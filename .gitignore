@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# OS
+.DS_Store
+
+# Qdrant local storage (if run via local-mode/on-disk client)
+qdrant_storage/
