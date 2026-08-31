@@ -15,7 +15,7 @@ CAPTION_RE = re.compile(r"^(Table|Exhibit)\s+([A-Z0-9]+)\s*[:—-]?\s*(.*)$", re
 
 @dataclass
 class Block:
-    kind: str  # heading | prose | table
+    kind: str  # heading | prose | table | flowchart
     page: int
     text: str = ""
     level: int | None = None
@@ -75,10 +75,13 @@ def _is_continuation(last: Block | None, rows, idx: int, caption: str | None) ->
     return bool(last.rows) and bool(rows) and last.rows[0] == rows[0]
 
 
-def parse(path: str) -> Document:
+def parse(path: str, captions: dict[int, str] | None = None) -> Document:
+    """Parse the PDF. `captions` maps a page number to that page's diagram caption,
+    which is inserted as a flowchart block in reading order."""
     doc = Document(source=path.split("/")[-1])
     pending_caption: str | None = None
     last_table: Block | None = None
+    captions = captions or {}
 
     with pdfplumber.open(path) as pdf:
         for pno, page in enumerate(pdf.pages, start=1):
@@ -144,6 +147,11 @@ def parse(path: str) -> Document:
                 last_table = blk if not cont else last_table
                 if not cont:
                     pending_caption = None
+
+            if pno in captions:
+                doc.blocks.append(
+                    Block(kind="flowchart", page=pno, text=captions[pno])
+                )
 
     return _merge_prose(doc)
 

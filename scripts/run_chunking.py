@@ -14,10 +14,26 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.ingest.chunker import chunk, to_dicts
+from src.ingest.flowchart import caption, extract_images
 from src.ingest.parser import parse
 
 DEFAULT_PDF = "data/raw/NovaCred_UW_V0_pdf.pdf"
 DEFAULT_OUT = "data/processed/chunks.json"
+IMAGE_DIR = "data/interim/images"
+CAPTION_DIR = "data/interim/captions"
+
+
+def load_captions(pdf: str) -> dict[int, str]:
+    """Caption every embedded diagram, reporting any the pipeline cannot read."""
+    captions: dict[int, str] = {}
+    for ref in extract_images(pdf, IMAGE_DIR):
+        text = caption(ref, CAPTION_DIR)
+        if text:
+            captions[ref.page] = text
+        else:
+            print(f"  WARNING: page {ref.page} diagram has no caption "
+                  f"(sha {ref.sha}) — set ANTHROPIC_API_KEY to generate it")
+    return captions
 
 
 def main() -> None:
@@ -26,7 +42,9 @@ def main() -> None:
     ap.add_argument("--out", default=DEFAULT_OUT)
     args = ap.parse_args()
 
-    chunks = chunk(parse(args.pdf))
+    captions = load_captions(args.pdf)
+    print(f"diagram captions loaded: {len(captions)}")
+    chunks = chunk(parse(args.pdf, captions=captions))
     Path(args.out).write_text(json.dumps(to_dicts(chunks), indent=2))
 
     counts = [c.token_count for c in chunks]

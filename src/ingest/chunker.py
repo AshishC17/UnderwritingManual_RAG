@@ -114,6 +114,31 @@ def _split_table(rows: list[list[str]], caption: str | None) -> list[str]:
     return out
 
 
+def _split_flowchart(text: str) -> list[str]:
+    """Split a diagram caption between its narrative and its edge list.
+
+    The title is repeated on the edge-list chunk: an edge like
+    `Rule Result? --Pass--> Assign Line` is ambiguous without knowing which of the
+    two near-identical process diagrams it belongs to.
+    """
+    if n_tokens(text) <= MAX_TOKENS:
+        return [text]
+
+    marker = "Decision paths:"
+    if marker not in text:
+        return _split_prose(text)
+
+    narrative, edges = text.split(marker, 1)
+    title = narrative.strip().split("\n", 1)[0]
+    head = narrative.strip()
+    tail = f"{title}\n{marker}{edges.rstrip()}"
+
+    out = []
+    for part in (head, tail):
+        out.extend(_split_prose(part) if n_tokens(part) > MAX_TOKENS else [part])
+    return out
+
+
 def _stitch(blocks: list[Block]) -> list[Block]:
     """Merge cross-page table continuations back into one logical table."""
     out: list[Block] = []
@@ -160,6 +185,10 @@ def chunk(doc: Document) -> list[Chunk]:
                 texts = _split_table(b.rows, b.caption)
                 kind = "table"
                 table_name = b.caption
+            elif b.kind == "flowchart":
+                texts = _split_flowchart(b.text)
+                kind = "flowchart"
+                table_name = None
             else:
                 texts = _split_prose(b.text)
                 kind = ctype_base

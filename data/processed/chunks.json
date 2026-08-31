@@ -655,6 +655,57 @@
   },
   {
     "chunk_id": "NovaCred_UW_V0_pdf.pdf::0033",
+    "text": "New Customer Pre-Qual Process\n\nThis flowchart describes the prequalification stage for a new customer application. The Decision Engine Receives App, then the system moves to Determine Channel, then to Run Prescreen Prequalification Checks, which feeds the Rule Result? decision point. Rule Result? has four outcomes: Pass, NOAA, Manual Review, and RFAI. On Pass the application proceeds to Assign Line, then Display Offer, then the Customer Accepts? decision; if the customer accepts, the application reaches Continue Application \u2192 Full Underwriting, and if not it reaches Expire Application. On NOAA the application goes to Assign Applicable NOAA, then Send Notification, then Expire Application. On Manual Review the application goes to Manual Review and then to the Reviewer Outcome? decision, whose branches are approve to Approved, counter to Counteroffer, NMI to Need More Information (NMI), and decline to Send Notification. On RFAI the application goes directly to Need More Information (NMI). Need More Information (NMI) loops back to Run Prescreen Prequalification Checks once info received, allowing the application to be re-evaluated. Terminal states are Continue Application \u2192 Full Underwriting, Approved, Counteroffer, and Expire Application.\n\nDecision paths:\n- Decision Engine Receives App --> Determine Channel\n- Determine Channel --> Run Prescreen Prequalification Checks\n- Run Prescreen Prequalification Checks --> Rule Result?\n- Rule Result? --Pass--> Assign Line\n- Rule Result? --NOAA--> Assign Applicable NOAA\n- Rule Result? --Manual Review--> Manual Review\n- Rule Result? --RFAI--> Need More Information (NMI)\n- Assign Line --> Display Offer\n- Display Offer --> Customer Accepts?\n- Customer Accepts? --Yes--> Continue Application \u2192 Full Underwriting\n- Customer Accepts? --No--> Expire Application\n- Assign Applicable NOAA --> Send Notification\n- Send Notification --> Expire Application\n- Manual Review --> Reviewer Outcome?\n- Reviewer Outcome? --approve--> Approved\n- Reviewer Outcome? --counter--> Counteroffer\n- Reviewer Outcome? --NMI--> Need More Information (NMI)\n- Reviewer Outcome? --decline--> Send Notification\n- Need More Information (NMI) --info received--> Run Prescreen Prequalification Checks",
+    "chunk_type": "flowchart",
+    "section": "EXHIBIT B \u2014 UNDERWRITING DECISION FLOW",
+    "subsection": null,
+    "pages": [
+      11
+    ],
+    "table_name": null,
+    "rule_codes_referenced": [],
+    "has_footnote": false,
+    "source_doc": "NovaCred_UW_V0_pdf.pdf",
+    "position_in_doc": 33,
+    "token_count": 470,
+    "parent_context": null
+  },
+  {
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0034",
+    "text": "New Customer Full Underwriting Process\n\nThis flowchart describes the full underwriting stage that follows prequalification. The process starts at Continue Application from Prequalification, moves to Determine Channel, then to Run Full Underwriting Policy & Credit Checks, which feeds the Rule Result? decision point. Rule Result? has four outcomes: Pass, NOAA, Manual Review, and RFAI. On Pass the application proceeds to Run Scoring & Affordability \u2192 Line, then Fraud & Compliance Checks, then the Clear? decision. If Clear? is Yes the application reaches Present Approved / Counteroffer and then the Customer Accepts? decision; if Clear? is No it is routed to Manual Review. If Customer Accepts? is Yes the application proceeds to Intraday Account Review and then to the All Required Verifications Complete? decision; if No it reaches Expire Application. If All Required Verifications Complete? is Yes the application reaches Ready to Fund, the successful terminal state; if No it is routed to Manual Review. On NOAA the application goes to Assign Applicable NOAA, then Send Notification, then Expire Application. On Manual Review the application goes to Manual Review, which leads to the Reviewer Outcome? decision, whose branches are approve to Approved, counter to Counteroffer, NMI to Need More Information (NMI), and decline to Expire Application. On RFAI, and from Need More Information (NMI) once resolved, the application reaches Evidence / Verification, which loops back to Run Full Underwriting Policy & Credit Checks for re-evaluation. Terminal states are Ready to Fund, Approved, Counteroffer, and Expire Application.",
+    "chunk_type": "flowchart",
+    "section": "EXHIBIT B \u2014 UNDERWRITING DECISION FLOW",
+    "subsection": null,
+    "pages": [
+      12
+    ],
+    "table_name": null,
+    "rule_codes_referenced": [],
+    "has_footnote": false,
+    "source_doc": "NovaCred_UW_V0_pdf.pdf",
+    "position_in_doc": 34,
+    "token_count": 330,
+    "parent_context": null
+  },
+  {
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0035",
+    "text": "New Customer Full Underwriting Process\nDecision paths:\n- Continue Application from Prequalification --> Determine Channel\n- Determine Channel --> Run Full Underwriting Policy & Credit Checks\n- Run Full Underwriting Policy & Credit Checks --> Rule Result?\n- Rule Result? --Pass--> Run Scoring & Affordability \u2192 Line\n- Rule Result? --NOAA--> Assign Applicable NOAA\n- Rule Result? --Manual Review--> Manual Review\n- Rule Result? --RFAI--> Evidence / Verification\n- Run Scoring & Affordability \u2192 Line --> Fraud & Compliance Checks\n- Fraud & Compliance Checks --> Clear?\n- Clear? --Yes--> Present Approved / Counteroffer\n- Clear? --No--> Manual Review\n- Present Approved / Counteroffer --> Customer Accepts?\n- Customer Accepts? --Yes--> Intraday Account Review\n- Customer Accepts? --No--> Expire Application\n- Intraday Account Review --> All Required Verifications Complete?\n- All Required Verifications Complete? --Yes--> Ready to Fund\n- All Required Verifications Complete? --No--> Manual Review\n- Assign Applicable NOAA --> Send Notification\n- Send Notification --No--> Expire Application\n- Manual Review --> Reviewer Outcome?\n- Reviewer Outcome? --approve--> Approved\n- Reviewer Outcome? --counter--> Counteroffer\n- Reviewer Outcome? --NMI--> Need More Information (NMI)\n- Reviewer Outcome? --decline--> Expire Application\n- Need More Information (NMI) --resolved--> Evidence / Verification\n- Evidence / Verification --> Run Full Underwriting Policy & Credit Checks",
+    "chunk_type": "flowchart",
+    "section": "EXHIBIT B \u2014 UNDERWRITING DECISION FLOW",
+    "subsection": null,
+    "pages": [
+      12
+    ],
+    "table_name": null,
+    "rule_codes_referenced": [],
+    "has_footnote": false,
+    "source_doc": "NovaCred_UW_V0_pdf.pdf",
+    "position_in_doc": 35,
+    "token_count": 327,
+    "parent_context": null
+  },
+  {
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0036",
     "text": "S S S This appendix is the authoritative code dictionary for Tables 3 through 6. Each code is defined with its disposition family and operational meaning. Every code shown in those rule tables appears below, and every appendix code is used at least once in Tables 3 through 6. The two-column format is intentional: the underwriting tables provide the rule-to-code linkage, while Exhibit C provides the code-to-meaning lookup.",
     "chunk_type": "appendix",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -666,12 +717,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 33,
+    "position_in_doc": 36,
     "token_count": 86,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0034",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0037",
     "text": "Table 9: Available NOAAs\n| Code | Description |\n| --- | --- |\n| NOAA 101 | NOAA \u2014 Blocked SSN: SSN matches an active NovaShield identity block. Exception: an administrative duplicate older than 36 months with exact current identity comparison may be treated as passed. |\n| NOAA 102 | NOAA \u2014 Blocked Phone: phone number matches a high-confidence synthetic fraud suppression record. |\n| NOAA 103 | NOAA \u2014 Blocked Email: email hash appears on the synthetic high-risk email registry. |\n| NOAA 107 | NOAA \u2014 Score Floor: representative bureau score is below 566 during prequalification. |\n| NOAA 108 | NOAA \u2014 Insufficient Income: verified or normalized monthly income is below $1,850. |\n| NOAA 109 | NOAA \u2014 SSI Threshold: SSI-only income is below the synthetic $1,120 monthly equivalent threshold. |\n| NOAA 110 | NOAA \u2014 Recent Application Decline: a NovaCred application was declined recently for a non-fraud credit reason; the Prescreen threshold is within 21 days and the full-underwriting overlay is within 10 days after cleared prequalification. |\n| NOAA 111 | NOAA \u2014 Inquiry Velocity: more than 6 hard inquiries occurred in the prior 120 days, excluding NovaCred soft checks. |\n| NOAA 113 | NOAA \u2014 OFAC Match: a potential sanctions screening match remains uncleared after automated or secondary comparison. |\n| NOAA 117 | NOAA \u2014 Existing Exposure: current Flex balance plus the requested amount exceeds the synthetic prequalification exposure cap. |\n| NOAA 118 | NOAA \u2014 Duplicate Application: identity fingerprint indicates an active duplicate application in the same campaign window. |\n| NOAA 120 | NOAA \u2014 Blocked Routing: a blocked identity route persists after prequalification and remains present at full underwriting refresh. The defined temporary- network-anomaly exception may override this result when its conditions are satisfied. |\n| NOAA 121 | NOAA \u2014 Credit Score Confirmation: refreshed representative bureau score is below 580 at full underwriting. |\n| NOAA 123 | NOAA \u2014 Employment Tenure: employment tenure is under 45 days without an alternate qualifying income source. |\n| NOAA 124 | NOAA \u2014 Bank Stability: average monthly transaction inflow is below $2,050 over the eligible observation window. |\n| NOAA 125 | NOAA \u2014 Payment Stress: projected installment-to-net- inflow ratio is above 0.31. |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -700,12 +751,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 34,
+    "position_in_doc": 37,
     "token_count": 493,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0035",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0038",
     "text": "Table 9: Available NOAAs\n| Code | Description |\n| --- | --- |\n| NOAA 126 | NOAA \u2014 High Inquiry Overlay: more than 9 hard inquiries occurred in 120 days, triggering a stricter final assessment. |\n| NOAA 130 | NOAA \u2014 Document Integrity: required evidence contains unresolved alteration, corruption, or integrity indicators. |\n| NOAA 133 | NOAA \u2014 Early-Payoff Pattern: prior NovaCred loan shows three or more rapid payoff-and-reapply cycles in 90 days. |\n| NOAA 135 | NOAA \u2014 Bank Account Ownership: funding or repayment account ownership cannot be reconciled to an eligible applicant. |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -723,12 +774,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 35,
+    "position_in_doc": 38,
     "token_count": 132,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0036",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0039",
     "text": "Table 10: Available RFAIs\n| Code | Description |\n| --- | --- |\n| RFAI 105 | RFAI \u2014 Credit Freeze: bureau security freeze prevents normal file access or remains active at full underwriting refresh. Additional information or a refreshed bureau state is required. |\n| RFAI 106 | RFAI \u2014 Thin File: bureau file has fewer than two tradelines and no qualifying alternate history; if unresolved after refresh, additional information is required. |\n| RFAI 114 | RFAI \u2014 FACTA Alert / Resolution: an identity-theft alert requires additional evidence or remains unresolved after document review. |\n| RFAI 115 | RFAI \u2014 Credit Risk Model Score Vector: the Credit Risk Model score vector required for automated risk ranking is missing, incomplete, or outside the applicable automated scoring process. |\n| RFAI 116 | RFAI \u2014 Bank Transaction Model Score Vector: the Bank Transaction Model score vector required for automated risk ranking is missing, incomplete, or outside the applicable automated scoring process. |\n| RFAI 122 | RFAI \u2014 Income Reconciliation: stated/application income differs from verified income by more than 28%, requiring evidence reconciliation. |\n| RFAI 128 | RFAI \u2014 Offer Age: an offer or campaign artifact is too old at application intake. Prescreen uses an older- than-45-day threshold; Non-Prescreen uses an older- than-30-day threshold. |\n| RFAI 134 | RFAI \u2014 Channel Attestation: partner-originated application lacks required acquisition attestation. |\n| RFAI 139 | RFAI \u2014 Address Evidence: address evidence is insufficient to reconcile the current residence after required automated checks. |\n| RFAI 140 | RFAI \u2014 Funding Method Verification: requested funding method requires additional ownership or destination verification. |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -751,12 +802,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 36,
+    "position_in_doc": 39,
     "token_count": 384,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0037",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0040",
     "text": "Table 11: Available NOIAs\n| Code | Description |\n| --- | --- |\n| NOIA 136 | NOIA \u2014 Borrower Notice / Verification Pending: eligible applicant requires a synthetic borrower notice after a documentation event. |\n| NOIA 137 | NOIA \u2014 Borrower Notice / Data Correction Requested: critical application field was corrected after initial intake and notice issuance. |\n| NOIA 138 | NOIA \u2014 Final Disposition Pending: final notice generation is pending a downstream policy event. |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -772,12 +823,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 37,
+    "position_in_doc": 40,
     "token_count": 103,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0038",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0041",
     "text": "Table 12: Available Manual Review Codes\n| Code | Description |\n| --- | --- |\n| Manual Review 104 | Manual Review \u2014 IP Velocity: application IP exceeds the synthetic rolling 24-hour application threshold; contextual review is required because shared networks or partner traffic can create legitimate velocity. |\n| Manual Review 112 | Manual Review \u2014 MLA Check / MLA Final: MLA coverage or status remains unresolved at the applicable underwriting stage. |\n| Manual Review 119 | Manual Review \u2014 Contact Inconsistency: applicant name and contact metadata show an unresolved high- risk mismatch requiring reconciliation. |\n| Manual Review 127 | Manual Review \u2014 Manual Identity Reconciliation: required core identity fields disagree across two or more sources and require contextual reconciliation. |\n| Manual Review 129 | Manual Review \u2014 Residence Mismatch: declared/ application residence conflicts with validated address information and cannot be resolved automatically. |\n| Manual Review 131 | Manual Review \u2014 Acquisition Source Risk: Non- Prescreen partner or campaign source has a temporary risk posture above its permitted band. |\n| Manual Review 132 | Manual Review \u2014 Device Reuse: device fingerprint is linked to 5 or more unrelated active applications during the prior 12 hours. |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -797,12 +848,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 38,
+    "position_in_doc": 41,
     "token_count": 242,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0039",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0042",
     "text": "Table 13: Code Cross-Reference Audit\n| Code Family | Codes Covered | Rule Tables Referencing the Codes |\n| --- | --- | --- |\n| NOAA | 101, 102, 103, 107, 108, 109, 110, 111, 113, 117, 118, 120, 121, 123, 124, 125, 126, 130, 133, 135 | Tables 3-6 |\n| RFAI | 105, 106, 114, 115, 116, 122, 128, 134, 139, 140 | Tables 3-6 |\n| NOIA | 136, 137, 138 | Table 6 |\n| Manual Review | 104, 112, 119, 127, 129, 131, 132 | Tables 3-6 |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -855,12 +906,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 39,
+    "position_in_doc": 42,
     "token_count": 189,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0040",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0043",
     "text": "Table 14: Fraud Consortium Criteria\n| Criterion ID | Synthetic Criterion | Severity | Disposition Guidance |\n| --- | --- | --- | --- |\n| FC-01 | Device reused across 6+ unrelated applicants in 12 hours | High | Manual Review unless corroborated by another high- confidence signal |\n| FC-02 | Contact point reused across 8+ unrelated active applications | High | Manual Review; verify ownership and relationship |\n| FC-03 | Identity attributes converge with known synthetic cluster | Critical | NOAA if identity block is active; otherwise Manual Review |\n| FC-04 | Application velocity exceeds synthetic consortium burst threshold | Medium | Manual Review; compare network context |\n| FC-05 | Repeated bank-account ownership conflicts across applicants | High | NOAA if ownership cannot be resolved |\n| FC-06 | Rapid payoff-and-reapply cycle observed across multiple accounts | Medium | Evaluate with Code 133; do not automatically treat one cycle as fraud |\n| FC-07 | Shared device used by a household cluster with consistent identity evidence | Low | May be cleared if identity and ownership evidence reconcile |\n| FC-08 | Partner traffic cluster shares anomalous network signature | Medium | Evaluate Code 131 and Table 13 before terminal action |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -883,12 +934,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 40,
+    "position_in_doc": 43,
     "token_count": 249,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0041",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0044",
     "text": "Table 14 is deliberately referenced by the Fraud, Verifications, and Manual Review section. The criteria shown here are synthetic pattern definitions used to support retrieval tests in which a reader must follow a forward cross- reference. The consortium criteria do not create new underwriting codes in this manual; where a disposition maps to a rule, the applicable code remains the code in Tables 3 through 6.",
     "chunk_type": "appendix",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -900,12 +951,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 41,
+    "position_in_doc": 44,
     "token_count": 79,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0042",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0045",
     "text": "Table 15: Override Footnote Register\n| Footnote | Annotated Rule | Effect |\n| --- | --- | --- |\n| \u00b9 | Blocked SSN / Blocked SSN-style identity block | May be treated as passed when the documented administrative-duplicate exception applies. |\n| \u00b2 | Blocked Routing | May be treated as passed when the defined temporary network anomaly exception and the documented Intraday Account Review criteria are satisfied. |\n| \u00b3 | Scoring | Missing score vector can be treated as passed for continuation when the Null Score condition did not trigger; no score is invented. |\n| \u2074 | RFAI appendix reference | Points the reviewer to Table 10 for the complete RFAI code list. |",
     "chunk_type": "table",
     "section": "EXHIBIT C \u2014 AVAILABLE NOAA , RFAI , AND NOIA",
@@ -917,12 +968,12 @@
     "rule_codes_referenced": [],
     "has_footnote": true,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 42,
+    "position_in_doc": 45,
     "token_count": 148,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0043",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0046",
     "text": "When multiple approved sources provide the same attribute, the rule configuration must specify a precedence order. The reviewer should not choose the most favorable source simply because it supports an approval. A source can be considered stale even when technically available; the timestamp and freshness window are part of the data contract. Source precedence should be encoded as an ordered preference list rather than left to the implementation team's judgment. When two approved sources disagree, retain both responses and apply the configured tie-break rule; do not overwrite one provider's value with the other. Fallback use should be monitored because a rise in fallback frequency can change the effective population being evaluated.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -934,12 +985,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 43,
+    "position_in_doc": 46,
     "token_count": 125,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0044",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0047",
     "text": "For each terminal or manual result, retain the data element, source, timestamp, rule code, action, and reviewer or system identifier. A screenshot without the underlying source reference is insufficient for reproducibility. Evidence should be retained according to the fictional enterprise retention schedule. Retention should preserve the evidence artifact, metadata, and evaluation event that consumed it. Where policy permits replacement or refresh, the prior artifact must remain addressable so the original decision can be reconstructed. Retention schedules should distinguish applicant-submitted documents from transient provider responses and system-generated evaluations.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -951,12 +1002,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 44,
+    "position_in_doc": 47,
     "token_count": 110,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0045",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0048",
     "text": "The rule engine must record the configuration version that generated the result. A code can retain its meaning while its threshold changes between configuration versions. Monitoring should therefore segment by both rule code and version rather than code alone. Every production evaluation should record the configuration version that supplied its thresholds, mappings, and rule sequence. Historical versions must remain readable even after a newer configuration becomes active, because prior decisions may need to be reproduced. A configuration release should identify changed rules and expected monitoring effects before it is activated.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -968,12 +1019,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 45,
+    "position_in_doc": 48,
     "token_count": 99,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0046",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0049",
     "text": "A reprocessed application must carry a new evaluation timestamp and preserve the original result. Reprocessing should be triggered by a defined event such as new bureau data, requested evidence, or a documented technical correction. It should not be used to search repeatedly for a favorable outcome. Reprocessing should create a new evaluation event rather than mutating the original decision record. The trigger for reprocessing should be classified, such as source correction, applicant response, or policy-approved retry. Outputs from a reprocessed event should remain linked to the initiating event so reviewers can compare the before- and-after state.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -985,12 +1036,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 46,
+    "position_in_doc": 49,
     "token_count": 115,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0047",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0050",
     "text": "Rule firing rates should be monitored by underwriting path, acquisition source, month, score band, and application type. Sudden changes may reflect data availability changes rather than true risk movement. Analysts should compare rule firing rate against source completeness and latency. Monitoring should distinguish changes caused by applicant mix from changes caused by upstream source behavior. Rule-level metrics should be examined alongside source availability, latency, and fallback rates. Unexpected shifts should be tied back to the configuration version before a policy conclusion is drawn.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -1002,12 +1053,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 47,
+    "position_in_doc": 50,
     "token_count": 99,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0048",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0051",
     "text": "Exception paths should be rare, documented, and separately reportable. An exception that becomes common is a candidate for policy redesign. Reviewers must not create informal exception categories outside the configured code set. An exception should identify the rule condition, approving authority, evidence basis, and expiration or scope. Exceptions must not silently become permanent policy; recurring exceptions should be evaluated for whether the underlying rule needs a formal change. Reporting should separate approved exceptions from ordinary automated passes so that exception volume remains visible.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -1019,12 +1070,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 48,
+    "position_in_doc": 51,
     "token_count": 97,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0049",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0052",
     "text": "The reason presented to an operator should correspond to the rule code and its configured description. User-facing notices may use approved language that differs from the internal rule name, but the mapping should be deterministic and auditable. Decision explanations should connect the final disposition to the rule or rules that materially affected it. Applicant-facing language should be generated from controlled mappings rather than exposed internal rule names. Internal audit detail may retain more technical evidence than the external notice, but both should reconcile to the same decision event.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -1036,12 +1087,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 49,
+    "position_in_doc": 52,
     "token_count": 98,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0050",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0053",
     "text": "If a critical source is structurally invalid, the system should quarantine the application or route it to an appropriate information/manual path. Defaulting nulls to favorable values is prohibited under this fictional policy. Data quality failures should be isolated from ordinary applicant risk signals when the source value cannot be trusted. A quarantined record should carry a reason, source, timestamp, and permitted recovery action. Analysts should monitor quarantine rates by source and path because systematic source defects can resemble changes in underwriting behavior.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -1053,12 +1104,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 50,
+    "position_in_doc": 53,
     "token_count": 99,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0051",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0054",
     "text": "Scores must be normalized to the current scoring schema before entering the line assignment matrix. A score from an incompatible model version cannot be silently mapped by numeric similarity. Scores from different providers or model versions should be normalized before they are compared with band boundaries. The normalized value must retain lineage to the raw score and scoring version that produced it. Band assignment should occur after normalization; a missing or incompatible score should follow the configured missing-score path instead of defaulting to a band.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -1070,12 +1121,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 51,
+    "position_in_doc": 54,
     "token_count": 93,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0052",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0055",
     "text": "Because identical rules reuse codes across paths, enterprise monitoring can compare the rate and downstream outcomes associated with Code 105, Code 106, and other shared controls without building artificial translation tables. Prescreen and Non-Prescreen results should be compared using path-aware denominators because their applicant populations are constructed differently. Path comparisons should include acquisition source and configuration version so a channel shift is not mistaken for a rule effect. Shared rule codes should remain comparable across paths, while path-specific rules should be reported separately.",
     "chunk_type": "appendix",
     "section": "APPENDIX OPERATING NOTES",
@@ -1090,12 +1141,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 52,
+    "position_in_doc": 55,
     "token_count": 100,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0053",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0056",
     "text": "The underwriting sequence begins only after the application has a valid path identifier and required identity envelope. A record with missing path metadata should not enter a best-guess ruleset. The intent is to make stage entry itself observable and prevent silent routing differences from becoming unexplained policy variance. For stage entry, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting stage entry should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for stage entry should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for stage entry should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "RULE SEQUENCE AND TERMINALITY",
@@ -1107,12 +1158,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 53,
+    "position_in_doc": 56,
     "token_count": 217,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0054",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0057",
     "text": "Terminal actions may short-circuit downstream rules, but the engine should retain the exact point of termination. For example, a high-confidence identity block can stop additional scoring calls, while an RFAI typically permits the application to remain open. The implementation must therefore distinguish terminal decline, temporary hold, and review routing. For short-circuit behavior, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting short-circuit behavior should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for short-circuit behavior should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for short-circuit behavior should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "RULE SEQUENCE AND TERMINALITY",
@@ -1124,12 +1175,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 54,
+    "position_in_doc": 57,
     "token_count": 231,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0055",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0058",
     "text": "More than one rule can fire in the same stage. The system should preserve all fired codes even when one code determines the immediate action. This allows analysts to understand secondary risk patterns and prevents a later investigation from losing evidence simply because the first terminal rule already ended the workflow. For multi-fire cases, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting multi-fire cases should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for multi-fire cases should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for multi-fire cases should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "RULE SEQUENCE AND TERMINALITY",
@@ -1141,12 +1192,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 55,
+    "position_in_doc": 58,
     "token_count": 219,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0056",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0059",
     "text": "Changing rule order can change observable outcomes even if each individual rule is unchanged. Configuration governance should therefore treat ordering as a versioned policy attribute. A month-over-month change in decline mix should be reviewed alongside ordering changes rather than attributed automatically to applicant behavior. For ordering changes, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting ordering changes should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for ordering changes should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for ordering changes should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "RULE SEQUENCE AND TERMINALITY",
@@ -1158,12 +1209,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 56,
+    "position_in_doc": 59,
     "token_count": 211,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0057",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0060",
     "text": "The synthetic bureau layer may return more than one score or no score. The configured representative-score selection method must be deterministic and recorded. A reviewer should not select a score based on which score produces the better outcome. If the expected score source is absent, the application follows the documented missing-data behavior rather than a favorable default. Source lineage for representative score selection should retain the raw bureau response together with the normalized field consumed by the rule, including the provider timestamp. Schema changes affecting representative score selection should be visible in the mapping layer. An incompatible field should produce a controlled missing-data state rather than a synthetic value. When multiple bureau responses are available for representative score selection, the decision record should identify which response was selected and why it was considered current. Monitoring for representative score selection should distinguish source-quality failures from genuine applicant conditions, using response completeness and refresh timing as separate diagnostic measures.",
     "chunk_type": "primary",
     "section": "BUREAU DATA HANDLING",
@@ -1175,12 +1226,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 57,
+    "position_in_doc": 60,
     "token_count": 174,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0058",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0061",
     "text": "A freeze is treated as an information state in the early rules because the applicant may be able to resolve it or provide another approved evidence path. The full-underwriting refresh repeats the condition so that a stale prequalification result does not accidentally survive into final decisioning. Source lineage for freeze processing should retain the raw bureau response together with the normalized field consumed by the rule, including the provider timestamp. Schema changes affecting freeze processing should be visible in the mapping layer. An incompatible field should produce a controlled missing-data state rather than a synthetic value. When multiple bureau responses are available for freeze processing, the decision record should identify which response was selected and why it was considered current. Monitoring for freeze processing should distinguish source-quality failures from genuine applicant conditions, using response completeness and refresh timing as separate diagnostic measures.",
     "chunk_type": "primary",
     "section": "BUREAU DATA HANDLING",
@@ -1192,12 +1243,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 58,
+    "position_in_doc": 61,
     "token_count": 158,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0059",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0062",
     "text": "Thin file is not a synonym for poor credit. The rule is specifically about insufficient observable history for the fictional automated strategy. An applicant can have no adverse tradelines and still trigger the thin-file rule because the model does not have enough evidence under the defined control. Source lineage for thin-file processing should retain the raw bureau response together with the normalized field consumed by the rule, including the provider timestamp. Schema changes affecting thin-file processing should be visible in the mapping layer. An incompatible field should produce a controlled missing-data state rather than a synthetic value. When multiple bureau responses are available for thin-file processing, the decision record should identify which response was selected and why it was considered current. Monitoring for thin-file processing should distinguish source-quality failures from genuine applicant conditions, using response completeness and refresh timing as separate diagnostic measures.",
     "chunk_type": "primary",
     "section": "BUREAU DATA HANDLING",
@@ -1209,12 +1260,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 59,
+    "position_in_doc": 62,
     "token_count": 162,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0060",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0063",
     "text": "Inquiry count uses a defined observation window and exclusions. Soft NovaCred checks are excluded from the count in the early rule. The stricter full-stage overlay uses a higher threshold and remains a separate code so monitoring can distinguish normal prequalification pressure from a final-stage overlay. Source lineage for inquiry handling should retain the raw bureau response together with the normalized field consumed by the rule, including the provider timestamp. Schema changes affecting inquiry handling should be visible in the mapping layer. An incompatible field should produce a controlled missing-data state rather than a synthetic value. When multiple bureau responses are available for inquiry handling, the decision record should identify which response was selected and why it was considered current. Monitoring for inquiry handling should distinguish source-quality failures from genuine applicant conditions, using response completeness and refresh timing as separate diagnostic measures.",
     "chunk_type": "primary",
     "section": "BUREAU DATA HANDLING",
@@ -1226,12 +1277,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 60,
+    "position_in_doc": 63,
     "token_count": 161,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0061",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0064",
     "text": "A block record is treated as a high-confidence control when its status is active and its identity linkage is exact enough for the configured rule. Footnote \u00b9 is intentionally narrow. It permits an exception for a resolved administrative duplicate but does not authorize a general reviewer override whenever the reviewer disagrees with the block. For identity blocks, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting identity blocks should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for identity blocks should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for identity blocks should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "IDENTITY, CONTACT, AND NETWORK CONTROLS",
@@ -1243,12 +1294,12 @@
     "rule_codes_referenced": [],
     "has_footnote": true,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 61,
+    "position_in_doc": 64,
     "token_count": 221,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0062",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0065",
     "text": "Phone suppression can be generated by synthetic fraud signals or repeated reuse patterns. The implementation should preserve the reason category and confidence. A reused phone is not automatically equivalent to a blocked phone; the policy separates the high-confidence blocked condition from contextual velocity signals. For phone controls, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting phone controls should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for phone controls should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for phone controls should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "IDENTITY, CONTACT, AND NETWORK CONTROLS",
@@ -1260,12 +1311,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 62,
+    "position_in_doc": 65,
     "token_count": 210,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0063",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0066",
     "text": "Email hash matching is used to avoid storing raw contact values in the synthetic risk registry. A blocked hash can trigger a NOAA, while unresolved name/contact mismatch is routed to Manual Review. This distinction creates a retrieval edge case in which two contact-related rules have different actions and codes. For email controls, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting email controls should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for email controls should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for email controls should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "IDENTITY, CONTACT, AND NETWORK CONTROLS",
@@ -1277,12 +1328,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 63,
+    "position_in_doc": 66,
     "token_count": 216,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0064",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0067",
     "text": "IP Velocity is a contextual trigger. Shared networks, partner environments, and household behavior can create legitimate reuse. That is why Code 104 is Manual Review rather than an automatic decline. Table 13 and Table 14 provide additional context for interpreting the signal. For ip controls, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting ip controls should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for ip controls should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for ip controls should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "IDENTITY, CONTACT, AND NETWORK CONTROLS",
@@ -1296,12 +1347,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 64,
+    "position_in_doc": 67,
     "token_count": 212,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0065",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0068",
     "text": "Device Reuse is unique to the Non-Prescreen path in this manual. It detects a pattern across multiple active applications but does not establish fraud by itself. Reviewers should compare the device signal against identity consistency, applicant relationship, and consortium criteria before choosing the final disposition. For device controls, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting device controls should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for device controls should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for device controls should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "IDENTITY, CONTACT, AND NETWORK CONTROLS",
@@ -1313,12 +1364,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 65,
+    "position_in_doc": 68,
     "token_count": 216,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0066",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0069",
     "text": "Income values should be normalized to a monthly amount using the source-specific convention. Salary, weekly pay, annual contract income, and business inflow may use different conversion logic. The normalized amount should be stored alongside the original amount and source frequency so that a reviewer can reproduce the calculation. For monthly normalization, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting monthly normalization should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for monthly normalization should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for monthly normalization should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "INCOME AND AFFORDABILITY CALCULATION STANDARDS",
@@ -1330,12 +1381,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 66,
+    "position_in_doc": 69,
     "token_count": 217,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0067",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0070",
     "text": "The same employment income should not be counted once from payroll and again from bank inflows. When two sources represent the same underlying stream, the controlling source should be chosen using the tier rules. The other source can serve as corroboration but not as additive income unless the policy explicitly identifies a separate stream. For duplicate income streams, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting duplicate income streams should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for duplicate income streams should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for duplicate income streams should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "INCOME AND AFFORDABILITY CALCULATION STANDARDS",
@@ -1347,12 +1398,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 67,
+    "position_in_doc": 70,
     "token_count": 226,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0068",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0071",
     "text": "Tier 3 is intentionally different for self-employed applicants. Gross business receipts can overstate spendable repayment capacity. The synthetic policy therefore requires eligible expense adjustments and a reconciliation between business records and bank activity before monthly income is finalized. For self-employed income, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting self-employed income should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for self-employed income should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for self-employed income should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "INCOME AND AFFORDABILITY CALCULATION STANDARDS",
@@ -1364,12 +1415,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 68,
+    "position_in_doc": 71,
     "token_count": 210,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0069",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0072",
     "text": "Payment Stress is a final-stage affordability control and uses net inflow rather than a generic score. Analysts should inspect both numerator and denominator if the rule fires unexpectedly. A sudden increase in firing rate can arise from changes in transaction categorization rather than true deterioration in applicants. For payment stress, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting payment stress should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for payment stress should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for payment stress should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "INCOME AND AFFORDABILITY CALCULATION STANDARDS",
@@ -1381,12 +1432,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 69,
+    "position_in_doc": 72,
     "token_count": 215,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0070",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0073",
     "text": "An affordability-based counteroffer should preserve the original requested amount and the adjusted amount. The system should not overwrite the original request, because later monitoring may need to distinguish demand from capacity. A counteroffer is a new proposed line, not evidence that the original request was approved. For counteroffer logic, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting counteroffer logic should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for counteroffer logic should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for counteroffer logic should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "INCOME AND AFFORDABILITY CALCULATION STANDARDS",
@@ -1398,12 +1449,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 70,
+    "position_in_doc": 73,
     "token_count": 219,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0071",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0074",
     "text": "The synthetic MLA check is intentionally a Manual Review state when status cannot be resolved automatically. It is not treated as a simple score. The reviewer must establish which status was returned, when it was obtained, and whether the ambiguity can be resolved with an approved source. For mla status, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting mla status should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for mla status should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for mla status should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "COMPLIANCE CONTROL OPERATIONS",
@@ -1415,12 +1466,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 71,
+    "position_in_doc": 74,
     "token_count": 217,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0072",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0075",
     "text": "The synthetic OFAC rule treats an uncleared match as a NOAA. Secondary comparison can clear some potential matches, but the final result must be recorded. An automated mismatch should not be hidden simply because the applicant otherwise passes credit and income checks. For ofac screening, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting ofac screening should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for ofac screening should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for ofac screening should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "COMPLIANCE CONTROL OPERATIONS",
@@ -1432,12 +1483,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 72,
+    "position_in_doc": 75,
     "token_count": 213,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0073",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0076",
     "text": "A FACTA alert is treated as an RFAI because additional identity evidence may resolve the condition. The alert can appear both at prequalification and final refresh. The reused code means downstream monitoring can compare the control across stages. For facta alert, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting facta alert should create an observable event rather than silently altering an earlier decision. Re- evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for facta alert should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for facta alert should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "COMPLIANCE CONTROL OPERATIONS",
@@ -1449,12 +1500,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 73,
+    "position_in_doc": 76,
     "token_count": 210,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0074",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0077",
     "text": "NOIA codes 136-138 are document-generation events, not substitutes for credit outcomes. They should be generated in addition to the relevant underwriting decision record when the configured notice condition occurs. This makes the appendix deliberately contain a third family of codes that cannot be mistaken for NOAA or RFAI. For notice generation, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting notice generation should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for notice generation should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for notice generation should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "COMPLIANCE CONTROL OPERATIONS",
@@ -1469,12 +1520,12 @@
     ],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 74,
+    "position_in_doc": 77,
     "token_count": 221,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0075",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0078",
     "text": "The scoring rule references two synthetic models: the Credit Risk Model and the Bank Transaction Model. The rule intentionally uses multiple codes so that model-output failures can be diagnosed by component. If both outputs are available but combined score is weak, the scoring row is still evaluated through the configured action; if one output is missing, the specific code associated with that component can identify the failure source. For score lineage, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting score lineage should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for score lineage should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for score lineage should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "SCORING AND MODEL OUTPUT HANDLING",
@@ -1486,12 +1537,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 75,
+    "position_in_doc": 78,
     "token_count": 237,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0076",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0079",
     "text": "Footnote \u00b3 provides a narrow continuation override. It does not manufacture a score and it does not guarantee approval. The downstream workflow may still require another evidence path before line assignment, particularly when the score bands cannot be populated safely. For missing scores, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting missing scores should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for missing scores should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for missing scores should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "SCORING AND MODEL OUTPUT HANDLING",
@@ -1503,12 +1554,12 @@
     "rule_codes_referenced": [],
     "has_footnote": true,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 76,
+    "position_in_doc": 79,
     "token_count": 207,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0077",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0080",
     "text": "Band boundaries are inclusive or exclusive exactly as shown in the matrix labels. Implementations must not infer boundaries from neighboring cells. Boundary tests should include values immediately below, at, and immediately above each cut so that drift caused by comparison operators is caught. For score cut boundaries, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting score cut boundaries should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for score cut boundaries should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for score cut boundaries should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "SCORING AND MODEL OUTPUT HANDLING",
@@ -1520,12 +1571,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 77,
+    "position_in_doc": 80,
     "token_count": 214,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0078",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0081",
     "text": "The minimum floor and maximum cap are independent controls. A positive matrix adjustment cannot push the line above the cap, and a negative adjustment cannot reduce the line below the floor. These controls are applied after the matrix cell is selected. For line floor and cap, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting line floor and cap should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for line floor and cap should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for line floor and cap should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "SCORING AND MODEL OUTPUT HANDLING",
@@ -1537,12 +1588,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 78,
+    "position_in_doc": 81,
     "token_count": 214,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0079",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0082",
     "text": "Monitoring should examine the distribution of score bands as well as the frequency of each rule. A stable rule-firing rate with a shifting score mix can still materially change the final line distribution. For monitoring score mix, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting monitoring score mix should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for monitoring score mix should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for monitoring score mix should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "SCORING AND MODEL OUTPUT HANDLING",
@@ -1554,12 +1605,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 79,
+    "position_in_doc": 82,
     "token_count": 202,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0080",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0083",
     "text": "An RFAI starts an information-request lifecycle. The request should specify what evidence is needed, why it is needed, when it expires, and what rule code created it. When evidence arrives, the application is re-evaluated against the current stage. The old RFAI event remains in history even if the condition is resolved. For rfai lifecycle, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting rfai lifecycle should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for rfai lifecycle should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for rfai lifecycle should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "APPLICATION REWORK, NMI, AND REMEDIATION",
@@ -1571,12 +1622,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 80,
+    "position_in_doc": 83,
     "token_count": 232,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0081",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0084",
     "text": "If several RFAI codes fire, operations should consolidate requests where the same document can satisfy multiple rules, but the audit record must preserve the relationship from each request back to its source code. This prevents a single uploaded document from obscuring which policy conditions were actually resolved. For multiple requests, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting multiple requests should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for multiple requests should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for multiple requests should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "APPLICATION REWORK, NMI, AND REMEDIATION",
@@ -1588,12 +1639,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 81,
+    "position_in_doc": 84,
     "token_count": 215,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0082",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0085",
     "text": "Evidence received after its validity window should not be treated as automatically current. The case may need a refreshed bureau or income pull. This is a timing issue, not necessarily an applicant risk issue. For expired evidence, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting expired evidence should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for expired evidence should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for expired evidence should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "APPLICATION REWORK, NMI, AND REMEDIATION",
@@ -1605,12 +1656,12 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 82,
+    "position_in_doc": 85,
     "token_count": 199,
     "parent_context": null
   },
   {
-    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0083",
+    "chunk_id": "NovaCred_UW_V0_pdf.pdf::0086",
     "text": "A declined application should not be manually reopened simply because an applicant calls. Reopening should use a configured event type and preserve the original decline. A new application may be appropriate when the original evidence is materially stale. For reopen controls, the evidence record should retain the source value, normalized interpretation, rule context, and timestamp needed to explain the result. The control is evaluated from the approved inputs available at that stage. A change affecting reopen controls should create an observable event rather than silently altering an earlier decision. Re-evaluation should state what changed, which rule was rerun, and whether any prior action remains in force. Exception handling for reopen controls should be explicit. When a fallback, override, or manual disposition is permitted, the record should identify the condition that allowed it and the authority or configuration that governed the exception. Monitoring for reopen controls should look beyond raw firing counts. Reviewers should compare the mix of source outcomes, path, configuration version, and downstream disposition so operational drift is not mistaken for a policy change.",
     "chunk_type": "primary",
     "section": "APPLICATION REWORK, NMI, AND REMEDIATION",
@@ -1622,7 +1673,7 @@
     "rule_codes_referenced": [],
     "has_footnote": false,
     "source_doc": "NovaCred_UW_V0_pdf.pdf",
-    "position_in_doc": 83,
+    "position_in_doc": 86,
     "token_count": 203,
     "parent_context": null
   }

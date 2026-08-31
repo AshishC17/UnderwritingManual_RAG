@@ -222,3 +222,6 @@ __marimo__/
 
 # Qdrant local storage (if run via local-mode/on-disk client)
 qdrant_storage/
+
+# Images extracted from source PDFs — regenerable, unlike the captions beside them
+data/interim/images/
