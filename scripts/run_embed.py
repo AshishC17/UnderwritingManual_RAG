@@ -15,8 +15,13 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from dotenv import load_dotenv
+
 from src.embed.embedder import DIMS, MODEL, MissingCredentials, embed_document
 from src.store import qdrant_store as qs
+
+# Reads VOYAGE_API_KEY from .env at the project root (gitignored).
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 DEFAULT_CHUNKS = "data/processed/chunks.json"
 
