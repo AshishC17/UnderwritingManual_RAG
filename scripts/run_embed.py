@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dotenv import load_dotenv
 
 from src.embed.embedder import DIMS, MODEL, MissingCredentials, embed_document
+from src.embed.sparse import embed_documents as embed_sparse
 from src.store import qdrant_store as qs
 
 # Reads VOYAGE_API_KEY from .env at the project root (gitignored).
@@ -53,11 +54,17 @@ def main() -> None:
         raise SystemExit(
             f"embedding returned {len(vectors)} vectors for {len(chunks)} chunks"
         )
-    print(f"embedded: {len(vectors)} vectors of dim {len(vectors[0])}")
+    print(f"embedded: {len(vectors)} dense vectors of dim {len(vectors[0])}")
+
+    # BM25 runs locally — no API, no rate limit, no cost.
+    sparse = embed_sparse(texts)
+    nnz = sum(len(s.indices) for s in sparse) / len(sparse)
+    print(f"embedded: {len(sparse)} sparse vectors, {nnz:.0f} avg terms each")
 
     client = qs.connect(args.qdrant)
     qs.ensure_collection(client, dims=args.dims, recreate=args.recreate)
-    print(f"upserted: {qs.upsert(client, chunks, vectors)} points -> {qs.COLLECTION}")
+    n = qs.upsert(client, chunks, vectors, sparse=sparse)
+    print(f"upserted: {n} points -> {qs.COLLECTION}")
     print(f"collection now holds: {client.get_collection(qs.COLLECTION).points_count}")
 
 
