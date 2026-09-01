@@ -40,6 +40,17 @@ SPLITS = {
 }
 
 
+def _rerank_cached(case: dict, client, dv, sv, args) -> bool:
+    """True if this case's rerank is already cached, so no wait is needed."""
+    from src.rerank.reranker import CACHE_DIR, MODEL, _key
+
+    hits = qs.search_hybrid(
+        client, dv, sv, limit=args.candidates, prefetch_limit=args.candidates * 2
+    )
+    texts = [h.payload["text"] for h in hits]
+    return (Path(CACHE_DIR) / f"{_key(MODEL, case['question'], texts)}.json").exists()
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--split", choices=list(SPLITS), default="dev")
@@ -70,23 +81,33 @@ def main() -> None:
     max_k = max(args.k)
     results: dict = {}
 
+    completed: list[str] = []
     for config in args.configs:
         needs_api = config == "hybrid_rerank"
         print(f"running {config}{' (reranking — rate limited)' if needs_api else ''}")
         retrievals, latencies = {}, []
 
-        for i, case in enumerate(cases):
-            dv, sv = vectors[case["id"]]
-            if needs_api and i:
-                import time as _t
-                _t.sleep(args.spacing)
-            r = retrieve(
-                client, config, dv, sv,
-                k=max_k, candidates=args.candidates, query=case["question"],
-            )
-            retrievals[case["id"]] = r.chunk_ids
-            latencies.append(r.latency_ms)
+        try:
+            for i, case in enumerate(cases):
+                dv, sv = vectors[case["id"]]
+                # Sleep before *every* uncached rerank, including the first: the
+                # query-embedding pass just consumed this rate-limit window.
+                if needs_api and not _rerank_cached(case, client, dv, sv, args):
+                    import time as _t
+                    _t.sleep(args.spacing)
+                r = retrieve(
+                    client, config, dv, sv,
+                    k=max_k, candidates=args.candidates, query=case["question"],
+                )
+                retrievals[case["id"]] = r.chunk_ids
+                latencies.append(r.latency_ms)
+        except Exception as e:  # keep whatever already succeeded
+            print(f"  {config} FAILED after {len(retrievals)}/{len(cases)} cases: "
+                  f"{type(e).__name__}: {str(e)[:110]}")
+            print(f"  reporting the {len(completed)} config(s) that completed.")
+            continue
 
+        completed.append(config)
         results[config] = {
             "retrievals": retrievals,
             "latency_p50": percentile(latencies, 50),
@@ -96,6 +117,9 @@ def main() -> None:
                 for k in args.k
             },
         }
+    args.configs = completed
+    if not completed:
+        raise SystemExit("no configuration completed")
     print()
 
     # ---- headline table -------------------------------------------------

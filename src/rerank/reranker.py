@@ -21,10 +21,16 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import time
 from pathlib import Path
 
 MODEL = "rerank-2.5"
 CACHE_DIR = "data/interim/reranks"
+
+# The free tier allows 3 requests and 10K tokens per minute, and reranking a
+# shortlist spends a large share of that in one call. The SDK's own retry gives
+# up well inside a 60s window, so back off past the whole window instead.
+RETRY_WAITS_S = [65, 65, 125]
 
 
 class MissingCredentials(RuntimeError):
@@ -48,6 +54,25 @@ def _client():
     return voyageai.Client()
 
 
+def _rerank_with_backoff(query: str, texts: list[str], model: str, verbose: bool = True):
+    """Call rerank, waiting out the rate-limit window rather than failing."""
+    import voyageai
+
+    client = _client()
+    for attempt, wait in enumerate([0, *RETRY_WAITS_S]):
+        if wait:
+            if verbose:
+                print(f"      rate limited; waiting {wait}s "
+                      f"(attempt {attempt}/{len(RETRY_WAITS_S)})", flush=True)
+            time.sleep(wait)
+        try:
+            return client.rerank(query=query, documents=texts, model=model)
+        except voyageai.error.RateLimitError:
+            if attempt == len(RETRY_WAITS_S):
+                raise
+    raise RuntimeError("unreachable")
+
+
 def rerank(
     query: str,
     candidates: list[dict],
@@ -67,7 +92,7 @@ def rerank(
     if cache.exists():
         scored = json.loads(cache.read_text())
     else:
-        result = _client().rerank(query=query, documents=texts, model=model)
+        result = _rerank_with_backoff(query, texts, model)
         scored = [[r.index, r.relevance_score] for r in result.results]
         cache.parent.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps(scored))
