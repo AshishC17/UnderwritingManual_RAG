@@ -32,6 +32,13 @@ CACHE_DIR = "data/interim/reranks"
 # up well inside a 60s window, so back off past the whole window instead.
 RETRY_WAITS_S = [65, 65, 125]
 
+# A 25-candidate shortlist of ~200-token chunks measures ~8.2K tokens — 82% of a
+# free-tier minute in one call. Retrying an over-budget request cannot succeed
+# and burns the budget it is waiting for, so trim the shortlist to fit instead.
+# Raise this once rate limits allow; it caps recall, since the reranker can only
+# reorder what it is given.
+MAX_RERANK_TOKENS = 7500
+
 
 class MissingCredentials(RuntimeError):
     pass
@@ -73,12 +80,29 @@ def _rerank_with_backoff(query: str, texts: list[str], model: str, verbose: bool
     raise RuntimeError("unreachable")
 
 
+def _fit_budget(candidates: list[dict], max_tokens: int) -> list[dict]:
+    """Keep the highest-ranked candidates that fit the token budget.
+
+    Trimming from the tail is safe: candidates arrive in retrieval-rank order, so
+    the ones dropped are those retrieval already judged least promising.
+    """
+    kept, used = [], 0
+    for c in candidates:
+        cost = c.get("token_count") or max(1, len(c["text"]) // 4)
+        if kept and used + cost > max_tokens:
+            break
+        kept.append(c)
+        used += cost
+    return kept
+
+
 def rerank(
     query: str,
     candidates: list[dict],
     top_k: int | None = None,
     model: str = MODEL,
     cache_dir: str = CACHE_DIR,
+    max_tokens: int = MAX_RERANK_TOKENS,
 ) -> list[tuple[dict, float]]:
     """Reorder `candidates` (chunk payload dicts) by joint relevance to `query`.
 
@@ -86,6 +110,7 @@ def rerank(
     absolute 0-1 relevance judgements, not similarities — unlike the fused RRF
     ranks coming in, they are comparable across queries and can carry a threshold.
     """
+    candidates = _fit_budget(candidates, max_tokens)
     texts = [c["text"] for c in candidates]
     cache = Path(cache_dir) / f"{_key(model, query, texts)}.json"
 
