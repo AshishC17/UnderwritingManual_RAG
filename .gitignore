@@ -225,3 +225,6 @@ qdrant_storage/
 
 # Images extracted from source PDFs — regenerable, unlike the captions beside them
 data/interim/images/
+
+# Embedding cache — regenerable, and large
+data/interim/embeddings/
