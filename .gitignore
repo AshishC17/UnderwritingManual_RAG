@@ -228,3 +228,6 @@ data/interim/images/
 
 # Embedding cache — regenerable, and large
 data/interim/embeddings/
+
+# Rerank cache — regenerable, and keyed to a specific shortlist
+data/interim/reranks/
