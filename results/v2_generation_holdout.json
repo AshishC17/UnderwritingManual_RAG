@@ -1,0 +1,230 @@
+{
+  "split": "holdout",
+  "k": 10,
+  "gen_model": "openai/gpt-oss-120b",
+  "judge_model": "qwen/qwen3.8-27b",
+  "aggregate": {
+    "cases": 13,
+    "claim_recall": 0.8467032967032968,
+    "hallucination_rate": 0.07692307692307693,
+    "citation_validity": 1.0,
+    "forbidden_assertions": 2
+  },
+  "by_difficulty": {
+    "easy": {
+      "cases": 2,
+      "claim_recall": 1.0,
+      "hallucination_rate": 0.0,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 0
+    },
+    "medium": {
+      "cases": 3,
+      "claim_recall": 0.5833333333333334,
+      "hallucination_rate": 0.3333333333333333,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 2
+    },
+    "difficult": {
+      "cases": 3,
+      "claim_recall": 0.8666666666666667,
+      "hallucination_rate": 0.0,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 0
+    },
+    "extreme": {
+      "cases": 5,
+      "claim_recall": 0.9314285714285715,
+      "hallucination_rate": 0.0,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 0
+    }
+  },
+  "cases": [
+    {
+      "case_id": "E03",
+      "difficulty": "easy",
+      "stress_type": "matrix_cell_lookup",
+      "claims_required": 1,
+      "claims_present": 1,
+      "claim_recall": 1.0,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 1,
+      "citations_valid": 1,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "E01",
+      "difficulty": "easy",
+      "stress_type": "single_table_lookup",
+      "claims_required": 3,
+      "claims_present": 3,
+      "claim_recall": 1.0,
+      "forbidden_total": 2,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M03",
+      "difficulty": "medium",
+      "stress_type": "semantic_distinction",
+      "claims_required": 4,
+      "claims_present": 3,
+      "claim_recall": 0.75,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M02",
+      "difficulty": "medium",
+      "stress_type": "table_plus_footnote",
+      "claims_required": 5,
+      "claims_present": 5,
+      "claim_recall": 1.0,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "D06",
+      "difficulty": "difficult",
+      "stress_type": "source_precedence_and_temporal_lineage",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "D05",
+      "difficulty": "difficult",
+      "stress_type": "prescreen_offer_not_final_approval",
+      "claims_required": 5,
+      "claims_present": 5,
+      "claim_recall": 1.0,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "D04",
+      "difficulty": "difficult",
+      "stress_type": "calculation_with_policy_blocker",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X06",
+      "difficulty": "extreme",
+      "stress_type": "criterion_to_rule_threshold_mapping",
+      "claims_required": 5,
+      "claims_present": 5,
+      "claim_recall": 1.0,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X05",
+      "difficulty": "extreme",
+      "stress_type": "complex_flowchart_loop",
+      "claims_required": 7,
+      "claims_present": 6,
+      "claim_recall": 0.8571428571428571,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 2,
+      "citations_valid": 2,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X04",
+      "difficulty": "extreme",
+      "stress_type": "appendix_forward_reference",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X02",
+      "difficulty": "extreme",
+      "stress_type": "confusing_adjacent_code_families",
+      "claims_required": 5,
+      "claims_present": 5,
+      "claim_recall": 1.0,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M07",
+      "difficulty": "medium",
+      "stress_type": "implicit_stage_flowchart_rework_loop",
+      "claims_required": 3,
+      "claims_present": 0,
+      "claim_recall": 0.0,
+      "forbidden_total": 3,
+      "forbidden_asserted": [
+        "The RFAI routes directly to Evidence / Verification.",
+        "Information received resumes Run Full Underwriting Policy & Credit Checks."
+      ],
+      "hallucinated": 1,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X09",
+      "difficulty": "extreme",
+      "stress_type": "multi_hop_manual_review_stage_contradiction",
+      "claims_required": 6,
+      "claims_present": 6,
+      "claim_recall": 1.0,
+      "forbidden_total": 5,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    }
+  ]
+}

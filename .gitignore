@@ -235,3 +235,6 @@ data/interim/reranks/
 # Generation and judge caches — regenerable
 data/interim/generations/
 data/interim/judgements/
+
+# Judge label templates — generated per validation run
+results/*.labels.json

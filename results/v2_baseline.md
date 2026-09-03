@@ -102,6 +102,58 @@ correct-stage chunk outranks every distractor. Ranks are reported alongside the 
 
 p95 for `hybrid_rerank` is contaminated by rate-limit backoff and is not reported.
 
+## 3b. Generation
+
+**Generator `openai/gpt-oss-120b`, judge `qwen/qwen3.8-27b`** — both on Groq, deliberately
+different model *families* (OpenAI vs Alibaba), since a model grading its own output has a
+self-preference bias that same-family models partly share. `temperature=0` on both so eval
+numbers do not wander between runs. Context = the reranked top-10.
+
+| metric | dev (14) | holdout (13) |
+|---|---|---|
+| claim recall | 0.855 | 0.847 |
+| hallucination rate | 0.071 | 0.077 |
+| citation validity | 1.000 | 1.000 |
+| forbidden assertions | 1 | 2 |
+
+### By difficulty
+
+| difficulty | dev claim-recall | dev halluc | holdout claim-recall | holdout halluc |
+|---|---|---|---|---|
+| easy | 1.000 | 0.000 | 1.000 | 0.000 |
+| medium | 0.817 | 0.000 | 0.583 | 0.333 |
+| difficult | 0.800 | 0.000 | 0.867 | 0.000 |
+| extreme | 0.825 | 0.250 | 0.931 | 0.000 |
+
+**The one dev hallucination is X08 — the same case that failed retrieval.** Chunk `0033` was
+never retrieved (stage metric: `X08:−v3`), so the model answered without the Pre-Qual flow and
+asserted *"Resolved evidence at the current stage goes directly to Evidence / Verification"* —
+the Full Underwriting behaviour. **It hallucinated the wrong stage because it was handed the
+wrong stage.** Retrieval failure cascading into generation failure, traced across two
+independent metrics. The fix is at rung 2 of the ladder (retrieval), not in the prompt.
+
+**Citation validity is 1.000 on both splits** — no invented sources. Note the models cite with
+CJK brackets `【id】` rather than the ASCII `[id]` the prompt requests; the citation regex
+accepts both, and matching only ASCII would have scored every citation invalid.
+
+### THE JUDGE IS NOT YET VALIDATED
+
+Every generation number above is produced by an unverified Qwen-27B. **217 verdicts
+(111 dev + 106 holdout) are exported to `results/judge_audit_*.json` and have not been
+hand-checked.** Until they are, treat these as provisional.
+
+```bash
+python scripts/validate_judge.py results/judge_audit_dev.json --sample 40
+# fill the "human" field in the generated .labels.json, then:
+python scripts/validate_judge.py results/judge_audit_dev.json --score
+```
+
+Reports **Cohen's kappa**, not raw agreement — a judge that answered "absent" to everything
+would score ~0.90 raw agreement and kappa 0.000 while catching zero hallucinations (verified
+against synthetic cases). Target is kappa **0.7–0.8**. The sampler deliberately balances
+present/absent rather than drawing randomly, because a random draw is mostly "absent" and the
+verdicts worth checking are the "present" ones.
+
 ## 4. Headline
 
 **hybrid_rerank holds at 0.923 full-coverage and MRR 1.000 on holdout, with perfect stage
@@ -132,8 +184,9 @@ problem — a retrieval problem. This is the hardest case in the set.
    ~0.10 are noise.
 2. **Stage accuracy rests on 2 cases per split.** Directionally striking, statistically thin.
    The dense 0.000 result is consistent across 4/4 cases, which is what makes it credible.
-3. **Retrieval only.** No generation, so `required_claims` / `forbidden_claims` (103 and 80
-   assertions) remain unused and answer quality is unmeasured.
+3. **Generation numbers rest on an unvalidated judge** (see §3b). This is the largest
+   caveat in the document — the hallucination rate is a Qwen-27B's opinion until someone
+   checks it.
 4. **Ground truth keys on positional chunk IDs.** Re-chunking renumbers them and silently
    invalidates labels.
 5. **Holdout was run once per version**, aggregates only, never used for tuning.

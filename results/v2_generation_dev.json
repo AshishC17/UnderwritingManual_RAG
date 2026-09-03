@@ -1,0 +1,243 @@
+{
+  "split": "dev",
+  "k": 10,
+  "gen_model": "openai/gpt-oss-120b",
+  "judge_model": "qwen/qwen3.8-27b",
+  "aggregate": {
+    "cases": 14,
+    "claim_recall": 0.8547619047619047,
+    "hallucination_rate": 0.07142857142857142,
+    "citation_validity": 1.0,
+    "forbidden_assertions": 1
+  },
+  "by_difficulty": {
+    "easy": {
+      "cases": 3,
+      "claim_recall": 1.0,
+      "hallucination_rate": 0.0,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 0
+    },
+    "medium": {
+      "cases": 4,
+      "claim_recall": 0.8166666666666667,
+      "hallucination_rate": 0.0,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 0
+    },
+    "difficult": {
+      "cases": 3,
+      "claim_recall": 0.7999999999999999,
+      "hallucination_rate": 0.0,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 0
+    },
+    "extreme": {
+      "cases": 4,
+      "claim_recall": 0.825,
+      "hallucination_rate": 0.25,
+      "citation_validity": 1.0,
+      "forbidden_assertions": 1
+    }
+  },
+  "cases": [
+    {
+      "case_id": "E05",
+      "difficulty": "easy",
+      "stress_type": "single_table_document_lookup",
+      "claims_required": 2,
+      "claims_present": 2,
+      "claim_recall": 1.0,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "E04",
+      "difficulty": "easy",
+      "stress_type": "single_table_threshold_lookup",
+      "claims_required": 3,
+      "claims_present": 3,
+      "claim_recall": 1.0,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "E02",
+      "difficulty": "easy",
+      "stress_type": "definition_with_negative_constraint",
+      "claims_required": 3,
+      "claims_present": 3,
+      "claim_recall": 1.0,
+      "forbidden_total": 2,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M04",
+      "difficulty": "medium",
+      "stress_type": "stage_specific_threshold_comparison",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M05",
+      "difficulty": "medium",
+      "stress_type": "reused_code_across_stages",
+      "claims_required": 4,
+      "claims_present": 4,
+      "claim_recall": 1.0,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M01",
+      "difficulty": "medium",
+      "stress_type": "code_definition_and_rule_usage",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "D02",
+      "difficulty": "difficult",
+      "stress_type": "narrow_override_and_missing_data",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "D01",
+      "difficulty": "difficult",
+      "stress_type": "exception_propagation_across_paths",
+      "claims_required": 5,
+      "claims_present": 3,
+      "claim_recall": 0.6,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "D03",
+      "difficulty": "difficult",
+      "stress_type": "multi_fire_and_terminality",
+      "claims_required": 4,
+      "claims_present": 4,
+      "claim_recall": 1.0,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X07",
+      "difficulty": "extreme",
+      "stress_type": "production_monitoring_causal_confounding",
+      "claims_required": 6,
+      "claims_present": 6,
+      "claim_recall": 1.0,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X01",
+      "difficulty": "extreme",
+      "stress_type": "multi_hop_code_join_and_rework",
+      "claims_required": 6,
+      "claims_present": 5,
+      "claim_recall": 0.8333333333333334,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X03",
+      "difficulty": "extreme",
+      "stress_type": "exception_reference_and_non_final_pass",
+      "claims_required": 5,
+      "claims_present": 4,
+      "claim_recall": 0.8,
+      "forbidden_total": 4,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "M06",
+      "difficulty": "medium",
+      "stress_type": "implicit_stage_flowchart_transition",
+      "claims_required": 3,
+      "claims_present": 2,
+      "claim_recall": 0.6666666666666666,
+      "forbidden_total": 3,
+      "forbidden_asserted": [],
+      "hallucinated": 0,
+      "citations_made": 1,
+      "citations_valid": 1,
+      "citation_validity": 1.0
+    },
+    {
+      "case_id": "X08",
+      "difficulty": "extreme",
+      "stress_type": "multi_hop_reused_code_stage_contradiction",
+      "claims_required": 6,
+      "claims_present": 4,
+      "claim_recall": 0.6666666666666666,
+      "forbidden_total": 5,
+      "forbidden_asserted": [
+        "Resolved evidence at the current stage goes directly to Evidence / Verification."
+      ],
+      "hallucinated": 1,
+      "citations_made": 0,
+      "citations_valid": 0,
+      "citation_validity": 1.0
+    }
+  ]
+}

@@ -5,8 +5,9 @@ model to score a whole answer at once, and a per-claim verdict is something a
 human can check in seconds — which matters, because an unvalidated judge silently
 corrupts every number downstream.
 
-The judge runs on a *different* model than the generator: a model grading its own
-output has a documented self-preference bias.
+The judge runs on a different model *family* than the generator (Qwen vs
+GPT-OSS), not merely a different size: a model grading its own output has a
+documented self-preference bias, and same-family models share it in part.
 
 The judge must quote the sentence it relies on. Forcing a span makes the verdict
 checkable and measurably reduces judge hallucination — a model that has to point
@@ -21,7 +22,7 @@ import os
 import re
 from pathlib import Path
 
-JUDGE_MODEL = "claude-opus-4-8"
+JUDGE_MODEL = "qwen/qwen3.8-27b"
 CACHE_DIR = "data/interim/judgements"
 
 PROMPT = """You are checking whether a specific claim is asserted in an answer.
@@ -50,11 +51,11 @@ def _key(model: str, claim: str, answer: str) -> str:
 
 
 def _client():
-    import anthropic
+    import groq
 
-    if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
-        raise MissingCredentials("ANTHROPIC_API_KEY is not set")
-    return anthropic.Anthropic()
+    if not os.environ.get("GROQ_API_KEY"):
+        raise MissingCredentials("GROQ_API_KEY is not set")
+    return groq.Groq()
 
 
 def _parse(text: str) -> dict:
@@ -83,15 +84,16 @@ def judge_claim(
         data = json.loads(cache.read_text())
         return data["verdict"] == "present", data.get("evidence", "")
 
-    response = _client().messages.create(
+    response = _client().chat.completions.create(
         model=model,
         max_tokens=1000,
+        temperature=0,  # deterministic verdicts; a judge that wanders is unusable
         messages=[{
             "role": "user",
             "content": PROMPT.format(claim=claim, answer=answer),
         }],
     )
-    raw = "".join(b.text for b in response.content if b.type == "text")
+    raw = response.choices[0].message.content or ""
     data = _parse(raw)
 
     cache.parent.mkdir(parents=True, exist_ok=True)

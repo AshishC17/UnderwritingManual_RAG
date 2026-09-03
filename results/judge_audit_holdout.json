@@ -1,0 +1,638 @@
+[
+  {
+    "case_id": "E03",
+    "claim": "The selected matrix adjustment is +$450.",
+    "verdict": "present",
+    "evidence": "The adjustment for the 610\u2011649 Vantage Score band intersecting the 830\u2011909 NovaCred Risk Score band is **+$450**\u3010NovaCred_UW_V0_pdf.pdf::0021\u3011."
+  },
+  {
+    "case_id": "E03",
+    "claim": "The adjustment is +$700.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E03",
+    "claim": "The adjustment is +$150.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E03",
+    "claim": "The value is itself an approval decision.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E01",
+    "claim": "The source is NovaShield Network Monitor.",
+    "verdict": "present",
+    "evidence": "* **Source:** NovaShield Network Monitor"
+  },
+  {
+    "case_id": "E01",
+    "claim": "The action is Manual Review.",
+    "verdict": "present",
+    "evidence": "* **Action:** Manual Review"
+  },
+  {
+    "case_id": "E01",
+    "claim": "The code is 104.",
+    "verdict": "present",
+    "evidence": "* **Code:** 104"
+  },
+  {
+    "case_id": "E01",
+    "claim": "IP Velocity is an automatic NOAA or decline.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E01",
+    "claim": "IP Velocity is an RFAI.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M03",
+    "claim": "Thin file is not equivalent to poor credit.",
+    "verdict": "present",
+    "evidence": "The policy states that a thin file is **not** a synonym for poor credit; it is triggered when the bureau file has too few tradelines for the automated model, even if there are no adverse tradelines [0062]."
+  },
+  {
+    "case_id": "M03",
+    "claim": "The applicable code is 106.",
+    "verdict": "present",
+    "evidence": "The applicable code is **RFAI 106 \u2013 Thin File**."
+  },
+  {
+    "case_id": "M03",
+    "claim": "The disposition is RFAI/additional information, not automatic decline.",
+    "verdict": "present",
+    "evidence": "The next\u2011step disposition is to place the application in an **information\u2011request (NMI) state** so that additional bureau data or a refreshed file can be obtained, not to decline it as poor credit."
+  },
+  {
+    "case_id": "M03",
+    "claim": "The definition concerns fewer than two tradelines and no qualifying alternate history.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M03",
+    "claim": "The applicant must be declined for poor credit.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M03",
+    "claim": "Code 106 is a NOAA.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M03",
+    "claim": "No adverse tradelines means the applicant automatically passes.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M02",
+    "claim": "Two recent bank statements are required.",
+    "verdict": "present",
+    "evidence": "Tier 3 (self\u2011employed, contract\u2011based, commission\u2011heavy, or business\u2011derived income) must be supported by **two recent bank statements, one business/income statement, and the applicable self\u2011employment attestation**\u30100026\u3011."
+  },
+  {
+    "case_id": "M02",
+    "claim": "One business/income statement is required.",
+    "verdict": "present",
+    "evidence": "Tier 3 (self\u2011employed, contract\u2011based, commission\u2011heavy, or business\u2011derived income) must be supported by two recent bank statements, one business/income statement, and the applicable self\u2011employment attestation"
+  },
+  {
+    "case_id": "M02",
+    "claim": "The applicable self-employment attestation is required.",
+    "verdict": "present",
+    "evidence": "Tier 3 (self\u2011employed, contract\u2011based, commission\u2011heavy, or business\u2011derived income) must be supported by two recent bank statements, one business/income statement, and the applicable self\u2011employment attestation"
+  },
+  {
+    "case_id": "M02",
+    "claim": "Eligible expenses must be adjusted and business records reconciled with bank activity.",
+    "verdict": "present",
+    "evidence": "The policy requires that the business inflow be **adjusted for eligible expenses and reconciled with the applicant\u2019s bank activity** before the monthly income figure is finalized."
+  },
+  {
+    "case_id": "M02",
+    "claim": "Gross receipts must not be treated directly as repayment capacity.",
+    "verdict": "present",
+    "evidence": "For Tier 3 self-employed applicants, gross business receipts cannot be used directly as monthly repayment capacity."
+  },
+  {
+    "case_id": "M02",
+    "claim": "One pay statement is sufficient.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M02",
+    "claim": "Gross business receipts can be used directly as monthly income.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M02",
+    "claim": "Tier 3 is the stable salaried-employment tier.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D06",
+    "claim": "Configured source precedence and tie-break rules control selection.",
+    "verdict": "present",
+    "evidence": "When two approved providers return different values, the reviewer must **retain both responses and apply the configured tie\u2011break rule**"
+  },
+  {
+    "case_id": "D06",
+    "claim": "The favorable value cannot be chosen merely because it supports approval.",
+    "verdict": "present",
+    "evidence": "the reviewer may not pick the more favorable (stale) value or overwrite the current provider\u2019s value to obtain an approval [0046]"
+  },
+  {
+    "case_id": "D06",
+    "claim": "Both conflicting responses must be retained rather than overwritten.",
+    "verdict": "present",
+    "evidence": "When two approved providers return different values, the reviewer must **retain both responses and apply the configured tie\u2011break rule**; the reviewer may not pick the more favorable (stale) value or overwrite the current provider\u2019s value to obtain an approval [0046]."
+  },
+  {
+    "case_id": "D06",
+    "claim": "Timestamp and freshness window are part of the decision.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D06",
+    "claim": "A later refresh creates a new evaluation event and preserves the original evidence.",
+    "verdict": "present",
+    "evidence": "A later source refresh must be **recorded as a new evaluation event**, preserving the original snapshot and its retrieval timestamp and noting which source change caused any rule rerun."
+  },
+  {
+    "case_id": "D06",
+    "claim": "The reviewer should choose the most favorable approved provider.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D06",
+    "claim": "A technically available stale value is automatically current.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D06",
+    "claim": "The selected provider's value should overwrite the conflicting value.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D06",
+    "claim": "A later refresh may be attached retroactively to the old finalized decision.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D05",
+    "claim": "The firm offer is not final underwriting approval.",
+    "verdict": "present",
+    "evidence": "The manual states that a firm\u2011offer \u201cdoes not bypass full underwriting\u201d and \u201cmust not be interpreted as evidence that all downstream rules have passed\u201d [0032]."
+  },
+  {
+    "case_id": "D05",
+    "claim": "The active freeze produces RFAI Code 105.",
+    "verdict": "present",
+    "evidence": "In the prescreen pre\u2011qualification rule set this condition is the \u201cCredit Freeze Refresh\u201d rule, which carries **RFAI 105** [0013] and is listed in Table 10 as \u201cCredit Freeze: bureau security freeze prevents normal file access \u2026 Additional information \u2026 is required\u201d [0039]."
+  },
+  {
+    "case_id": "D05",
+    "claim": "The freeze can be resolved through information or refreshed bureau state.",
+    "verdict": "present",
+    "evidence": "The applicant must resolve the freeze (or provide alternate evidence) before the case can proceed."
+  },
+  {
+    "case_id": "D05",
+    "claim": "A refreshed score of 575 is below 580 and produces NOAA Code 121.",
+    "verdict": "present",
+    "evidence": "The refreshed bureau score of **575** is evaluated by the \u201cCredit Score Confirmation\u201d rule, which is **Code 121** and produces a **NOAA** outcome [0013]."
+  },
+  {
+    "case_id": "D05",
+    "claim": "Current underwriting evidence controls despite the earlier selection state.",
+    "verdict": "present",
+    "evidence": "Both downstream controls are applied regardless of the earlier offer [0032]."
+  },
+  {
+    "case_id": "D05",
+    "claim": "The firm offer guarantees approval.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D05",
+    "claim": "The freeze automatically produces a NOAA.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D05",
+    "claim": "The relevant full-stage cutoff is 566.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D05",
+    "claim": "Resolving the freeze prevents later score-based decline.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D04",
+    "claim": "The matrix adjustment is +$1,100.",
+    "verdict": "present",
+    "evidence": "The matrix cell for a **NovaCred Risk Score > 649** and a **Vantage Score > 909** contains a **+$1,100** adjustment\u30100021\u3011."
+  },
+  {
+    "case_id": "D04",
+    "claim": "The pre-cap arithmetic is $4,600.",
+    "verdict": "present",
+    "evidence": "Applied to the synthetic base line of **$3,500**, the proposed line before any floor\u2011or\u2011cap controls is **$3,500 + $1,100 = $4,600**\u30100021\u3011."
+  },
+  {
+    "case_id": "D04",
+    "claim": "The maximum cap still applies and its value is not provided.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D04",
+    "claim": "Unresolved MLA is Manual Review Code 112.",
+    "verdict": "present",
+    "evidence": "An unresolved **MLA (Manual\u2011Review) status** is a manual\u2011review condition (Manual Review 112) that must be resolved before a line can be finalized\u30100041\u3011\u30100074\u3011."
+  },
+  {
+    "case_id": "D04",
+    "claim": "The positive adjustment does not override Manual Review or authorize funding.",
+    "verdict": "present",
+    "evidence": "Therefore, even though the matrix proposes $4,600, the system cannot finalize that line or fund the loan while the MLA status remains unresolved."
+  },
+  {
+    "case_id": "D04",
+    "claim": "$4,600 is necessarily the final line.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D04",
+    "claim": "A positive matrix adjustment overrides compliance review.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D04",
+    "claim": "Unresolved MLA is an automatic approval or RFAI.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "D04",
+    "claim": "The manual specifies a numeric maximum cap.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X06",
+    "claim": "One cycle does not automatically trigger fraud or NOAA 133.",
+    "verdict": "present",
+    "evidence": "No. A single rapid payoff\u2011and\u2011reapply cycle does **not** automatically generate NOAA 133."
+  },
+  {
+    "case_id": "X06",
+    "claim": "FC-06 points to existing Code 133 rather than creating a new underwriting code.",
+    "verdict": "present",
+    "evidence": "Fraud\u2011Consortium criterion FC\u201106 states: \u201cRapid payoff\u2011and\u2011reapply cycle observed across multiple accounts \u2013 Medium \u2013 Evaluate with Code 133; do not automatically treat one cycle as fraud\u201d\u30100043\u3011."
+  },
+  {
+    "case_id": "X06",
+    "claim": "Code 133 is Early-Payoff Pattern and is a Non-Prescreen NOAA rule.",
+    "verdict": "present",
+    "evidence": "The Early\u2011Payoff Pattern rule in the Non\u2011Prescreen pre\u2011qualification table maps to NOAA 133"
+  },
+  {
+    "case_id": "X06",
+    "claim": "The authoritative threshold is three or more cycles in 90 days.",
+    "verdict": "present",
+    "evidence": "Therefore, the condition must be evaluated against the NOAA 133 threshold (\u2265 3 cycles within 90 days)."
+  },
+  {
+    "case_id": "X06",
+    "claim": "The condition may be evaluated and retained without inventing a terminal outcome.",
+    "verdict": "present",
+    "evidence": "Therefore, the condition must be evaluated against the NOAA 133 threshold (\u2265 3 cycles within 90 days)."
+  },
+  {
+    "case_id": "X06",
+    "claim": "FC-06 itself is a three-digit underwriting code.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X06",
+    "claim": "Any single rapid payoff automatically causes NOAA 133.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X06",
+    "claim": "Code 133 is a Manual Review or RFAI code.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X06",
+    "claim": "The threshold is six cycles in 12 hours.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X05",
+    "claim": "The initial Clear No branch routes to Manual Review.",
+    "verdict": "present",
+    "evidence": "3. **Clear? = No \u2192 Manual Review** \u2013 the reviewer selects **NMI**."
+  },
+  {
+    "case_id": "X05",
+    "claim": "Reviewer Outcome NMI routes to Need More Information.",
+    "verdict": "present",
+    "evidence": "4. **Reviewer Outcome = NMI \u2192 Need More Information (NMI)** \u2013 the request is later **resolved**."
+  },
+  {
+    "case_id": "X05",
+    "claim": "Resolved NMI goes through Evidence/Verification and loops back to full-underwriting checks.",
+    "verdict": "present",
+    "evidence": "5. **Resolved NMI \u2192 Evidence / Verification \u2192 Run Full Underwriting Policy & Credit Checks** \u2013 the re\u2011run again returns **Pass**."
+  },
+  {
+    "case_id": "X05",
+    "claim": "After rerun and Clear Yes, acceptance leads to Intraday Account Review.",
+    "verdict": "present",
+    "evidence": "8. **Customer Accepts\u202f=\u202fYes \u2192 Intraday Account Review \u2192 All Required Verifications Complete?** \u2013 the answer is **No** (verifications still incomplete)."
+  },
+  {
+    "case_id": "X05",
+    "claim": "Incomplete required verifications route back to Manual Review.",
+    "verdict": "present",
+    "evidence": "All Required Verifications Complete? = No \u2192 Manual Review \u2013 the case is routed back to Manual Review for a final reviewer decision."
+  },
+  {
+    "case_id": "X05",
+    "claim": "The ending state is Manual Review, not Ready to Fund.",
+    "verdict": "present",
+    "evidence": "The workflow ends in **Manual Review** (the case is awaiting a reviewer outcome such as approve, counter\u2011offer, NMI, or decline)."
+  },
+  {
+    "case_id": "X05",
+    "claim": "No unspecified later reviewer outcome is invented.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X05",
+    "claim": "Resolved NMI goes directly to approval or funding.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X05",
+    "claim": "Customer acceptance alone makes the application Ready to Fund.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X05",
+    "claim": "Incomplete verification expires the application automatically.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X05",
+    "claim": "The reviewer ultimately approves, counters, or declines when no such outcome is provided.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X04",
+    "claim": "FC-08 is not a new underwriting code.",
+    "verdict": "present",
+    "evidence": "FC\u201108 is **not** a new underwriting code and it does not itself generate an automatic NOAA."
+  },
+  {
+    "case_id": "X04",
+    "claim": "FC-08 does not automatically require NOAA.",
+    "verdict": "present",
+    "evidence": "FC\u201108 is **not** a new underwriting code and it does not itself generate an automatic NOAA."
+  },
+  {
+    "case_id": "X04",
+    "claim": "Code 131 must be evaluated.",
+    "verdict": "present",
+    "evidence": "It is a synthetic\u2011pattern criterion that, when matched, requires the reviewer to **evaluate the existing Code 131** (Acquisition Source Risk \u2013 Manual Review) and to follow the guidance in Table 13 before taking any terminal action\u30100043\u3011."
+  },
+  {
+    "case_id": "X04",
+    "claim": "Code 131 is Acquisition Source Risk and routes to Manual Review.",
+    "verdict": "present",
+    "evidence": "It is a synthetic\u2011pattern criterion that, when matched, requires the reviewer to **evaluate the existing Code 131** (Acquisition Source Risk \u2013 Manual Review) and to follow the guidance in Table 13 before taking any terminal action\u30100043\u3011."
+  },
+  {
+    "case_id": "X04",
+    "claim": "The applicable underwriting code remains the existing Tables 3-6 code.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X04",
+    "claim": "FC-08 is itself Code 138 or another three-digit code.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X04",
+    "claim": "An anomalous partner network signature automatically declines the application.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X04",
+    "claim": "Code 131 is a NOAA or RFAI.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X04",
+    "claim": "Table 14 creates a new terminal code family.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X02",
+    "claim": "Code 135 is NOAA - Bank Account Ownership.",
+    "verdict": "present",
+    "evidence": "NOIA 136 does **not** replace or soften the NOAA generated by Bank Account Ownership Code 135."
+  },
+  {
+    "case_id": "X02",
+    "claim": "Code 136 is a NOIA notice event, not an underwriting substitute.",
+    "verdict": "present",
+    "evidence": "NOIA codes 136\u2011138 are document\u2011generation events, not substitutes for credit outcomes\u2026 They should be generated **in addition to** the relevant underwriting decision record"
+  },
+  {
+    "case_id": "X02",
+    "claim": "NOIA 136 does not replace or soften NOAA 135.",
+    "verdict": "present",
+    "evidence": "NOIA 136 does **not** replace or soften the NOAA generated by Bank Account Ownership Code 135."
+  },
+  {
+    "case_id": "X02",
+    "claim": "The NOAA disposition remains and the notification/expiration path applies.",
+    "verdict": "present",
+    "evidence": "Therefore the underwriting decision that resulted in NOAA 135 must be retained. In the full\u2011underwriting flow, a NOAA outcome routes the application to **Assign Applicable NOAA \u2192 Send Notification \u2192 Expire Application** (see the \u201cNOAA\u201d branch of the Rule Result? decision point) [0035]. The NOIA 136 notice is added on top of that decision but does not alter the NOAA\u2011driven workflow."
+  },
+  {
+    "case_id": "X02",
+    "claim": "The NOIA event may be recorded in addition to the decision.",
+    "verdict": "present",
+    "evidence": "They should be generated **in addition to** the relevant underwriting decision record"
+  },
+  {
+    "case_id": "X02",
+    "claim": "Code 136 converts the case to RFAI or NMI.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X02",
+    "claim": "NOIA 136 cancels NOAA 135.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X02",
+    "claim": "The applicant can proceed to funding because a notice was generated.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X02",
+    "claim": "The higher code number is more severe or controls automatically.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M07",
+    "claim": "The RFAI result routes to Need More Information (NMI).",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M07",
+    "claim": "Information received loops back to Run Prescreen Prequalification Checks.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M07",
+    "claim": "The current route does not use the full-underwriting Evidence / Verification loop.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M07",
+    "claim": "The RFAI routes directly to Evidence / Verification.",
+    "verdict": "present",
+    "evidence": "The application is sent first to **Evidence / Verification** (the RFAI branch of the full\u2011underwriting flow) [0035]."
+  },
+  {
+    "case_id": "M07",
+    "claim": "Information received resumes Run Full Underwriting Policy & Credit Checks.",
+    "verdict": "present",
+    "evidence": "When the requested information arrives, the case is re\u2011evaluated by looping back to **Run Full Underwriting Policy & Credit Checks** [0035]."
+  },
+  {
+    "case_id": "M07",
+    "claim": "Receiving the information creates approval or Ready to Fund status.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X09",
+    "claim": "Code 104 is IP Velocity from NovaShield Network Monitor with a Manual Review disposition.",
+    "verdict": "present",
+    "evidence": "The policy defines this as **Manual Review Code 104** (IP Velocity) and explicitly states that it is a manual\u2011review trigger, not an automatic decline\u30100041\u3011."
+  },
+  {
+    "case_id": "X09",
+    "claim": "Manual Review may not be converted to RFAI merely to avoid human intervention.",
+    "verdict": "present",
+    "evidence": "The underwriting manual states: *\u201cWhen a rule produces Manual Review, operations should not convert the result to RFAI merely to avoid human intervention; the manual\u2011review condition exists because the policy anticipates a judgment or reconciliation task.\u201d*\u30100014\u3011."
+  },
+  {
+    "case_id": "X09",
+    "claim": "A reviewer NMI outcome routes to Need More Information.",
+    "verdict": "present",
+    "evidence": "The reviewer returns **NMI** (Need More Information)."
+  },
+  {
+    "case_id": "X09",
+    "claim": "Information received reruns Prescreen Prequalification Checks rather than the full-underwriting Evidence / Verification loop.",
+    "verdict": "present",
+    "evidence": "In pre\u2011qualification the NMI loop is: \u201cinfo received \u2192 Run Prescreen Prequalification Checks\u201d\u30100033\u3011."
+  },
+  {
+    "case_id": "X09",
+    "claim": "Receiving information or clearing the trigger is not final approval.",
+    "verdict": "present",
+    "evidence": "Receiving the information alone does not approve the application; it merely enables the rule to be re\u2011evaluated."
+  },
+  {
+    "case_id": "X09",
+    "claim": "After an early-stage Pass, line assignment, offer display, customer acceptance, and full underwriting still remain.",
+    "verdict": "present",
+    "evidence": "If the IP\u2011Velocity condition no longer fires, the rule result becomes **Pass** \u2192 **Assign Line \u2192 Display Offer \u2192 Customer Accepts? \u2192 Continue Application \u2192 Full Underwriting**\u30100033\u3011."
+  },
+  {
+    "case_id": "X09",
+    "claim": "Code 104 is an RFAI or NOAA disposition.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X09",
+    "claim": "Operations may bypass Manual Review by relabeling the result.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X09",
+    "claim": "A reviewer NMI outcome goes directly to full-underwriting Evidence / Verification.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X09",
+    "claim": "Information received resumes full-underwriting policy and credit checks at this stage.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "X09",
+    "claim": "Clearing IP Velocity makes the application approved or Ready to Fund.",
+    "verdict": "absent",
+    "evidence": ""
+  }
+]

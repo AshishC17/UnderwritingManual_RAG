@@ -102,8 +102,14 @@ def main() -> None:
         s = score_generation(case, answer, [c["chunk_id"] for c in chunks],
                              make_judge(case["id"]))
         scores.append(s)
-        print(f"  [{i}/{len(cases)}] {case['id']}  claims {s.claims_present}/"
-              f"{s.claims_required}  {'HALLUCINATED' if s.hallucinated else 'clean'}")
+        # Progress only on a diagnosable split. On holdout even a per-case
+        # pass/fail line is tuning signal, which the policy exists to withhold.
+        if protected:
+            print(f"  [{i}/{len(cases)}] scored", flush=True)
+        else:
+            print(f"  [{i}/{len(cases)}] {case['id']}  claims {s.claims_present}/"
+                  f"{s.claims_required}  "
+                  f"{'HALLUCINATED' if s.hallucinated else 'clean'}")
 
     agg = aggregate_generation(scores)
     print("\n" + "=" * 72)

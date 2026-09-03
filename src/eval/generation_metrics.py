@@ -22,7 +22,10 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-CITATION_RE = re.compile(r"\[([^\]\s]+::\d+)\]")
+# Models cite with whichever bracket they favour — gpt-oss-120b emits CJK 【】 rather
+# than the ASCII [] the prompt asks for. Matching only [] scored every citation
+# invalid, so accept both rather than penalise formatting for a substantive metric.
+CITATION_RE = re.compile(r"[\[【]([^\]】\s]+::\d+)[\]】]")
 
 
 @dataclass

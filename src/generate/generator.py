@@ -17,7 +17,7 @@ import json
 import os
 from pathlib import Path
 
-MODEL = "claude-opus-5"
+MODEL = "openai/gpt-oss-120b"
 CACHE_DIR = "data/interim/generations"
 MAX_TOKENS = 4000
 
@@ -63,14 +63,13 @@ def build_context(chunks: list[dict]) -> str:
 
 
 def _client():
-    import anthropic
+    import groq
 
-    if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
+    if not os.environ.get("GROQ_API_KEY"):
         raise MissingCredentials(
-            "ANTHROPIC_API_KEY is not set. Get one at console.anthropic.com "
-            "(billed separately from a Claude Code subscription) and add it to .env"
+            "GROQ_API_KEY is not set. Get one at console.groq.com and add it to .env"
         )
-    return anthropic.Anthropic()
+    return groq.Groq()
 
 
 def generate(
@@ -84,17 +83,17 @@ def generate(
     if cache.exists():
         return json.loads(cache.read_text())["answer"]
 
-    response = _client().messages.create(
+    response = _client().chat.completions.create(
         model=model,
         max_tokens=MAX_TOKENS,
-        system=[{"type": "text", "text": SYSTEM, "cache_control": {"type": "ephemeral"}}],
-        thinking={"type": "adaptive"},
-        messages=[{
-            "role": "user",
-            "content": f"Context:\n\n{context}\n\nQuestion: {question}",
-        }],
+        temperature=0,  # deterministic: eval numbers must not wander between runs
+        messages=[
+            {"role": "system", "content": SYSTEM},
+            {"role": "user",
+             "content": f"Context:\n\n{context}\n\nQuestion: {question}"},
+        ],
     )
-    answer = "".join(b.text for b in response.content if b.type == "text").strip()
+    answer = (response.choices[0].message.content or "").strip()
 
     cache.parent.mkdir(parents=True, exist_ok=True)
     cache.write_text(json.dumps({
