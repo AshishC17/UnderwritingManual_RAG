@@ -175,8 +175,9 @@ while getting the stage wrong half the time. Without `stage_accuracy` this would
 healthy configuration.
 
 **X08 fails on every config, and differently from the rest.** The `−` in `X08:−v3` means
-chunk `0033` was **never retrieved at all**, while a distractor ranked 3rd. Not a ranking
-problem — a retrieval problem. This is the hardest case in the set.
+chunk `0033` did not appear **within k=10**, while a distractor ranked 3rd. It is in fact
+retrieved at **rank 12** — outside the cutoff, not absent from the index. That distinction
+matters: the fix is the cutoff, not the retriever. Full walkthrough in §7.
 
 ## 6. Caveats
 
@@ -200,6 +201,58 @@ sub-question → **rank 1**. Fix is query decomposition, not deeper shortlists.
 
 **Stage confusion** — now measured; see §5.
 
+### Worked example: X08, a retrieval failure that presents as a hallucination
+
+The only dev case that both fails retrieval and hallucinates. Worth tracing in full, because
+the surface symptom points at the wrong fix.
+
+**The question.** *"An application is still in the stage before full underwriting when Credit
+Freeze returns Code 105. Operations argues that because Code 105 appears later as Credit
+Freeze Refresh, resolved evidence should enter Evidence / Verification and resume
+full-underwriting checks. Is that correct?"* — Operations is wrong; the model must say so.
+
+**What it needed:** `0011` (Table 3, Prescreen Prequalification Rules), `0012` (reused-code
+semantics), `0033` (Pre-Qual flowchart).
+
+**What retrieval gave it (top-10, hybrid_rerank):**
+
+```
+ 1. 0018  Table 6: Non-Prescreen FULL UNDERWRITING Rules   <- wrong stage
+ 2. 0039  Table 10: Available RFAIs
+ 3. 0035  Full Underwriting flowchart                      <- wrong stage
+ 4. 0034  Full Underwriting flowchart                      <- wrong stage
+ 6. 0012  needed, present
+```
+
+`0011` never retrieved. **`0033` at rank 12 — two places outside the k=10 cutoff.** So the
+model received the Full Underwriting rule table and both Full Underwriting flowcharts, and
+nothing from the stage the question was about.
+
+**What it did with that.** It understood the question — the answer opens *"At the
+pre-qualification point..."* — but had to cite **Table 6** (Full Underwriting) to support it,
+because Table 3 was absent. It then got the reused-code reasoning right from `0012`, and got
+the final question right (*"Does any of these steps grant final approval? – No."*). But for the
+route it wrote:
+
+> *"Rule Result? – RFAI → the flowchart sends the application to **Evidence / Verification**
+> [0035][0034] ... loops back to **Run Full Underwriting Policy & Credit Checks**"*
+
+That is the forbidden claim nearly verbatim. **`Evidence / Verification` exists only in the
+Full Underwriting flowchart.** The Pre-Qual equivalent is
+`Need More Information (NMI) --info received--> Run Prescreen Prequalification Checks` — a
+different node with a different destination. The model described the Full Underwriting rework
+loop because that is the only rework loop it was shown.
+
+**The lesson.** The model reasoned correctly over the wrong evidence. Reading "asserted a
+forbidden claim" and going to work on the prompt would have been wasted effort — no prompt
+change puts a missing chunk into context. It took two metrics together to localise it: stage
+accuracy showing `X08:−v3`, then hallucination on the same case.
+
+**The candidate fix is Tier-0** — `0033` is at rank 12, so raising `k` from 10 to 15 puts it in
+context. But **one case at rank 12 is not evidence that k=10 is wrong in general**: raising `k`
+adds tokens, latency, and distraction across all 27 cases, and "lost in the middle" is a real
+effect. This is a change to make against the full eval and measure, not a one-case patch.
+
 **Abbreviation mismatch — still untested by the eval.** The corpus uses `NOAA` 97 times and
 never expands it; `RFAI` 64 times. Measured BM25 top-5 overlap between document vocabulary
 and plausible user phrasing: NOAA vs "Notice of Adverse Action" = **0/5**, RFAI vs "Request
@@ -209,14 +262,16 @@ vocabulary, so this remains invisible to the eval.
 
 ## 8. Next
 
-1. Generation + generation eval — `required_claims` / `forbidden_claims` are built and idle;
-   the dangerous failures in this domain (over-generalizing a narrow exception, reading an
-   adjacent matrix cell) are generation failures that retrieval eval cannot catch.
-2. Metadata filtering for stage, with `stage_accuracy` as the instrument that proves it worked.
-3. Query decomposition (LangGraph) — addresses the compound-query failure class.
-4. HyDE — targets the abbreviation gap.
-5. Add abbreviation cases to ground truth first, so any improvement is measurable.
-6. Fix `rule_codes_referenced` regex — `\b(1[0-4][0-9])\b` matches `$100` and "120 days".
+1. **Validate the judge** (§3b) — every generation number is provisional until this is done.
+   ~40 verdicts, roughly an hour, and it is the cheapest way to make the numbers real.
+2. **Sweep `k`** against the full eval — X08 needs 12, but raising `k` costs tokens, latency
+   and distraction on all 27 cases. Measure, do not patch the one case.
+3. Metadata filtering for stage, with `stage_accuracy` as the instrument that proves it worked.
+4. Query decomposition (LangGraph) — addresses the compound-query failure class.
+5. Add abbreviation cases to ground truth **before** attempting HyDE, so any improvement is
+   measurable rather than assumed.
+6. HyDE — targets the abbreviation gap.
+7. Fix `rule_codes_referenced` regex — `\b(1[0-4][0-9])\b` matches `$100` and "120 days".
 
 ## 9. Reproducing
 
@@ -225,7 +280,11 @@ docker compose up -d
 python scripts/run_chunking.py
 python scripts/run_embed.py
 python scripts/run_eval.py --split dev
+python scripts/run_generation_eval.py --split dev --export-judge results/judge_audit_dev.json
+python scripts/validate_judge.py results/judge_audit_dev.json --sample 40
 ```
+
+Requires `VOYAGE_API_KEY` (retrieval) and `GROQ_API_KEY` (generation) in `.env`.
 
 `--split dev_v1` / `holdout_v1` re-run the original 23-case set.
 Raw metrics: `results/v2_dev.json`, `results/v2_holdout.json`.
