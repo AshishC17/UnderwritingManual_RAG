@@ -1,0 +1,194 @@
+[
+  {
+    "case_id": "E05",
+    "claim": "Two recent pay statements are required.",
+    "verdict": "present",
+    "evidence": "Tier 2 requires **two recent pay statements** plus **one employment\u2011status confirmation**\u30100026\u3011."
+  },
+  {
+    "case_id": "E05",
+    "claim": "One employment-status confirmation is required.",
+    "verdict": "present",
+    "evidence": "Tier 2 requires **two recent pay statements** plus **one employment\u2011status confirmation**\u30100026\u3011."
+  },
+  {
+    "case_id": "E05",
+    "claim": "Tier 2 requires only one pay statement.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E05",
+    "claim": "Tier 2 requires bank statements and a self-employment attestation.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E05",
+    "claim": "Tier 2 is the complex disputed-income Manual Review tier.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E04",
+    "claim": "The threshold is at least $1,900 monthly.",
+    "verdict": "present",
+    "evidence": "The Prescreen selection requires a **synthetic income proxy of $1,900 per month or higher (and it must not be missing)**, and this proxy is provided by the **NovaCred Affordability Index** [0005]."
+  },
+  {
+    "case_id": "E04",
+    "claim": "The value must not be missing.",
+    "verdict": "present",
+    "evidence": "The Prescreen selection requires a **synthetic income proxy of $1,900 per month or higher (and it must not be missing)**, and this proxy is provided by the **NovaCred Affordability Index** [0005]."
+  },
+  {
+    "case_id": "E04",
+    "claim": "The source is NovaCred Affordability Index.",
+    "verdict": "present",
+    "evidence": "The Prescreen selection requires a **synthetic income proxy of $1,900 per month or higher (and it must not be missing)**, and this proxy is provided by the **NovaCred Affordability Index** [0005]."
+  },
+  {
+    "case_id": "E04",
+    "claim": "The Prescreen Income Proxy threshold is $1,850.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E04",
+    "claim": "The source is Income Verification Service.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E04",
+    "claim": "Passing this selection criterion guarantees approval.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E02",
+    "claim": "An Authorized Payer does not become a borrower.",
+    "verdict": "present",
+    "evidence": "An Authorized Payer is only permitted to provide a payment account or instruction and is **not** treated as a borrower, nor does the payer independently satisfy the borrower\u2011underwriting requirements\u30100007\u3011."
+  },
+  {
+    "case_id": "E02",
+    "claim": "The role does not independently satisfy borrower underwriting requirements.",
+    "verdict": "present",
+    "evidence": "An Authorized Payer is only permitted to provide a payment account or instruction and is **not** treated as a borrower, nor does the payer independently satisfy the borrower\u2011underwriting requirements\u30100007\u3011."
+  },
+  {
+    "case_id": "E02",
+    "claim": "The role may provide a payment account or payment instruction.",
+    "verdict": "present",
+    "evidence": "An Authorized Payer is only permitted to provide a payment account or instruction and is **not** treated as a borrower, nor does the payer independently satisfy the borrower\u2011underwriting requirements\u30100007\u3011."
+  },
+  {
+    "case_id": "E02",
+    "claim": "An Authorized Payer is a co-applicant.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "E02",
+    "claim": "The payer's income or identity automatically counts as an obligor's.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M04",
+    "claim": "Prequalification uses NOAA Code 107.",
+    "verdict": "present",
+    "evidence": "- **Pre\u2011qualification bureau\u2011score control** \u2013 Code **NOAA 107** \u201cScore Floor\u201d; the rule triggers when the representative bureau score is **below 566** [0037][0011]."
+  },
+  {
+    "case_id": "M04",
+    "claim": "Code 107 triggers below 566.",
+    "verdict": "present",
+    "evidence": "Code NOAA 107 \u201cScore Floor\u201d; the rule triggers when the representative bureau score is below 566 [0037][0011]."
+  },
+  {
+    "case_id": "M04",
+    "claim": "Full underwriting uses NOAA Code 121.",
+    "verdict": "present",
+    "evidence": "- **Full\u2011underwriting bureau\u2011score control** \u2013 Code **NOAA 121** \u201cCredit Score Confirmation\u201d; the rule triggers when the refreshed representative bureau score is **below 580** [0037][0013]."
+  },
+  {
+    "case_id": "M04",
+    "claim": "Code 121 triggers when the refreshed score is below 580.",
+    "verdict": "present",
+    "evidence": "Full\u2011underwriting bureau\u2011score control \u2013 Code NOAA 121 \u201cCredit Score Confirmation\u201d; the rule triggers when the refreshed representative bureau score is below 580 [0037][0013]."
+  },
+  {
+    "case_id": "M04",
+    "claim": "The codes represent stage-specific controls, not severity rank.",
+    "verdict": "present",
+    "evidence": "- **Pre\u2011qualification bureau\u2011score control** \u2013 Code **NOAA 107** \u201cScore Floor\u201d; the rule triggers when the representative bureau score is **below 566** [0037][0011].\n\n- **Full\u2011underwriting bureau\u2011score control** \u2013 Code **NOAA 121** \u201cCredit Score Confirmation\u201d; the rule triggers when the refreshed representative bureau score is **below 580** [0037][0013]."
+  },
+  {
+    "case_id": "M04",
+    "claim": "Both stages use the same threshold.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M04",
+    "claim": "Code 107 triggers below 580.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M04",
+    "claim": "Code 121 triggers below 566.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M04",
+    "claim": "Code 121 is more severe because its number is higher.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M05",
+    "claim": "FACTA Alert at prequalification is RFAI Code 114.",
+    "verdict": "present",
+    "evidence": "- **Pre\u2011qualification** \u2013 The \u201cFACTA Alert\u201d rule appears in the prescreen pre\u2011qualification table (Table 3) and is defined as an **RFAI** (request for additional information) with **Code 114** [0011]."
+  },
+  {
+    "case_id": "M05",
+    "claim": "FACTA Resolution at full underwriting is also RFAI Code 114.",
+    "verdict": "present",
+    "evidence": "The same condition is represented in the full\u2011underwriting tables (Table\u202f4 for prescreen candidates and Table\u202f6 for non\u2011prescreen candidates) as \u201cFACTA\u202fResolution,\u201d also an **RFAI** with **Code\u202f114**\u202f[0013][0018]."
+  },
+  {
+    "case_id": "M05",
+    "claim": "Additional identity evidence may resolve the condition.",
+    "verdict": "present",
+    "evidence": "The compliance\u2011control description states that a FACTA alert is treated as an RFAI because additional identity evidence may resolve the condition, and \u201cthe alert can appear both at prequalification and final refresh."
+  },
+  {
+    "case_id": "M05",
+    "claim": "Code reuse supports comparison across stages while stage-specific evidence may differ.",
+    "verdict": "present",
+    "evidence": "The reused code means downstream monitoring can compare the control across stages"
+  },
+  {
+    "case_id": "M05",
+    "claim": "FACTA is a NOAA or automatic decline.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M05",
+    "claim": "A new code is required at full underwriting.",
+    "verdict": "absent",
+    "evidence": ""
+  },
+  {
+    "case_id": "M05",
+    "claim": "Reusing Code 114 means the full-stage check is redundant or skipped.",
+    "verdict": "absent",
+    "evidence": ""
+  }
+]
