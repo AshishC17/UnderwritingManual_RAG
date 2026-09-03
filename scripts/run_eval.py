@@ -34,10 +34,14 @@ ROOT = Path(__file__).resolve().parents[1]
 load_dotenv(ROOT / ".env")
 
 SPLITS = {
-    "dev": "eval/dev_eval_v1.json",
-    "holdout": "eval/holdout_eval_v1.json",
-    "all": "eval/ground_truth_v1.json",
+    "dev": "eval/dev_eval_v2.json",
+    "holdout": "eval/holdout_eval_v2.json",
+    "all": "eval/ground_truth_v2.json",
+    "dev_v1": "eval/dev_eval_v1.json",
+    "holdout_v1": "eval/holdout_eval_v1.json",
 }
+# Only "dev" and "dev_v1" expose per-case detail; everything else is a verdict.
+DIAGNOSABLE = {"dev", "dev_v1"}
 
 
 def _rerank_cached(case: dict, client, dv, sv, args) -> bool:
@@ -63,7 +67,7 @@ def main() -> None:
     ap.add_argument("--out", default=None, help="write raw per-case results to JSON")
     args = ap.parse_args()
 
-    protected = args.split != "dev"
+    protected = args.split not in DIAGNOSABLE
 
     data = json.loads((ROOT / SPLITS[args.split]).read_text())
     cases = data["cases"]
@@ -154,6 +158,23 @@ def main() -> None:
             for d in diffs
         )
         print(f"{config:<14} " + cells)
+
+    # ---- stage disambiguation -------------------------------------------
+    staged = [s for s in results[args.configs[0]]["scores"][focus_k]
+              if s.stage_correct is not None]
+    if staged:
+        print(f"\nstage disambiguation @{focus_k} "
+              f"({len(staged)} cases test it)")
+        print(f"{'config':<14} {'accuracy':>9}   ranks (correct vs distractor)")
+        for config in args.configs:
+            ss = [s for s in results[config]["scores"][focus_k]
+                  if s.stage_correct is not None]
+            acc = sum(s.stage_correct for s in ss) / len(ss)
+            detail = "  ".join(
+                f"{s.case_id}:{s.stage_rank or '-'}v{s.distractor_rank or '-'}"
+                for s in ss
+            )
+            print(f"{config:<14} {acc:>9.3f}   {detail}")
 
     # ---- per-case failures: DEV ONLY ------------------------------------
     if protected:

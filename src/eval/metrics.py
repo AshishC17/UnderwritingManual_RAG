@@ -29,6 +29,37 @@ class CaseScore:
     groups_total: int
     groups_hit: int
     missed_groups: list[str]
+    # Stage disambiguation — None when the case does not test it.
+    stage_correct: int | None = None
+    stage_rank: int | None = None       # best-ranked correct-stage chunk
+    distractor_rank: int | None = None  # best-ranked wrong-stage chunk
+
+
+def score_stage(case: dict, retrieved: list[str], k: int):
+    """Did the right *stage* win, or did a wrong-stage chunk outrank it?
+
+    Answers the reused-identifier trap the corpus was built around: a question
+    about the stage before full underwriting can be answered by a chunk covering
+    the same control at the wrong stage, which plain recall scores as a hit.
+    Ranks are returned alongside the verdict — a correct chunk ranked 9th with a
+    distractor 8th fails differently from one that never appeared at all.
+    """
+    spec = (case.get("evaluation_metrics") or {}).get("stage_accuracy_at_k") or {}
+    if not spec.get("applicable"):
+        return None, None, None
+
+    top = retrieved[:k]
+    correct = set(spec.get("correct_stage_chunk_ids", []))
+    distractors = set(spec.get("distractor_stage_chunk_ids", []))
+
+    c_rank = next((i for i, cid in enumerate(top, 1) if cid in correct), None)
+    d_rank = next((i for i, cid in enumerate(top, 1) if cid in distractors), None)
+
+    if c_rank is None:
+        return 0, None, d_rank
+    if d_rank is None:
+        return 1, c_rank, None
+    return int(c_rank < d_rank), c_rank, d_rank
 
 
 def relevant_ids(case: dict) -> set[str]:
@@ -59,6 +90,7 @@ def score_case(case: dict, retrieved: list[str], k: int) -> CaseScore:
             break
 
     n = len(groups)
+    stage_ok, c_rank, d_rank = score_stage(case, retrieved, k)
     return CaseScore(
         case_id=case["id"],
         difficulty=case.get("difficulty", "?"),
@@ -72,18 +104,26 @@ def score_case(case: dict, retrieved: list[str], k: int) -> CaseScore:
         groups_total=n,
         groups_hit=hit,
         missed_groups=missed,
+        stage_correct=stage_ok,
+        stage_rank=c_rank,
+        distractor_rank=d_rank,
     )
 
 
 def aggregate(scores: list[CaseScore]) -> dict:
     n = len(scores) or 1
-    return {
+    staged = [s for s in scores if s.stage_correct is not None]
+    out = {
         "cases": len(scores),
         "group_recall": sum(s.group_recall for s in scores) / n,
         "full_coverage": sum(s.full_coverage for s in scores) / n,
         "precision": sum(s.precision for s in scores) / n,
         "mrr": sum(s.reciprocal_rank for s in scores) / n,
     }
+    if staged:
+        out["stage_accuracy"] = sum(s.stage_correct for s in staged) / len(staged)
+        out["stage_cases"] = len(staged)
+    return out
 
 
 def by_difficulty(scores: list[CaseScore]) -> dict[str, dict]:
