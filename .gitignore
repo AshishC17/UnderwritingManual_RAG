@@ -231,3 +231,7 @@ data/interim/embeddings/
 
 # Rerank cache — regenerable, and keyed to a specific shortlist
 data/interim/reranks/
+
+# Generation and judge caches — regenerable
+data/interim/generations/
+data/interim/judgements/
