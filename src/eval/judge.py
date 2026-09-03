@@ -72,6 +72,107 @@ def _parse(text: str) -> dict:
     return data
 
 
+DECOMPOSE_PROMPT = """Break this answer into atomic factual claims — one \
+verifiable statement each, no compound sentences. Ignore hedges, restatements of \
+the question, and structural text.
+
+ANSWER:
+{answer}
+
+Reply with only a JSON array of strings, no other text."""
+
+# One call per answer, not per claim. Sending the full context alongside every
+# individual claim multiplied token spend by the number of claims — ~15x on a
+# typical answer — and exhausted a daily quota in five cases.
+SUPPORT_BATCH_PROMPT = """Decide which CLAIMS are supported by the CONTEXT.
+
+CONTEXT:
+{context}
+
+CLAIMS:
+{claims}
+
+For each numbered claim, decide whether it is stated in, or directly entailed \
+by, the CONTEXT. Plausibility is not support — if the CONTEXT does not establish \
+it, answer "unsupported", even if the claim sounds correct.
+
+Reply with only a JSON array, one object per claim, in the same order:
+[{{"n": 1, "verdict": "supported" or "unsupported"}}, ...]"""
+
+RELEVANCE_PROMPT = """Does the ANSWER address the QUESTION that was asked?
+
+QUESTION:
+{question}
+
+ANSWER:
+{answer}
+
+Judge only whether it responds to what was asked — not whether it is correct. \
+An answer that is on-topic but wrong still addresses the question. An answer \
+that discusses something else, or only restates the question, does not.
+
+Reply with only a JSON object:
+{{"verdict": "addresses" or "does_not_address", "evidence": ""}}"""
+
+
+def _ask(prompt: str, model: str, cache_dir: str, tag: str, max_tokens: int = 1500):
+    """Run one cached judge call, returning the parsed JSON object."""
+    cache = Path(cache_dir) / f"{tag}_{hashlib.sha256((model + prompt).encode()).hexdigest()[:20]}.json"
+    if cache.exists():
+        return json.loads(cache.read_text())
+
+    response = _client().chat.completions.create(
+        model=model,
+        max_tokens=max_tokens,
+        temperature=0,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    raw = response.choices[0].message.content or ""
+    cleaned = re.sub(r"^```(?:json)?|```$", "", raw.strip(), flags=re.M).strip()
+    data = json.loads(cleaned)
+
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps(data))
+    return data
+
+
+def decompose_claims(answer: str, model: str = JUDGE_MODEL,
+                     cache_dir: str = CACHE_DIR) -> list[str]:
+    """Split an answer into atomic claims for groundedness checking."""
+    data = _ask(DECOMPOSE_PROMPT.format(answer=answer), model, cache_dir, "decomp", 3000)
+    return [str(c) for c in data] if isinstance(data, list) else []
+
+
+def check_supported_batch(claims: list[str], context: str,
+                          model: str = JUDGE_MODEL,
+                          cache_dir: str = CACHE_DIR) -> list[bool]:
+    """Which of these claims does the retrieved context establish?
+
+    The reverse question from `judge_claim`, and it catches what forbidden_claims
+    structurally cannot: an invention nobody thought to forbid.
+
+    A short reply is missing verdicts rather than wrong ones, so unanswered
+    claims default to unsupported — the conservative direction, since counting an
+    unjudged claim as grounded would understate the problem.
+    """
+    if not claims:
+        return []
+    numbered = "\n".join(f"{i}. {c}" for i, c in enumerate(claims, 1))
+    data = _ask(SUPPORT_BATCH_PROMPT.format(context=context, claims=numbered),
+                model, cache_dir, "support", max_tokens=2000)
+
+    verdicts = {int(r["n"]): r.get("verdict") == "supported"
+                for r in data if isinstance(r, dict) and "n" in r}
+    return [verdicts.get(i, False) for i in range(1, len(claims) + 1)]
+
+
+def check_relevance(question: str, answer: str, model: str = JUDGE_MODEL,
+                    cache_dir: str = CACHE_DIR) -> bool:
+    data = _ask(RELEVANCE_PROMPT.format(question=question, answer=answer),
+                model, cache_dir, "relev")
+    return data.get("verdict") == "addresses"
+
+
 def judge_claim(
     claim: str,
     answer: str,

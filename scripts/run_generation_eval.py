@@ -2,8 +2,13 @@
 
     python scripts/run_generation_eval.py --split dev
 
-Requires ANTHROPIC_API_KEY (separate from a Claude Code subscription) and
-VOYAGE_API_KEY. Answers and judgements are cached, so re-runs are free.
+Requires VOYAGE_API_KEY (retrieval) and GROQ_API_KEY (generation and judging).
+Answers and judgements are cached, so re-runs are free.
+
+Groq enforces a per-model daily token cap. Groundedness sends the context once
+per answer rather than once per claim, which is roughly an order of magnitude
+cheaper on a typical answer; a rate-limit failure still reports whatever scored
+before it, rather than discarding the run.
 
 Also writes a judge-validation file. The judge is unvalidated until a human
 checks it, and an unvalidated judge silently corrupts every number here — so
@@ -30,9 +35,15 @@ from src.eval.generation_metrics import (
     by_difficulty_generation,
     score_generation,
 )
-from src.eval.judge import JUDGE_MODEL, judge_claim
+from src.eval.judge import (
+    JUDGE_MODEL,
+    check_relevance,
+    check_supported_batch,
+    decompose_claims,
+    judge_claim,
+)
 from src.generate.generator import MODEL as GEN_MODEL
-from src.generate.generator import MissingCredentials, generate
+from src.generate.generator import MissingCredentials, build_context, generate
 from src.rerank.reranker import rerank
 from src.store import qdrant_store as qs
 
@@ -84,6 +95,7 @@ def main() -> None:
         return _judge
 
     scores = []
+    partial = False
     for i, case in enumerate(cases, 1):
         q = case["question"]
         hits = qs.search_hybrid(
@@ -99,8 +111,22 @@ def main() -> None:
             print(f"\nERROR: {e}")
             raise SystemExit(1)
 
-        s = score_generation(case, answer, [c["chunk_id"] for c in chunks],
-                             make_judge(case["id"]))
+        try:
+            s = score_generation(
+                case, answer, [c["chunk_id"] for c in chunks],
+                make_judge(case["id"]),
+                context=build_context(chunks),
+                decompose=(lambda a: decompose_claims(a, model=args.judge_model)),
+                supported=(lambda cs, ctx: check_supported_batch(
+                    cs, ctx, model=args.judge_model)),
+                relevance=(lambda q, a: check_relevance(q, a, model=args.judge_model)),
+            )
+        except Exception as e:  # keep what already scored; the cache preserves it
+            print(f"\n  STOPPED at {case['id']}: {type(e).__name__}: {str(e)[:160]}")
+            print(f"  reporting the {len(scores)} case(s) that completed. "
+                  f"Cached work is preserved — re-run to continue.")
+            partial = True
+            break
         scores.append(s)
         # Progress only on a diagnosable split. On holdout even a per-case
         # pass/fail line is tuning signal, which the policy exists to withhold.
@@ -111,17 +137,30 @@ def main() -> None:
                   f"{s.claims_required}  "
                   f"{'HALLUCINATED' if s.hallucinated else 'clean'}")
 
+    if not scores:
+        raise SystemExit('no case completed')
+
     agg = aggregate_generation(scores)
     print("\n" + "=" * 72)
     print(f"GENERATION RESULTS — {args.split}")
     print("=" * 72)
-    print(f"  claim recall        {agg['claim_recall']:.3f}   "
+    print(f"  claim recall           {agg['claim_recall']:.3f}   "
           f"(required claims the answer asserts)")
-    print(f"  hallucination rate  {agg['hallucination_rate']:.3f}   "
+    print(f"  groundedness           {agg['groundedness']:.3f}   "
+          f"(claims it makes that the context supports)")
+    print(f"  hallucination rate     {agg['hallucination_rate']:.3f}   "
           f"(questions asserting ANY forbidden claim)")
-    print(f"  citation validity   {agg['citation_validity']:.3f}   "
+    print(f"  answer relevance       {agg['answer_relevance']:.3f}   "
+          f"(answers that address the question)")
+    print(f"  citation validity      {agg['citation_validity']:.3f}   "
           f"(cited ids that were actually retrieved)")
-    print(f"  forbidden assertions {agg['forbidden_assertions']} total")
+    print(f"  over-refusal           {agg['over_refusal']:.3f}   "
+          f"(declined despite having the evidence)")
+    print(f"  unsupported confidence {agg['unsupported_confidence']:.3f}   "
+          f"(of {agg['cases_missing_evidence']} cases missing evidence, "
+          f"answered anyway)")
+    print(f"  ungrounded claims      {agg['ungrounded_claims']} total | "
+          f"forbidden assertions {agg['forbidden_assertions']}")
 
     print("\nby difficulty")
     print(f"{'difficulty':<12} {'claim-recall':>13} {'halluc-rate':>12}")
@@ -138,18 +177,41 @@ def main() -> None:
             for c in s.forbidden_asserted:
                 print(f"      asserted forbidden: {c[:88]}")
 
+        ung = [s for s in scores if s.ungrounded_claims]
+        print(f"\nungrounded claims ({len(ung)} cases) — asserted without context support")
+        for s in ung:
+            print(f"  {s.case_id} [{s.difficulty}] "
+                  f"{s.claims_grounded}/{s.claims_made} grounded")
+            for c in s.ungrounded_claims[:3]:
+                print(f"      {c[:92]}")
+
+        risky = [s for s in scores if s.unsupported_confidence or s.over_refusal]
+        if risky:
+            print("\nabstention problems")
+            for s in risky:
+                kind = ("answered confidently without complete evidence"
+                        if s.unsupported_confidence else "declined despite having evidence")
+                print(f"  {s.case_id} [{s.difficulty}] — {kind}")
+
+    def _dest(path: str) -> Path:
+        """A partial run writes to *.partial.json — overwriting a complete
+        result with a truncated one silently destroys measured work."""
+        p = Path(path)
+        return p.with_suffix(".partial" + p.suffix) if partial else p
+
     if args.export_judge:
-        Path(args.export_judge).write_text(json.dumps(audit, indent=2))
-        print(f"\njudge verdicts -> {args.export_judge}  ({len(audit)} to hand-check)")
+        dest = _dest(args.export_judge)
+        dest.write_text(json.dumps(audit, indent=2))
+        print(f"\njudge verdicts -> {dest}  ({len(audit)} to hand-check)")
     if args.out:
-        Path(args.out).write_text(json.dumps({
+        _dest(args.out).write_text(json.dumps({
             "split": args.split, "k": args.k,
             "gen_model": args.gen_model, "judge_model": args.judge_model,
             "aggregate": agg,
             "by_difficulty": by_difficulty_generation(scores),
             "cases": [vars(s) for s in scores],
         }, indent=2))
-        print(f"results -> {args.out}")
+        print(f"results -> {_dest(args.out)}")
 
 
 if __name__ == "__main__":
