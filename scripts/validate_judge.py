@@ -19,7 +19,45 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+
+def _answers_by_case(split: str) -> dict[str, tuple[str, str]]:
+    """Reconstruct (question, full_answer) for every case in a split.
+
+    Re-runs retrieval and generation, but every step — dense/sparse search,
+    rerank, and the generation call itself — reads from its own disk cache with
+    identical inputs, so this costs zero API calls. The audit file only stores
+    the judge's per-claim verdict and its (possibly wrong) quoted evidence; you
+    cannot tell whether a verdict is correct without the actual question and the
+    full answer it was judged against.
+    """
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+
+    from src.embed.embedder import embed_query
+    from src.embed.sparse import embed_query as embed_query_sparse
+    from src.generate.generator import generate
+    from src.rerank.reranker import rerank
+    from src.store import qdrant_store as qs
+
+    path = Path(__file__).resolve().parents[1] / "eval" / f"{split}_eval_v2.json"
+    cases = json.loads(path.read_text())["cases"]
+    client = qs.connect()
+
+    out: dict[str, tuple[str, str]] = {}
+    for case in cases:
+        q = case["question"]
+        hits = qs.search_hybrid(
+            client, embed_query(q), embed_query_sparse(q),
+            limit=15, prefetch_limit=30,
+        )
+        chunks = [p for p, _ in rerank(q, [h.payload for h in hits], top_k=10)]
+        out[case["id"]] = (q, generate(q, chunks))
+    return out
 
 
 def kappa(pairs: list[tuple[str, str]]) -> float:
@@ -44,6 +82,9 @@ def main() -> None:
     ap.add_argument("--labels", default=None,
                     help="your labels file (default: <audit>.labels.json)")
     ap.add_argument("--score", action="store_true", help="score existing labels")
+    ap.add_argument("--split", default="dev",
+                    help="which eval split the audit came from, to look up "
+                         "questions and re-derive full answers (cached, free)")
     args = ap.parse_args()
 
     audit = json.loads(Path(args.audit).read_text())
@@ -63,22 +104,34 @@ def main() -> None:
         print(f"{len(audit)} verdicts total "
               f"({len(present)} present, {len(absent)} absent)")
         print(f"sampling {len(picked)} — deliberately balanced, not random,\n"
-              f"because a random draw would be nearly all 'absent'.\n")
+              f"because a random draw would be nearly all 'absent'.")
+        print("re-deriving full questions and answers from cache "
+              "(no API calls)...\n")
+        answers = _answers_by_case(args.split)
+
+        template = []
         for i, r in enumerate(picked, 1):
+            question, full_answer = answers.get(r["case_id"], ("(unknown)", "(unknown)"))
             print("=" * 76)
-            print(f"[{i}] case {r['case_id']}   judge said: {r['verdict'].upper()}")
-            print(f"  CLAIM   : {r['claim']}")
-            print(f"  EVIDENCE: {r['evidence'] or '(none quoted)'}")
-        template = [
-            {"i": i, "case_id": r["case_id"], "claim": r["claim"],
-             "judge": r["verdict"], "evidence": r["evidence"], "human": ""}
-            for i, r in enumerate(picked, 1)
-        ]
+            print(f"[{i}] case {r['case_id']}")
+            print(f"  QUESTION: {question}")
+            print(f"  FULL ANSWER:\n    " + full_answer.replace("\n", "\n    "))
+            print(f"  ---")
+            print(f"  CLAIM        : {r['claim']}")
+            print(f"  JUDGE SAID   : {r['verdict'].upper()}")
+            print(f"  JUDGE'S QUOTE: {r['evidence'] or '(none quoted)'}")
+            template.append({
+                "i": i, "case_id": r["case_id"], "question": question,
+                "full_answer": full_answer, "claim": r["claim"],
+                "judge": r["verdict"], "judge_evidence": r["evidence"], "human": "",
+            })
+
         labels_path.write_text(json.dumps(template, indent=2))
         print("\n" + "=" * 76)
         print(f"Template written to {labels_path}")
-        print('Fill each "human" field with "present" or "absent" — your own '
-              'judgement of whether the ANSWER asserts the CLAIM.')
+        print('For each row, read QUESTION + FULL ANSWER yourself, decide whether\n'
+              'the answer actually asserts the CLAIM, then fill "human" with\n'
+              '"present" or "absent" — your own judgement, not the judge\'s quote.')
         print(f"Then: python {Path(__file__).name} {args.audit} --score")
         return
 

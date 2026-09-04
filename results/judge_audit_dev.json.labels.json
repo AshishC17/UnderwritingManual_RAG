@@ -1,0 +1,405 @@
+[
+  {
+    "i": 1,
+    "case_id": "X08",
+    "question": "An application is still in the stage before full underwriting when Credit Freeze returns Code 105. Operations argues that because Code 105 appears later as Credit Freeze Refresh, resolved evidence should enter Evidence / Verification and resume full-underwriting policy and credit checks. Is that correct? Identify the disposition, reconcile the reused code across stages, trace the correct current-stage route through re-evaluation and, if it later passes, into full underwriting, and state whether any of these steps grants final approval.",
+    "full_answer": "**Disposition** \u2013 At the pre\u2011qualification point the \u201cCredit Freeze\u201d condition is treated as an **RFAI** (information request). In Table\u202f6 the *Credit Freeze Refresh* rule is listed with action **RFAI** and code\u202f105\u202f[0018]. The definition of RFAI\u202f105 confirms that a bureau freeze \u201crequires additional information or a refreshed bureau state\u201d\u202f[0039].\n\n**Re\u2011used code across stages** \u2013 The same three\u2011digit code (105) is used in more than one underwriting stage, but per the footnote in the underwriting overview \u201cidentical controls reuse codes, while materially different final\u2011stage logic receives a new code\u201d and reviewers must not assume the code is redundant because the source event, timestamp and evaluated state can differ\u202f[0012]. Thus the presence of code\u202f105 before full underwriting does **not** automatically invoke the full\u2011underwriting \u201cCredit Freeze Refresh\u201d rule; it is simply the same identifier applied to the freeze condition in the current stage.\n\n**Current\u2011stage route**  \n\n1. **Rule Result? \u2013 RFAI** \u2192 the flowchart sends the application to **Evidence\u202f/\u202fVerification**\u202f[0035][0034].  \n2. In **Evidence\u202f/\u202fVerification** the applicant (or operations) supplies the required freeze\u2011resolution evidence.  \n3. After the evidence is recorded, the process loops back to **Run Full Underwriting Policy & Credit Checks**\u202f[0035].  \n4. The rule set is re\u2011evaluated; if the credit\u2011freeze condition is now cleared, the rule result becomes **Pass**.  \n5. **Pass** \u2192 **Run Scoring & Affordability \u2192 Line** \u2192 **Fraud & Compliance Checks** \u2192 **Clear?** \u2192 **Present Approved / Counteroffer** \u2192 (subsequent steps to **Ready to Fund** or Manual Review)\u202f[0035][0034].\n\n**Does any of these steps grant final approval?** \u2013 No. An RFAI, the Evidence\u202f/\u202fVerification loop, and a subsequent Pass only move the application forward in the underwriting pipeline. Final approval is only issued at the terminal states **Ready to Fund**, **Approved** (via Manual Review), **Counteroffer**, or **Expire Application**\u202f[0035][0034]. Therefore, resolving code\u202f105 does **not** itself constitute a final approval; it merely enables the application to continue to the later full\u2011underwriting decisions.",
+    "claim": "Because the code is reused, its source event, evaluated state, and workflow route must be identical.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 2,
+    "case_id": "M05",
+    "question": "How is FACTA handled at prequalification and at full-underwriting refresh, and why does both use the same Code 114?",
+    "full_answer": "- **Pre\u2011qualification** \u2013 The \u201cFACTA Alert\u201d rule appears in the prescreen pre\u2011qualification table (Table\u202f3) and is defined as an **RFAI** (request for additional information) with **Code\u202f114**\u202f[0011].  \n\n- **Full\u2011underwriting refresh** \u2013 The same condition is represented in the full\u2011underwriting tables (Table\u202f4 for prescreen candidates and Table\u202f6 for non\u2011prescreen candidates) as \u201cFACTA\u202fResolution,\u201d also an **RFAI** with **Code\u202f114**\u202f[0013][0018].  \n\n- **Why the same code is reused** \u2013 The compliance\u2011control description states that a FACTA alert is treated as an RFAI because additional identity evidence may resolve the condition, and \u201cthe alert can appear both at prequalification and final refresh. The reused code means downstream monitoring can compare the control across stages\u201d\u202f[0076].  \n\nThus, both stages generate an RFAI using Code\u202f114 because the underlying policy objective (identity\u2011theft alert requiring extra evidence) is identical, and reusing the code enables consistent monitoring and comparison of the control across the pre\u2011qualification and full\u2011underwriting stages.",
+    "claim": "FACTA is a NOAA or automatic decline.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 3,
+    "case_id": "X01",
+    "question": "During Non-Prescreen full underwriting, the offer is 35 days old, automated checks cannot reconcile the current address, and the requested funding method needs additional ownership or destination verification. Identify every applicable code and disposition, explain whether the evidence requests may be consolidated, and describe what happens after the evidence is resolved.",
+    "full_answer": "**Applicable codes (Non\u2011Prescreen full underwriting)**  \n\n| Issue | RFAI code | Description (as written) |\n|-------|-----------|---------------------------|\n| Offer older than the Non\u2011Prescreen threshold (30\u202fdays) | **RFAI\u202f128** \u2013 \u201cOffer Age: an offer or campaign artifact is too old at application intake. Prescreen uses an older\u2011than\u201145\u2011day threshold; Non\u2011Prescreen uses an older\u2011than\u201130\u2011day threshold.\u201d\u30100039\u3011 |\n| Automated address checks cannot reconcile the current residence | **RFAI\u202f139** \u2013 \u201cAddress Evidence: address evidence is insufficient to reconcile the current residence after required automated checks.\u201d\u30100039\u3011 |\n| Requested funding method requires extra ownership or destination verification | **RFAI\u202f140** \u2013 \u201cFunding Method Verification: requested funding method requires additional ownership or destination verification.\u201d\u30100039\u3011 |\n\nAll three appear in the Non\u2011Prescreen rule table as RFAI actions\u30100018\u3011, so the rule result for the application will be **RFAI**.\n\n**Consolidation of evidence requests**  \n\nWhen multiple RFAI codes fire, \u201coperations should consolidate requests where the same document can satisfy multiple rules, but the audit record must preserve the relationship from each request back to its source code.\u201d\u30100084\u3011  \nTherefore the three requests may be combined into a single evidence\u2011submission (e.g., a document that proves the offer date, address, and funding\u2011method ownership), provided the system logs each source code (128,\u202f139,\u202f140) against that document.\n\n**What happens after the evidence is resolved**  \n\nThe underwriting flow routes an RFAI outcome to **Evidence\u202f/\u202fVerification**\u30100035\u3011. Once the required evidence is received and recorded, the application returns to **Run Full Underwriting Policy & Credit Checks**\u30100035\u3011. The engine re\u2011evaluates the rules; if the three RFAI conditions are now cleared, the rule result becomes **Pass**, and the application proceeds to:\n\n1. Run Scoring & Affordability \u2192 Line  \n2. Fraud & Compliance Checks \u2192 Clear? (Yes)  \n3. Present Approved / Counteroffer \u2192 Customer Accepts? (Yes)  \n4. Intraday Account Review \u2192 All Required Verifications Complete? (Yes) \u2192 **Ready to Fund** (terminal state).  \n\nIf any RFAI remains unresolved, the RFAI outcome repeats, keeping the application in the evidence\u2011request loop.",
+    "claim": "Code 139/RFAI applies to Address Evidence.",
+    "judge": "present",
+    "judge_evidence": "Automated address checks cannot reconcile the current residence | **RFAI 139** \u2013 \u201cAddress Evidence: address evidence is insufficient to reconcile the current residence after required automated checks.\u201d\u30100039\u3011",
+    "human": "present"
+  },
+  {
+    "i": 4,
+    "case_id": "M01",
+    "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?",
+    "full_answer": "- **Meaning of Code\u202f128** \u2013 It is the \u201cOffer Age\u201d RFAI, triggered when an offer or campaign artifact is too old at the time the application is taken in.\u202f[0039]  \n\n- **Disposition created** \u2013 The rule generates an **RFAI (Request for Additional Information)** disposition.\u202f[0039]  \n\n- **Age thresholds** \u2013  \n  * For **Prescreen** candidates the offer is considered too old if it is **older than\u202f45\u202fdays**.  \n  * For **Non\u2011Prescreen** candidates the threshold is **older than\u202f30\u202fdays**.\u202f[0039]  \n\n- **Where the rule is used** \u2013 The \u201cOffer Age\u201d rule appears in **Table\u202f4: Prescreen Full Underwriting Rules**, with source \u201cNovaCred Marketing Ledger,\u201d action \u201cRFAI,\u201d and code\u202f128.\u202f[0013]",
+    "claim": "Table 13 alone defines Code 128.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 5,
+    "case_id": "D03",
+    "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded?",
+    "full_answer": "- **Codes that must be kept in the evidence record**  \n  * **NOAA\u202f101 \u2013 Blocked SSN** \u2013 the prescreen rule \u201cBlocked SSN\u201d (Table\u202f3) fires with an active exact match and, because the \u201cadministrative\u2011duplicate\u202f>\u202f36\u202fmonths\u201d exception does not apply, the result is not overridden\u30100011\u3011. The NOAA description confirms this outcome and that it is a terminal block\u30100037\u3011.  \n  * **RFAI\u202f105 \u2013 Credit Freeze** \u2013 the prescreen rule \u201cCredit Freeze\u201d (Table\u202f3) also fires and generates an RFAI because a bureau freeze is present\u30100011\u3011; the RFAI definition describes it as requiring additional information but not as a terminal decline\u30100039\u3011.  \n\n- **Disposition to retain**  \n  * **NOAA\u202f101** \u2192 immediate terminal routing (decline/stop\u2011processing). The engine must treat this as a short\u2011circuiting, high\u2011confidence identity block that halts further scoring or downstream rules\u30100057\u3011.  \n  * **RFAI\u202f105** \u2192 retained as an \u201cinformation\u2011request/hold\u201d disposition (application remains open pending freeze resolution)\u30100039\u3011.  \n\n- **How to record the immediate routing and the work that is skipped**  \n  * Even though **NOAA\u202f101** determines the immediate action, the system must **preserve all fired codes** (both 101 and 105) in the audit trail, including source value, normalized interpretation, rule context, and timestamp\u30100058\u3011.  \n  * The evidence record should note that **NOAA\u202f101 caused a terminal short\u2011circuit**, so downstream scoring or other full\u2011underwriting rules were **skipped**. This is the \u201cpoint of termination\u201d that must be retained\u30100057\u3011.  \n  * The RFAI\u202f105 entry is kept for audit and monitoring purposes, but its downstream processing (e.g., requesting additional freeze\u2011resolution evidence) is **not executed** because the workflow was already terminated by the NOAA.  \n\nIn summary, the case must retain **both codes 101 (NOAA) and 105 (RFAI)** with their respective dispositions; the routing is an immediate terminal decline driven by NOAA\u202f101, and the record must explicitly indicate that subsequent rules were short\u2011circuited while still logging the RFAI\u202f105 fire for completeness.",
+    "claim": "The secondary RFAI event is not erased.",
+    "judge": "present",
+    "judge_evidence": "The RFAI 105 entry is kept for audit and monitoring purposes, but its downstream processing (e.g., requesting additional freeze-resolution evidence) is not executed because the workflow was already terminated by the NOAA.",
+    "human": "present"
+  },
+  {
+    "i": 6,
+    "case_id": "X01",
+    "question": "During Non-Prescreen full underwriting, the offer is 35 days old, automated checks cannot reconcile the current address, and the requested funding method needs additional ownership or destination verification. Identify every applicable code and disposition, explain whether the evidence requests may be consolidated, and describe what happens after the evidence is resolved.",
+    "full_answer": "**Applicable codes (Non\u2011Prescreen full underwriting)**  \n\n| Issue | RFAI code | Description (as written) |\n|-------|-----------|---------------------------|\n| Offer older than the Non\u2011Prescreen threshold (30\u202fdays) | **RFAI\u202f128** \u2013 \u201cOffer Age: an offer or campaign artifact is too old at application intake. Prescreen uses an older\u2011than\u201145\u2011day threshold; Non\u2011Prescreen uses an older\u2011than\u201130\u2011day threshold.\u201d\u30100039\u3011 |\n| Automated address checks cannot reconcile the current residence | **RFAI\u202f139** \u2013 \u201cAddress Evidence: address evidence is insufficient to reconcile the current residence after required automated checks.\u201d\u30100039\u3011 |\n| Requested funding method requires extra ownership or destination verification | **RFAI\u202f140** \u2013 \u201cFunding Method Verification: requested funding method requires additional ownership or destination verification.\u201d\u30100039\u3011 |\n\nAll three appear in the Non\u2011Prescreen rule table as RFAI actions\u30100018\u3011, so the rule result for the application will be **RFAI**.\n\n**Consolidation of evidence requests**  \n\nWhen multiple RFAI codes fire, \u201coperations should consolidate requests where the same document can satisfy multiple rules, but the audit record must preserve the relationship from each request back to its source code.\u201d\u30100084\u3011  \nTherefore the three requests may be combined into a single evidence\u2011submission (e.g., a document that proves the offer date, address, and funding\u2011method ownership), provided the system logs each source code (128,\u202f139,\u202f140) against that document.\n\n**What happens after the evidence is resolved**  \n\nThe underwriting flow routes an RFAI outcome to **Evidence\u202f/\u202fVerification**\u30100035\u3011. Once the required evidence is received and recorded, the application returns to **Run Full Underwriting Policy & Credit Checks**\u30100035\u3011. The engine re\u2011evaluates the rules; if the three RFAI conditions are now cleared, the rule result becomes **Pass**, and the application proceeds to:\n\n1. Run Scoring & Affordability \u2192 Line  \n2. Fraud & Compliance Checks \u2192 Clear? (Yes)  \n3. Present Approved / Counteroffer \u2192 Customer Accepts? (Yes)  \n4. Intraday Account Review \u2192 All Required Verifications Complete? (Yes) \u2192 **Ready to Fund** (terminal state).  \n\nIf any RFAI remains unresolved, the RFAI outcome repeats, keeping the application in the evidence\u2011request loop.",
+    "claim": "Code 128/RFAI applies because 35 days exceeds the Non-Prescreen 30-day threshold.",
+    "judge": "present",
+    "judge_evidence": "Offer older than the Non\u2011Prescreen threshold (30 days) | **RFAI 128** \u2013 \u201cOffer Age: an offer or campaign artifact is too old at application intake. Prescreen uses an older\u2011than\u201145\u2011day threshold; Non\u2011Prescreen uses an older\u2011than\u201130\u2011day threshold.\u201d\u30100039\u3011",
+    "human": "present"
+  },
+  {
+    "i": 7,
+    "case_id": "D03",
+    "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded?",
+    "full_answer": "- **Codes that must be kept in the evidence record**  \n  * **NOAA\u202f101 \u2013 Blocked SSN** \u2013 the prescreen rule \u201cBlocked SSN\u201d (Table\u202f3) fires with an active exact match and, because the \u201cadministrative\u2011duplicate\u202f>\u202f36\u202fmonths\u201d exception does not apply, the result is not overridden\u30100011\u3011. The NOAA description confirms this outcome and that it is a terminal block\u30100037\u3011.  \n  * **RFAI\u202f105 \u2013 Credit Freeze** \u2013 the prescreen rule \u201cCredit Freeze\u201d (Table\u202f3) also fires and generates an RFAI because a bureau freeze is present\u30100011\u3011; the RFAI definition describes it as requiring additional information but not as a terminal decline\u30100039\u3011.  \n\n- **Disposition to retain**  \n  * **NOAA\u202f101** \u2192 immediate terminal routing (decline/stop\u2011processing). The engine must treat this as a short\u2011circuiting, high\u2011confidence identity block that halts further scoring or downstream rules\u30100057\u3011.  \n  * **RFAI\u202f105** \u2192 retained as an \u201cinformation\u2011request/hold\u201d disposition (application remains open pending freeze resolution)\u30100039\u3011.  \n\n- **How to record the immediate routing and the work that is skipped**  \n  * Even though **NOAA\u202f101** determines the immediate action, the system must **preserve all fired codes** (both 101 and 105) in the audit trail, including source value, normalized interpretation, rule context, and timestamp\u30100058\u3011.  \n  * The evidence record should note that **NOAA\u202f101 caused a terminal short\u2011circuit**, so downstream scoring or other full\u2011underwriting rules were **skipped**. This is the \u201cpoint of termination\u201d that must be retained\u30100057\u3011.  \n  * The RFAI\u202f105 entry is kept for audit and monitoring purposes, but its downstream processing (e.g., requesting additional freeze\u2011resolution evidence) is **not executed** because the workflow was already terminated by the NOAA.  \n\nIn summary, the case must retain **both codes 101 (NOAA) and 105 (RFAI)** with their respective dispositions; the routing is an immediate terminal decline driven by NOAA\u202f101, and the record must explicitly indicate that subsequent rules were short\u2011circuited while still logging the RFAI\u202f105 fire for completeness.",
+    "claim": "The application remains open solely because an RFAI also fired.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "present",
+    "human_evidence": "Answer excerpt from the RFAI 105 disposition bullet: \"(application remains open pending freeze resolution)\". This positively asserts that the application remains open because of the RFAI in the dual-trigger case. Later passages say the NOAA terminates the workflow and RFAI processing is not executed. The answer is internally inconsistent; those later statements do not explicitly retract the earlier open-application assertion. Label present because the forbidden claim is asserted at least once, rather than overlooking it because the summary is correct."
+  },
+  {
+    "i": 8,
+    "case_id": "M01",
+    "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?",
+    "full_answer": "- **Meaning of Code\u202f128** \u2013 It is the \u201cOffer Age\u201d RFAI, triggered when an offer or campaign artifact is too old at the time the application is taken in.\u202f[0039]  \n\n- **Disposition created** \u2013 The rule generates an **RFAI (Request for Additional Information)** disposition.\u202f[0039]  \n\n- **Age thresholds** \u2013  \n  * For **Prescreen** candidates the offer is considered too old if it is **older than\u202f45\u202fdays**.  \n  * For **Non\u2011Prescreen** candidates the threshold is **older than\u202f30\u202fdays**.\u202f[0039]  \n\n- **Where the rule is used** \u2013 The \u201cOffer Age\u201d rule appears in **Table\u202f4: Prescreen Full Underwriting Rules**, with source \u201cNovaCred Marketing Ledger,\u201d action \u201cRFAI,\u201d and code\u202f128.\u202f[0013]",
+    "claim": "The rule appears in full underwriting for both paths.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 9,
+    "case_id": "M06",
+    "question": "During the stage before full underwriting, the initial rule result is Pass. A line is assigned, an offer is displayed, and the customer accepts it. What state comes next, and does that acceptance make the application ready to fund?",
+    "full_answer": "The next state is **\u201cContinue Application\u202f\u2192\u202fFull Underwriting.\u201d** After the customer accepts the displayed offer, the pre\u2011qualification flow routes the application to the full\u2011underwriting stage rather than to funding. Therefore, the acceptance does **not** make the application \u201cReady to Fund\u201d; that terminal state is reached only after the full\u2011underwriting process completes successfully\u3010NovaCred_UW_V0_pdf.pdf::0033\u3011.",
+    "claim": "The application bypasses full underwriting.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 10,
+    "case_id": "M05",
+    "question": "How is FACTA handled at prequalification and at full-underwriting refresh, and why does both use the same Code 114?",
+    "full_answer": "- **Pre\u2011qualification** \u2013 The \u201cFACTA Alert\u201d rule appears in the prescreen pre\u2011qualification table (Table\u202f3) and is defined as an **RFAI** (request for additional information) with **Code\u202f114**\u202f[0011].  \n\n- **Full\u2011underwriting refresh** \u2013 The same condition is represented in the full\u2011underwriting tables (Table\u202f4 for prescreen candidates and Table\u202f6 for non\u2011prescreen candidates) as \u201cFACTA\u202fResolution,\u201d also an **RFAI** with **Code\u202f114**\u202f[0013][0018].  \n\n- **Why the same code is reused** \u2013 The compliance\u2011control description states that a FACTA alert is treated as an RFAI because additional identity evidence may resolve the condition, and \u201cthe alert can appear both at prequalification and final refresh. The reused code means downstream monitoring can compare the control across stages\u201d\u202f[0076].  \n\nThus, both stages generate an RFAI using Code\u202f114 because the underlying policy objective (identity\u2011theft alert requiring extra evidence) is identical, and reusing the code enables consistent monitoring and comparison of the control across the pre\u2011qualification and full\u2011underwriting stages.",
+    "claim": "FACTA Resolution at full underwriting is also RFAI Code 114.",
+    "judge": "present",
+    "judge_evidence": "The same condition is represented in the full\u2011underwriting tables (Table 4 for prescreen candidates and Table 6 for non\u2011prescreen candidates) as \u201cFACTA Resolution,\u201d also an RFAI with Code 114 [0013][0018].",
+    "human": "present"
+  },
+  {
+    "i": 11,
+    "case_id": "M04",
+    "question": "Compare the bureau-score decline controls at prequalification and full underwriting: what are their codes and exact thresholds?",
+    "full_answer": "- **Pre\u2011qualification bureau\u2011score control** \u2013\u202fCode **NOAA\u202f107** \u201cScore\u202fFloor\u201d; the rule triggers when the representative bureau score is **below\u202f566**\u202f[0037][0011].\n\n- **Full\u2011underwriting bureau\u2011score control** \u2013\u202fCode **NOAA\u202f121** \u201cCredit\u202fScore\u202fConfirmation\u201d; the rule triggers when the refreshed representative bureau score is **below\u202f580**\u202f[0037][0013].",
+    "claim": "Code 107 triggers below 566.",
+    "judge": "present",
+    "judge_evidence": "Code **NOAA 107** \u201cScore Floor\u201d; the rule triggers when the representative bureau score is **below 566** [0037][0011].",
+    "human": "present"
+  },
+  {
+    "i": 12,
+    "case_id": "M06",
+    "question": "During the stage before full underwriting, the initial rule result is Pass. A line is assigned, an offer is displayed, and the customer accepts it. What state comes next, and does that acceptance make the application ready to fund?",
+    "full_answer": "The next state is **\u201cContinue Application\u202f\u2192\u202fFull Underwriting.\u201d** After the customer accepts the displayed offer, the pre\u2011qualification flow routes the application to the full\u2011underwriting stage rather than to funding. Therefore, the acceptance does **not** make the application \u201cReady to Fund\u201d; that terminal state is reached only after the full\u2011underwriting process completes successfully\u3010NovaCred_UW_V0_pdf.pdf::0033\u3011.",
+    "claim": "Acceptance at this stage is not Ready to Fund or final approval.",
+    "judge": "present",
+    "judge_evidence": "Therefore, the acceptance does **not** make the application \u201cReady to Fund\u201d; that terminal state is reached only after the full\u2011underwriting process completes successfully\u3010NovaCred_UW_V0_pdf.pdf::0033\u3011.",
+    "human": "present"
+  },
+  {
+    "i": 13,
+    "case_id": "M01",
+    "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?",
+    "full_answer": "- **Meaning of Code\u202f128** \u2013 It is the \u201cOffer Age\u201d RFAI, triggered when an offer or campaign artifact is too old at the time the application is taken in.\u202f[0039]  \n\n- **Disposition created** \u2013 The rule generates an **RFAI (Request for Additional Information)** disposition.\u202f[0039]  \n\n- **Age thresholds** \u2013  \n  * For **Prescreen** candidates the offer is considered too old if it is **older than\u202f45\u202fdays**.  \n  * For **Non\u2011Prescreen** candidates the threshold is **older than\u202f30\u202fdays**.\u202f[0039]  \n\n- **Where the rule is used** \u2013 The \u201cOffer Age\u201d rule appears in **Table\u202f4: Prescreen Full Underwriting Rules**, with source \u201cNovaCred Marketing Ledger,\u201d action \u201cRFAI,\u201d and code\u202f128.\u202f[0013]",
+    "claim": "The source is NovaCred Marketing Ledger.",
+    "judge": "present",
+    "judge_evidence": "The \u201cOffer Age\u201d rule appears in **Table 4: Prescreen Full Underwriting Rules**, with source \u201cNovaCred Marketing Ledger,\u201d action \u201cRFAI,\u201d and code 128. [0013]",
+    "human": "present"
+  },
+  {
+    "i": 14,
+    "case_id": "X01",
+    "question": "During Non-Prescreen full underwriting, the offer is 35 days old, automated checks cannot reconcile the current address, and the requested funding method needs additional ownership or destination verification. Identify every applicable code and disposition, explain whether the evidence requests may be consolidated, and describe what happens after the evidence is resolved.",
+    "full_answer": "**Applicable codes (Non\u2011Prescreen full underwriting)**  \n\n| Issue | RFAI code | Description (as written) |\n|-------|-----------|---------------------------|\n| Offer older than the Non\u2011Prescreen threshold (30\u202fdays) | **RFAI\u202f128** \u2013 \u201cOffer Age: an offer or campaign artifact is too old at application intake. Prescreen uses an older\u2011than\u201145\u2011day threshold; Non\u2011Prescreen uses an older\u2011than\u201130\u2011day threshold.\u201d\u30100039\u3011 |\n| Automated address checks cannot reconcile the current residence | **RFAI\u202f139** \u2013 \u201cAddress Evidence: address evidence is insufficient to reconcile the current residence after required automated checks.\u201d\u30100039\u3011 |\n| Requested funding method requires extra ownership or destination verification | **RFAI\u202f140** \u2013 \u201cFunding Method Verification: requested funding method requires additional ownership or destination verification.\u201d\u30100039\u3011 |\n\nAll three appear in the Non\u2011Prescreen rule table as RFAI actions\u30100018\u3011, so the rule result for the application will be **RFAI**.\n\n**Consolidation of evidence requests**  \n\nWhen multiple RFAI codes fire, \u201coperations should consolidate requests where the same document can satisfy multiple rules, but the audit record must preserve the relationship from each request back to its source code.\u201d\u30100084\u3011  \nTherefore the three requests may be combined into a single evidence\u2011submission (e.g., a document that proves the offer date, address, and funding\u2011method ownership), provided the system logs each source code (128,\u202f139,\u202f140) against that document.\n\n**What happens after the evidence is resolved**  \n\nThe underwriting flow routes an RFAI outcome to **Evidence\u202f/\u202fVerification**\u30100035\u3011. Once the required evidence is received and recorded, the application returns to **Run Full Underwriting Policy & Credit Checks**\u30100035\u3011. The engine re\u2011evaluates the rules; if the three RFAI conditions are now cleared, the rule result becomes **Pass**, and the application proceeds to:\n\n1. Run Scoring & Affordability \u2192 Line  \n2. Fraud & Compliance Checks \u2192 Clear? (Yes)  \n3. Present Approved / Counteroffer \u2192 Customer Accepts? (Yes)  \n4. Intraday Account Review \u2192 All Required Verifications Complete? (Yes) \u2192 **Ready to Fund** (terminal state).  \n\nIf any RFAI remains unresolved, the RFAI outcome repeats, keeping the application in the evidence\u2011request loop.",
+    "claim": "Code 135 applies merely because extra funding-method verification is needed.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 15,
+    "case_id": "X08",
+    "question": "An application is still in the stage before full underwriting when Credit Freeze returns Code 105. Operations argues that because Code 105 appears later as Credit Freeze Refresh, resolved evidence should enter Evidence / Verification and resume full-underwriting policy and credit checks. Is that correct? Identify the disposition, reconcile the reused code across stages, trace the correct current-stage route through re-evaluation and, if it later passes, into full underwriting, and state whether any of these steps grants final approval.",
+    "full_answer": "**Disposition** \u2013 At the pre\u2011qualification point the \u201cCredit Freeze\u201d condition is treated as an **RFAI** (information request). In Table\u202f6 the *Credit Freeze Refresh* rule is listed with action **RFAI** and code\u202f105\u202f[0018]. The definition of RFAI\u202f105 confirms that a bureau freeze \u201crequires additional information or a refreshed bureau state\u201d\u202f[0039].\n\n**Re\u2011used code across stages** \u2013 The same three\u2011digit code (105) is used in more than one underwriting stage, but per the footnote in the underwriting overview \u201cidentical controls reuse codes, while materially different final\u2011stage logic receives a new code\u201d and reviewers must not assume the code is redundant because the source event, timestamp and evaluated state can differ\u202f[0012]. Thus the presence of code\u202f105 before full underwriting does **not** automatically invoke the full\u2011underwriting \u201cCredit Freeze Refresh\u201d rule; it is simply the same identifier applied to the freeze condition in the current stage.\n\n**Current\u2011stage route**  \n\n1. **Rule Result? \u2013 RFAI** \u2192 the flowchart sends the application to **Evidence\u202f/\u202fVerification**\u202f[0035][0034].  \n2. In **Evidence\u202f/\u202fVerification** the applicant (or operations) supplies the required freeze\u2011resolution evidence.  \n3. After the evidence is recorded, the process loops back to **Run Full Underwriting Policy & Credit Checks**\u202f[0035].  \n4. The rule set is re\u2011evaluated; if the credit\u2011freeze condition is now cleared, the rule result becomes **Pass**.  \n5. **Pass** \u2192 **Run Scoring & Affordability \u2192 Line** \u2192 **Fraud & Compliance Checks** \u2192 **Clear?** \u2192 **Present Approved / Counteroffer** \u2192 (subsequent steps to **Ready to Fund** or Manual Review)\u202f[0035][0034].\n\n**Does any of these steps grant final approval?** \u2013 No. An RFAI, the Evidence\u202f/\u202fVerification loop, and a subsequent Pass only move the application forward in the underwriting pipeline. Final approval is only issued at the terminal states **Ready to Fund**, **Approved** (via Manual Review), **Counteroffer**, or **Expire Application**\u202f[0035][0034]. Therefore, resolving code\u202f105 does **not** itself constitute a final approval; it merely enables the application to continue to the later full\u2011underwriting decisions.",
+    "claim": "Before full underwriting, Credit Freeze is Code 105 with an RFAI disposition.",
+    "judge": "present",
+    "judge_evidence": "In Table 6 the *Credit Freeze Refresh* rule is listed with action **RFAI** and code 105 [0018].",
+    "human": "present",
+    "human_evidence": "Replacement answer excerpts: \"At the pre‑qualification point the “Credit Freeze” condition is treated as an **RFAI** (information request).\" and \"Thus the presence of code 105 before full underwriting does **not** automatically invoke the full‑underwriting “Credit Freeze Refresh” rule; it is simply the same identifier applied to the freeze condition in the current stage.\". Together these establish the earlier-stage Credit Freeze / Code 105 / RFAI relationship. The judge's quoted Table 6 Credit Freeze Refresh row alone describes the later stage and does not establish the earlier-stage qualifier. The present verdict is retained, but its supporting quote needed correction. This audits assertion presence, not the factual validity of the answer's citations."
+  },
+  {
+    "i": 16,
+    "case_id": "X01",
+    "question": "During Non-Prescreen full underwriting, the offer is 35 days old, automated checks cannot reconcile the current address, and the requested funding method needs additional ownership or destination verification. Identify every applicable code and disposition, explain whether the evidence requests may be consolidated, and describe what happens after the evidence is resolved.",
+    "full_answer": "**Applicable codes (Non\u2011Prescreen full underwriting)**  \n\n| Issue | RFAI code | Description (as written) |\n|-------|-----------|---------------------------|\n| Offer older than the Non\u2011Prescreen threshold (30\u202fdays) | **RFAI\u202f128** \u2013 \u201cOffer Age: an offer or campaign artifact is too old at application intake. Prescreen uses an older\u2011than\u201145\u2011day threshold; Non\u2011Prescreen uses an older\u2011than\u201130\u2011day threshold.\u201d\u30100039\u3011 |\n| Automated address checks cannot reconcile the current residence | **RFAI\u202f139** \u2013 \u201cAddress Evidence: address evidence is insufficient to reconcile the current residence after required automated checks.\u201d\u30100039\u3011 |\n| Requested funding method requires extra ownership or destination verification | **RFAI\u202f140** \u2013 \u201cFunding Method Verification: requested funding method requires additional ownership or destination verification.\u201d\u30100039\u3011 |\n\nAll three appear in the Non\u2011Prescreen rule table as RFAI actions\u30100018\u3011, so the rule result for the application will be **RFAI**.\n\n**Consolidation of evidence requests**  \n\nWhen multiple RFAI codes fire, \u201coperations should consolidate requests where the same document can satisfy multiple rules, but the audit record must preserve the relationship from each request back to its source code.\u201d\u30100084\u3011  \nTherefore the three requests may be combined into a single evidence\u2011submission (e.g., a document that proves the offer date, address, and funding\u2011method ownership), provided the system logs each source code (128,\u202f139,\u202f140) against that document.\n\n**What happens after the evidence is resolved**  \n\nThe underwriting flow routes an RFAI outcome to **Evidence\u202f/\u202fVerification**\u30100035\u3011. Once the required evidence is received and recorded, the application returns to **Run Full Underwriting Policy & Credit Checks**\u30100035\u3011. The engine re\u2011evaluates the rules; if the three RFAI conditions are now cleared, the rule result becomes **Pass**, and the application proceeds to:\n\n1. Run Scoring & Affordability \u2192 Line  \n2. Fraud & Compliance Checks \u2192 Clear? (Yes)  \n3. Present Approved / Counteroffer \u2192 Customer Accepts? (Yes)  \n4. Intraday Account Review \u2192 All Required Verifications Complete? (Yes) \u2192 **Ready to Fund** (terminal state).  \n\nIf any RFAI remains unresolved, the RFAI outcome repeats, keeping the application in the evidence\u2011request loop.",
+    "claim": "Any of the three conditions is automatically a NOAA.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 17,
+    "case_id": "D02",
+    "question": "The Credit Risk Model score vector is unavailable, but the Null Score condition did not trigger. May the system treat scoring as passed, assign a line from an invented score band, or approve the applicant?",
+    "full_answer": "- **Scoring may be treated as passed** \u2013 The policy states that when the credit\u2011score vector is unavailable **and the Null\u202fScore condition did not trigger**, the scoring result is overridden and \u201ctreated as passed for the purpose of continuing to non\u2011score controls\u201d\u202f[0014]. The footnote register also notes this exception for \u201cScoring\u201d (Footnote\u202f\u00b3)\u202f[0045].\n\n- **No invented score band may be used for line assignment** \u2013 The same section makes clear that the override \u201cdoes not create a score and does not guarantee approval,\u201d and elsewhere it says the scoring override \u201cdoes not authorize line assignment from an invented or stale score\u201d\u202f[0022].\n\n- **Approval is not guaranteed** \u2013 Because the override does not create a score and does not guarantee approval, the applicant cannot be automatically approved on the basis of the missing vector alone\u202f[0014].\n\n**Therefore:** The system may treat the missing Credit Risk Model score vector as a passed scoring step to allow the workflow to continue, but it must **not** fabricate a score band to assign a line, nor can it approve the applicant solely on that basis.",
+    "claim": "The missing score should default to the lowest or highest band.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 18,
+    "case_id": "X03",
+    "question": "At full underwriting, Blocked Routing Code 120 persists, but the prior block was caused solely by a temporary network anomaly and the current application passes Intraday Account Review. Can the rule be overridden, what evidence history must remain, and does the override mean the application is approved?",
+    "full_answer": "**Can the Blocked\u2011Routing rule be overridden?**  \nYes.\u202fThe Blocked\u2011Routing exception allows the result to be treated as passed when (1) the prior block was generated **solely** from a temporary network anomaly **and** (2) the current application **passes** the documented Intraday Account Review criteria\u202f\u30100012\u2020\u00b9\u3011.\u202fThe same condition is reflected in the NOAA\u2011120 definition\u202f\u30100037\u2020NOAA\u202f120\u3011 and the footnote register\u202f\u30100045\u2020\u00b2\u3011.\n\n**What evidence must remain in the record?**  \nWhen an override is applied the engine must keep a complete evidence trail, including:  \n\n* the original source value that caused the Blocked\u2011Routing flag,  \n* the normalized interpretation of that value,  \n* the rule context (Blocked Routing\u202f/\u202fNOAA\u202f120), and  \n* the timestamp of the original block and of the override decision.  \n\nThe record must also identify the **exception condition** that permitted the override (temporary\u2011network\u2011anomaly exception) and the authority/configuration that allowed it\u202f\u30100057\u2020evidence\u2011record requirement\u3011.  \n\n**Does the override mean the application is approved?**  \nNo.\u202fAn overridden rule is merely treated as **passed** for the purpose of continuing the underwriting flow; it does **not** constitute a final approval. The application must still satisfy all downstream controls (affordability, fraud, compliance, etc.) before reaching a terminal \u201cReady to Fund\u201d or \u201cApproved\u201d state\u202f\u30100014\u2020scoring\u2011exception note on \u201cdoes not guarantee approval\u201d] and the policy reminder that \u201ca rule passing is not the same as an application being approved\u201d\u202f\u3010developer instruction\u3011.",
+    "claim": "Code 120 normally creates a NOAA.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "present",
+    "human_evidence": "Answer excerpts: \"The same condition is reflected in the NOAA‑120 definition\" and \"the rule context (Blocked Routing / NOAA 120)\". In an answer that explains a narrow exception overriding the Blocked Routing result, these passages identify Code 120's ordinary disposition family as NOAA. The atomic meaning is present even though the exact sentence 'Code 120 normally creates a NOAA' is not used."
+  },
+  {
+    "i": 19,
+    "case_id": "D03",
+    "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded?",
+    "full_answer": "- **Codes that must be kept in the evidence record**  \n  * **NOAA\u202f101 \u2013 Blocked SSN** \u2013 the prescreen rule \u201cBlocked SSN\u201d (Table\u202f3) fires with an active exact match and, because the \u201cadministrative\u2011duplicate\u202f>\u202f36\u202fmonths\u201d exception does not apply, the result is not overridden\u30100011\u3011. The NOAA description confirms this outcome and that it is a terminal block\u30100037\u3011.  \n  * **RFAI\u202f105 \u2013 Credit Freeze** \u2013 the prescreen rule \u201cCredit Freeze\u201d (Table\u202f3) also fires and generates an RFAI because a bureau freeze is present\u30100011\u3011; the RFAI definition describes it as requiring additional information but not as a terminal decline\u30100039\u3011.  \n\n- **Disposition to retain**  \n  * **NOAA\u202f101** \u2192 immediate terminal routing (decline/stop\u2011processing). The engine must treat this as a short\u2011circuiting, high\u2011confidence identity block that halts further scoring or downstream rules\u30100057\u3011.  \n  * **RFAI\u202f105** \u2192 retained as an \u201cinformation\u2011request/hold\u201d disposition (application remains open pending freeze resolution)\u30100039\u3011.  \n\n- **How to record the immediate routing and the work that is skipped**  \n  * Even though **NOAA\u202f101** determines the immediate action, the system must **preserve all fired codes** (both 101 and 105) in the audit trail, including source value, normalized interpretation, rule context, and timestamp\u30100058\u3011.  \n  * The evidence record should note that **NOAA\u202f101 caused a terminal short\u2011circuit**, so downstream scoring or other full\u2011underwriting rules were **skipped**. This is the \u201cpoint of termination\u201d that must be retained\u30100057\u3011.  \n  * The RFAI\u202f105 entry is kept for audit and monitoring purposes, but its downstream processing (e.g., requesting additional freeze\u2011resolution evidence) is **not executed** because the workflow was already terminated by the NOAA.  \n\nIn summary, the case must retain **both codes 101 (NOAA) and 105 (RFAI)** with their respective dispositions; the routing is an immediate terminal decline driven by NOAA\u202f101, and the record must explicitly indicate that subsequent rules were short\u2011circuited while still logging the RFAI\u202f105 fire for completeness.",
+    "claim": "Only Code 101 should be retained.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 20,
+    "case_id": "M04",
+    "question": "Compare the bureau-score decline controls at prequalification and full underwriting: what are their codes and exact thresholds?",
+    "full_answer": "- **Pre\u2011qualification bureau\u2011score control** \u2013\u202fCode **NOAA\u202f107** \u201cScore\u202fFloor\u201d; the rule triggers when the representative bureau score is **below\u202f566**\u202f[0037][0011].\n\n- **Full\u2011underwriting bureau\u2011score control** \u2013\u202fCode **NOAA\u202f121** \u201cCredit\u202fScore\u202fConfirmation\u201d; the rule triggers when the refreshed representative bureau score is **below\u202f580**\u202f[0037][0013].",
+    "claim": "Prequalification uses NOAA Code 107.",
+    "judge": "present",
+    "judge_evidence": "Pre\u2011qualification bureau\u2011score control \u2013 Code NOAA 107 \u201cScore Floor\u201d; the rule triggers when the representative bureau score is below 566 [0037][0011].",
+    "human": "present"
+  },
+  {
+    "i": 21,
+    "case_id": "E02",
+    "question": "Does an Authorized Payer become a borrower or independently satisfy borrower underwriting requirements?",
+    "full_answer": "No. An Authorized Payer is only permitted to provide a payment account or instruction and is **not** treated as a borrower, nor does the payer independently satisfy the borrower\u2011underwriting requirements\u30100007\u3011. The manual also states that an Authorized Payer \u201cshould never be treated as an additional borrower merely because the payer account is attached to the application\u201d\u30100008\u3011.",
+    "claim": "The role does not independently satisfy borrower underwriting requirements.",
+    "judge": "present",
+    "judge_evidence": "An Authorized Payer is only permitted to provide a payment account or instruction and is **not** treated as a borrower, nor does the payer independently satisfy the borrower\u2011underwriting requirements\u30100007\u3011.",
+    "human": "present"
+  },
+  {
+    "i": 22,
+    "case_id": "M01",
+    "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?",
+    "full_answer": "- **Meaning of Code\u202f128** \u2013 It is the \u201cOffer Age\u201d RFAI, triggered when an offer or campaign artifact is too old at the time the application is taken in.\u202f[0039]  \n\n- **Disposition created** \u2013 The rule generates an **RFAI (Request for Additional Information)** disposition.\u202f[0039]  \n\n- **Age thresholds** \u2013  \n  * For **Prescreen** candidates the offer is considered too old if it is **older than\u202f45\u202fdays**.  \n  * For **Non\u2011Prescreen** candidates the threshold is **older than\u202f30\u202fdays**.\u202f[0039]  \n\n- **Where the rule is used** \u2013 The \u201cOffer Age\u201d rule appears in **Table\u202f4: Prescreen Full Underwriting Rules**, with source \u201cNovaCred Marketing Ledger,\u201d action \u201cRFAI,\u201d and code\u202f128.\u202f[0013]",
+    "claim": "Code 128 is RFAI - Offer Age.",
+    "judge": "present",
+    "judge_evidence": "It is the \u201cOffer Age\u201d RFAI, triggered when an offer or campaign artifact is too old at the time the application is taken in.",
+    "human": "present"
+  },
+  {
+    "i": 23,
+    "case_id": "D01",
+    "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?",
+    "full_answer": "- **Normal code/disposition:**\u202fA blocked\u2011SSN triggers **NOAA\u202f101** (a \u201cBlocked\u202fSSN\u201d notice) as the default outcome\u202f[0037].  \n- **Exception applicability:**\u202fYes. The blocked\u2011SSN exception applies when the block is\u202f>\u202f36\u202fmonths old, is a resolved administrative duplicate, and the current identity comparison is exact; under those conditions the result is overridden and treated as **passed**\u202f[0012][0045].  \n- **Coverage for Non\u2011Prescreen:**\u202fThe same exception is used for Non\u2011Prescreen blocked\u2011SSN checks (\u201cthe Non\u2011Prescreen blocked\u202fSSN exception follows the same exception defined for Table\u202f3\u201d)\u202f[0017].",
+    "claim": "Every identity block older than 36 months automatically passes.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 24,
+    "case_id": "D01",
+    "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?",
+    "full_answer": "- **Normal code/disposition:**\u202fA blocked\u2011SSN triggers **NOAA\u202f101** (a \u201cBlocked\u202fSSN\u201d notice) as the default outcome\u202f[0037].  \n- **Exception applicability:**\u202fYes. The blocked\u2011SSN exception applies when the block is\u202f>\u202f36\u202fmonths old, is a resolved administrative duplicate, and the current identity comparison is exact; under those conditions the result is overridden and treated as **passed**\u202f[0012][0045].  \n- **Coverage for Non\u2011Prescreen:**\u202fThe same exception is used for Non\u2011Prescreen blocked\u2011SSN checks (\u201cthe Non\u2011Prescreen blocked\u202fSSN exception follows the same exception defined for Table\u202f3\u201d)\u202f[0017].",
+    "claim": "The rule may be treated as passed when all conditions hold.",
+    "judge": "present",
+    "judge_evidence": "under those conditions the result is overridden and treated as passed [0012][0045]",
+    "human": "present"
+  },
+  {
+    "i": 25,
+    "case_id": "X08",
+    "question": "An application is still in the stage before full underwriting when Credit Freeze returns Code 105. Operations argues that because Code 105 appears later as Credit Freeze Refresh, resolved evidence should enter Evidence / Verification and resume full-underwriting policy and credit checks. Is that correct? Identify the disposition, reconcile the reused code across stages, trace the correct current-stage route through re-evaluation and, if it later passes, into full underwriting, and state whether any of these steps grants final approval.",
+    "full_answer": "**Disposition** \u2013 At the pre\u2011qualification point the \u201cCredit Freeze\u201d condition is treated as an **RFAI** (information request). In Table\u202f6 the *Credit Freeze Refresh* rule is listed with action **RFAI** and code\u202f105\u202f[0018]. The definition of RFAI\u202f105 confirms that a bureau freeze \u201crequires additional information or a refreshed bureau state\u201d\u202f[0039].\n\n**Re\u2011used code across stages** \u2013 The same three\u2011digit code (105) is used in more than one underwriting stage, but per the footnote in the underwriting overview \u201cidentical controls reuse codes, while materially different final\u2011stage logic receives a new code\u201d and reviewers must not assume the code is redundant because the source event, timestamp and evaluated state can differ\u202f[0012]. Thus the presence of code\u202f105 before full underwriting does **not** automatically invoke the full\u2011underwriting \u201cCredit Freeze Refresh\u201d rule; it is simply the same identifier applied to the freeze condition in the current stage.\n\n**Current\u2011stage route**  \n\n1. **Rule Result? \u2013 RFAI** \u2192 the flowchart sends the application to **Evidence\u202f/\u202fVerification**\u202f[0035][0034].  \n2. In **Evidence\u202f/\u202fVerification** the applicant (or operations) supplies the required freeze\u2011resolution evidence.  \n3. After the evidence is recorded, the process loops back to **Run Full Underwriting Policy & Credit Checks**\u202f[0035].  \n4. The rule set is re\u2011evaluated; if the credit\u2011freeze condition is now cleared, the rule result becomes **Pass**.  \n5. **Pass** \u2192 **Run Scoring & Affordability \u2192 Line** \u2192 **Fraud & Compliance Checks** \u2192 **Clear?** \u2192 **Present Approved / Counteroffer** \u2192 (subsequent steps to **Ready to Fund** or Manual Review)\u202f[0035][0034].\n\n**Does any of these steps grant final approval?** \u2013 No. An RFAI, the Evidence\u202f/\u202fVerification loop, and a subsequent Pass only move the application forward in the underwriting pipeline. Final approval is only issued at the terminal states **Ready to Fund**, **Approved** (via Manual Review), **Counteroffer**, or **Expire Application**\u202f[0035][0034]. Therefore, resolving code\u202f105 does **not** itself constitute a final approval; it merely enables the application to continue to the later full\u2011underwriting decisions.",
+    "claim": "None of these intermediate steps grants final approval or Ready to Fund status.",
+    "judge": "present",
+    "judge_evidence": "An RFAI, the Evidence / Verification loop, and a subsequent Pass only move the application forward in the underwriting pipeline.",
+    "human": "present"
+  },
+  {
+    "i": 26,
+    "case_id": "X07",
+    "question": "After a configuration release, Code 105 firing rises sharply only in Non-Prescreen. During the same period, bureau-source completeness falls and fallback usage rises. Can analysts conclude that applicant credit risk worsened, and what comparisons are required before making a policy conclusion?",
+    "full_answer": "No.  A sharp rise in Code\u202f105 (Credit\u2011Freeze\u202fRFAI) in the Non\u2011Prescreen path cannot be taken as evidence that applicant credit risk has deteriorated until the underlying data\u2011source and configuration context are examined.\n\nThe operating notes require that any change in a rule\u2011firing rate be \u201ctied back to the configuration version before a policy conclusion is drawn\u201d and that analysts \u201ccompare rule firing rate against source completeness and latency\u201d and \u201cdistinguish changes caused by applicant mix from changes caused by upstream source behavior\u201d\u202f[0050].  \n\nBecause the same codes are used on multiple paths, the comparison must be \u201cpath\u2011aware\u201d \u2013 i.e., use denominators that reflect the different applicant populations on Prescreen vs\u202fNon\u2011Prescreen and include \u201cacquisition source and configuration version so a channel shift is not mistaken for a rule effect\u201d\u202f[0055].  \n\nTherefore, before concluding that credit risk worsened, analysts must:\n\n1. **Compare the Code\u202f105 firing rate in Non\u2011Prescreen to the same code in Prescreen** using path\u2011aware denominators.  \n2. **Control for acquisition source and configuration version** to ensure the rise is not simply a channel shift or a new release effect.  \n3. **Overlay bureau\u2011source completeness and fallback usage** on the same time window to see whether the increase correlates with reduced source completeness or higher fallback rates.  \n4. **Examine score\u2011band distribution and other risk\u2011score metrics** (e.g., the mix of source outcomes) to verify that the underlying credit\u2011risk profile has changed rather than just the data\u2011availability signal.  \n\nOnly after these comparisons can a policy conclusion about worsening applicant credit risk be justified.",
+    "claim": "The observed firing-rate increase alone does not prove worsening applicant risk.",
+    "judge": "present",
+    "judge_evidence": "A sharp rise in Code 105 (Credit\u2011Freeze RFAI) in the Non\u2011Prescreen path cannot be taken as evidence that applicant credit risk has deteriorated until the underlying data\u2011source and configuration context are examined.",
+    "human": "present"
+  },
+  {
+    "i": 27,
+    "case_id": "D01",
+    "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?",
+    "full_answer": "- **Normal code/disposition:**\u202fA blocked\u2011SSN triggers **NOAA\u202f101** (a \u201cBlocked\u202fSSN\u201d notice) as the default outcome\u202f[0037].  \n- **Exception applicability:**\u202fYes. The blocked\u2011SSN exception applies when the block is\u202f>\u202f36\u202fmonths old, is a resolved administrative duplicate, and the current identity comparison is exact; under those conditions the result is overridden and treated as **passed**\u202f[0012][0045].  \n- **Coverage for Non\u2011Prescreen:**\u202fThe same exception is used for Non\u2011Prescreen blocked\u2011SSN checks (\u201cthe Non\u2011Prescreen blocked\u202fSSN exception follows the same exception defined for Table\u202f3\u201d)\u202f[0017].",
+    "claim": "The same exception applies to Non-Prescreen.",
+    "judge": "present",
+    "judge_evidence": "The same exception is used for Non\u2011Prescreen blocked\u2011SSN checks (\u201cthe Non\u2011Prescreen blocked SSN exception follows the same exception defined for Table 3\u201d) [0017].",
+    "human": "present"
+  },
+  {
+    "i": 28,
+    "case_id": "X07",
+    "question": "After a configuration release, Code 105 firing rises sharply only in Non-Prescreen. During the same period, bureau-source completeness falls and fallback usage rises. Can analysts conclude that applicant credit risk worsened, and what comparisons are required before making a policy conclusion?",
+    "full_answer": "No.  A sharp rise in Code\u202f105 (Credit\u2011Freeze\u202fRFAI) in the Non\u2011Prescreen path cannot be taken as evidence that applicant credit risk has deteriorated until the underlying data\u2011source and configuration context are examined.\n\nThe operating notes require that any change in a rule\u2011firing rate be \u201ctied back to the configuration version before a policy conclusion is drawn\u201d and that analysts \u201ccompare rule firing rate against source completeness and latency\u201d and \u201cdistinguish changes caused by applicant mix from changes caused by upstream source behavior\u201d\u202f[0050].  \n\nBecause the same codes are used on multiple paths, the comparison must be \u201cpath\u2011aware\u201d \u2013 i.e., use denominators that reflect the different applicant populations on Prescreen vs\u202fNon\u2011Prescreen and include \u201cacquisition source and configuration version so a channel shift is not mistaken for a rule effect\u201d\u202f[0055].  \n\nTherefore, before concluding that credit risk worsened, analysts must:\n\n1. **Compare the Code\u202f105 firing rate in Non\u2011Prescreen to the same code in Prescreen** using path\u2011aware denominators.  \n2. **Control for acquisition source and configuration version** to ensure the rise is not simply a channel shift or a new release effect.  \n3. **Overlay bureau\u2011source completeness and fallback usage** on the same time window to see whether the increase correlates with reduced source completeness or higher fallback rates.  \n4. **Examine score\u2011band distribution and other risk\u2011score metrics** (e.g., the mix of source outcomes) to verify that the underlying credit\u2011risk profile has changed rather than just the data\u2011availability signal.  \n\nOnly after these comparisons can a policy conclusion about worsening applicant credit risk be justified.",
+    "claim": "Prescreen and Non-Prescreen rates can be compared with identical unadjusted denominators.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 29,
+    "case_id": "X03",
+    "question": "At full underwriting, Blocked Routing Code 120 persists, but the prior block was caused solely by a temporary network anomaly and the current application passes Intraday Account Review. Can the rule be overridden, what evidence history must remain, and does the override mean the application is approved?",
+    "full_answer": "**Can the Blocked\u2011Routing rule be overridden?**  \nYes.\u202fThe Blocked\u2011Routing exception allows the result to be treated as passed when (1) the prior block was generated **solely** from a temporary network anomaly **and** (2) the current application **passes** the documented Intraday Account Review criteria\u202f\u30100012\u2020\u00b9\u3011.\u202fThe same condition is reflected in the NOAA\u2011120 definition\u202f\u30100037\u2020NOAA\u202f120\u3011 and the footnote register\u202f\u30100045\u2020\u00b2\u3011.\n\n**What evidence must remain in the record?**  \nWhen an override is applied the engine must keep a complete evidence trail, including:  \n\n* the original source value that caused the Blocked\u2011Routing flag,  \n* the normalized interpretation of that value,  \n* the rule context (Blocked Routing\u202f/\u202fNOAA\u202f120), and  \n* the timestamp of the original block and of the override decision.  \n\nThe record must also identify the **exception condition** that permitted the override (temporary\u2011network\u2011anomaly exception) and the authority/configuration that allowed it\u202f\u30100057\u2020evidence\u2011record requirement\u3011.  \n\n**Does the override mean the application is approved?**  \nNo.\u202fAn overridden rule is merely treated as **passed** for the purpose of continuing the underwriting flow; it does **not** constitute a final approval. The application must still satisfy all downstream controls (affordability, fraud, compliance, etc.) before reaching a terminal \u201cReady to Fund\u201d or \u201cApproved\u201d state\u202f\u30100014\u2020scoring\u2011exception note on \u201cdoes not guarantee approval\u201d] and the policy reminder that \u201ca rule passing is not the same as an application being approved\u201d\u202f\u3010developer instruction\u3011.",
+    "claim": "The original block record should be deleted after override.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 30,
+    "case_id": "D02",
+    "question": "The Credit Risk Model score vector is unavailable, but the Null Score condition did not trigger. May the system treat scoring as passed, assign a line from an invented score band, or approve the applicant?",
+    "full_answer": "- **Scoring may be treated as passed** \u2013 The policy states that when the credit\u2011score vector is unavailable **and the Null\u202fScore condition did not trigger**, the scoring result is overridden and \u201ctreated as passed for the purpose of continuing to non\u2011score controls\u201d\u202f[0014]. The footnote register also notes this exception for \u201cScoring\u201d (Footnote\u202f\u00b3)\u202f[0045].\n\n- **No invented score band may be used for line assignment** \u2013 The same section makes clear that the override \u201cdoes not create a score and does not guarantee approval,\u201d and elsewhere it says the scoring override \u201cdoes not authorize line assignment from an invented or stale score\u201d\u202f[0022].\n\n- **Approval is not guaranteed** \u2013 Because the override does not create a score and does not guarantee approval, the applicant cannot be automatically approved on the basis of the missing vector alone\u202f[0014].\n\n**Therefore:** The system may treat the missing Credit Risk Model score vector as a passed scoring step to allow the workflow to continue, but it must **not** fabricate a score band to assign a line, nor can it approve the applicant solely on that basis.",
+    "claim": "No score is created and approval is not guaranteed.",
+    "judge": "present",
+    "judge_evidence": "The same section makes clear that the override \u201cdoes not create a score and does not guarantee approval,\u201d and elsewhere it says the scoring override \u201cdoes not authorize line assignment from an invented or stale score\u201d [0022].",
+    "human": "present"
+  },
+  {
+    "i": 31,
+    "case_id": "E04",
+    "question": "What monthly Income Proxy is required for Prescreen selection, and which source supplies it?",
+    "full_answer": "The Prescreen selection requires a **synthetic income proxy of\u202f$1,900\u202fper month or higher (and it must not be missing)**, and this proxy is provided by the **NovaCred Affordability Index**\u202f[0005].",
+    "claim": "The source is Income Verification Service.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 32,
+    "case_id": "M01",
+    "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?",
+    "full_answer": "- **Meaning of Code\u202f128** \u2013 It is the \u201cOffer Age\u201d RFAI, triggered when an offer or campaign artifact is too old at the time the application is taken in.\u202f[0039]  \n\n- **Disposition created** \u2013 The rule generates an **RFAI (Request for Additional Information)** disposition.\u202f[0039]  \n\n- **Age thresholds** \u2013  \n  * For **Prescreen** candidates the offer is considered too old if it is **older than\u202f45\u202fdays**.  \n  * For **Non\u2011Prescreen** candidates the threshold is **older than\u202f30\u202fdays**.\u202f[0039]  \n\n- **Where the rule is used** \u2013 The \u201cOffer Age\u201d rule appears in **Table\u202f4: Prescreen Full Underwriting Rules**, with source \u201cNovaCred Marketing Ledger,\u201d action \u201cRFAI,\u201d and code\u202f128.\u202f[0013]",
+    "claim": "Non-Prescreen uses an older-than-30-day threshold.",
+    "judge": "present",
+    "judge_evidence": "For **Non\u2011Prescreen** candidates the threshold is **older than 30 days**.",
+    "human": "present"
+  },
+  {
+    "i": 33,
+    "case_id": "E02",
+    "question": "Does an Authorized Payer become a borrower or independently satisfy borrower underwriting requirements?",
+    "full_answer": "No. An Authorized Payer is only permitted to provide a payment account or instruction and is **not** treated as a borrower, nor does the payer independently satisfy the borrower\u2011underwriting requirements\u30100007\u3011. The manual also states that an Authorized Payer \u201cshould never be treated as an additional borrower merely because the payer account is attached to the application\u201d\u30100008\u3011.",
+    "claim": "An Authorized Payer is a co-applicant.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 34,
+    "case_id": "D02",
+    "question": "The Credit Risk Model score vector is unavailable, but the Null Score condition did not trigger. May the system treat scoring as passed, assign a line from an invented score band, or approve the applicant?",
+    "full_answer": "- **Scoring may be treated as passed** \u2013 The policy states that when the credit\u2011score vector is unavailable **and the Null\u202fScore condition did not trigger**, the scoring result is overridden and \u201ctreated as passed for the purpose of continuing to non\u2011score controls\u201d\u202f[0014]. The footnote register also notes this exception for \u201cScoring\u201d (Footnote\u202f\u00b3)\u202f[0045].\n\n- **No invented score band may be used for line assignment** \u2013 The same section makes clear that the override \u201cdoes not create a score and does not guarantee approval,\u201d and elsewhere it says the scoring override \u201cdoes not authorize line assignment from an invented or stale score\u201d\u202f[0022].\n\n- **Approval is not guaranteed** \u2013 Because the override does not create a score and does not guarantee approval, the applicant cannot be automatically approved on the basis of the missing vector alone\u202f[0014].\n\n**Therefore:** The system may treat the missing Credit Risk Model score vector as a passed scoring step to allow the workflow to continue, but it must **not** fabricate a score band to assign a line, nor can it approve the applicant solely on that basis.",
+    "claim": "Code 115 corresponds to the missing Credit Risk Model vector.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 35,
+    "case_id": "D01",
+    "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?",
+    "full_answer": "- **Normal code/disposition:**\u202fA blocked\u2011SSN triggers **NOAA\u202f101** (a \u201cBlocked\u202fSSN\u201d notice) as the default outcome\u202f[0037].  \n- **Exception applicability:**\u202fYes. The blocked\u2011SSN exception applies when the block is\u202f>\u202f36\u202fmonths old, is a resolved administrative duplicate, and the current identity comparison is exact; under those conditions the result is overridden and treated as **passed**\u202f[0012][0045].  \n- **Coverage for Non\u2011Prescreen:**\u202fThe same exception is used for Non\u2011Prescreen blocked\u2011SSN checks (\u201cthe Non\u2011Prescreen blocked\u202fSSN exception follows the same exception defined for Table\u202f3\u201d)\u202f[0017].",
+    "claim": "The exception is limited to Prescreen.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 36,
+    "case_id": "D02",
+    "question": "The Credit Risk Model score vector is unavailable, but the Null Score condition did not trigger. May the system treat scoring as passed, assign a line from an invented score band, or approve the applicant?",
+    "full_answer": "- **Scoring may be treated as passed** \u2013 The policy states that when the credit\u2011score vector is unavailable **and the Null\u202fScore condition did not trigger**, the scoring result is overridden and \u201ctreated as passed for the purpose of continuing to non\u2011score controls\u201d\u202f[0014]. The footnote register also notes this exception for \u201cScoring\u201d (Footnote\u202f\u00b3)\u202f[0045].\n\n- **No invented score band may be used for line assignment** \u2013 The same section makes clear that the override \u201cdoes not create a score and does not guarantee approval,\u201d and elsewhere it says the scoring override \u201cdoes not authorize line assignment from an invented or stale score\u201d\u202f[0022].\n\n- **Approval is not guaranteed** \u2013 Because the override does not create a score and does not guarantee approval, the applicant cannot be automatically approved on the basis of the missing vector alone\u202f[0014].\n\n**Therefore:** The system may treat the missing Credit Risk Model score vector as a passed scoring step to allow the workflow to continue, but it must **not** fabricate a score band to assign a line, nor can it approve the applicant solely on that basis.",
+    "claim": "The applicant is approved because scoring passed.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 37,
+    "case_id": "X07",
+    "question": "After a configuration release, Code 105 firing rises sharply only in Non-Prescreen. During the same period, bureau-source completeness falls and fallback usage rises. Can analysts conclude that applicant credit risk worsened, and what comparisons are required before making a policy conclusion?",
+    "full_answer": "No.  A sharp rise in Code\u202f105 (Credit\u2011Freeze\u202fRFAI) in the Non\u2011Prescreen path cannot be taken as evidence that applicant credit risk has deteriorated until the underlying data\u2011source and configuration context are examined.\n\nThe operating notes require that any change in a rule\u2011firing rate be \u201ctied back to the configuration version before a policy conclusion is drawn\u201d and that analysts \u201ccompare rule firing rate against source completeness and latency\u201d and \u201cdistinguish changes caused by applicant mix from changes caused by upstream source behavior\u201d\u202f[0050].  \n\nBecause the same codes are used on multiple paths, the comparison must be \u201cpath\u2011aware\u201d \u2013 i.e., use denominators that reflect the different applicant populations on Prescreen vs\u202fNon\u2011Prescreen and include \u201cacquisition source and configuration version so a channel shift is not mistaken for a rule effect\u201d\u202f[0055].  \n\nTherefore, before concluding that credit risk worsened, analysts must:\n\n1. **Compare the Code\u202f105 firing rate in Non\u2011Prescreen to the same code in Prescreen** using path\u2011aware denominators.  \n2. **Control for acquisition source and configuration version** to ensure the rise is not simply a channel shift or a new release effect.  \n3. **Overlay bureau\u2011source completeness and fallback usage** on the same time window to see whether the increase correlates with reduced source completeness or higher fallback rates.  \n4. **Examine score\u2011band distribution and other risk\u2011score metrics** (e.g., the mix of source outcomes) to verify that the underlying credit\u2011risk profile has changed rather than just the data\u2011availability signal.  \n\nOnly after these comparisons can a policy conclusion about worsening applicant credit risk be justified.",
+    "claim": "Analysis must segment by path and use path-aware denominators.",
+    "judge": "present",
+    "judge_evidence": "Because the same codes are used on multiple paths, the comparison must be \u201cpath\u2011aware\u201d \u2013 i.e., use denominators that reflect the different applicant populations on Prescreen vs Non\u2011Prescreen and include \u201cacquisition source and configuration version so a channel shift is not mistaken for a rule effect\u201d [0055].",
+    "human": "present"
+  },
+  {
+    "i": 38,
+    "case_id": "D01",
+    "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?",
+    "full_answer": "- **Normal code/disposition:**\u202fA blocked\u2011SSN triggers **NOAA\u202f101** (a \u201cBlocked\u202fSSN\u201d notice) as the default outcome\u202f[0037].  \n- **Exception applicability:**\u202fYes. The blocked\u2011SSN exception applies when the block is\u202f>\u202f36\u202fmonths old, is a resolved administrative duplicate, and the current identity comparison is exact; under those conditions the result is overridden and treated as **passed**\u202f[0012][0045].  \n- **Coverage for Non\u2011Prescreen:**\u202fThe same exception is used for Non\u2011Prescreen blocked\u2011SSN checks (\u201cthe Non\u2011Prescreen blocked\u202fSSN exception follows the same exception defined for Table\u202f3\u201d)\u202f[0017].",
+    "claim": "The normal disposition is NOAA Code 101.",
+    "judge": "present",
+    "judge_evidence": "A blocked\u2011SSN triggers **NOAA 101** (a \u201cBlocked SSN\u201d notice) as the default outcome [0037].",
+    "human": "present"
+  },
+  {
+    "i": 39,
+    "case_id": "M06",
+    "question": "During the stage before full underwriting, the initial rule result is Pass. A line is assigned, an offer is displayed, and the customer accepts it. What state comes next, and does that acceptance make the application ready to fund?",
+    "full_answer": "The next state is **\u201cContinue Application\u202f\u2192\u202fFull Underwriting.\u201d** After the customer accepts the displayed offer, the pre\u2011qualification flow routes the application to the full\u2011underwriting stage rather than to funding. Therefore, the acceptance does **not** make the application \u201cReady to Fund\u201d; that terminal state is reached only after the full\u2011underwriting process completes successfully\u3010NovaCred_UW_V0_pdf.pdf::0033\u3011.",
+    "claim": "Customer acceptance makes the application Ready to Fund.",
+    "judge": "absent",
+    "judge_evidence": "",
+    "human": "absent"
+  },
+  {
+    "i": 40,
+    "case_id": "E04",
+    "question": "What monthly Income Proxy is required for Prescreen selection, and which source supplies it?",
+    "full_answer": "The Prescreen selection requires a **synthetic income proxy of\u202f$1,900\u202fper month or higher (and it must not be missing)**, and this proxy is provided by the **NovaCred Affordability Index**\u202f[0005].",
+    "claim": "The threshold is at least $1,900 monthly.",
+    "judge": "present",
+    "judge_evidence": "The Prescreen selection requires a **synthetic income proxy of $1,900 per month or higher (and it must not be missing)**, and this proxy is provided by the **NovaCred Affordability Index** [0005].",
+    "human": "present"
+  }
+]

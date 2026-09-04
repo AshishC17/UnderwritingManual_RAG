@@ -129,20 +129,23 @@ Reply with only a JSON object:
 {{"verdict": "addresses" or "does_not_address", "evidence": ""}}"""
 
 
-# Groq sizes a request as input tokens PLUS reserved max_tokens, so a large
-# prompt with a generous output budget is rejected (413) even when neither half
-# is individually large. Keep the sum under this.
-REQUEST_TOKEN_BUDGET = 9000
-MIN_OUTPUT_TOKENS = 1200  # enough for a reasoning preamble and a JSON verdict
+# Groq's real constraint for this model is `max_tokens <= 16384` — a hard per-
+# response cap, unrelated to input size (context window is 131K). An earlier
+# version of this file assumed input+output had to fit a shared ~9000 budget;
+# that was wrong, conflated with a separate quota error, and it starved the
+# model's reasoning on multi-claim batches, producing truncated <think> blocks
+# with no JSON. qwen3.x spends real output tokens reasoning before it answers,
+# so the cap needs headroom, not a tight fit.
+MODEL_MAX_TOKENS = 16384
+OUTPUT_SAFETY_MARGIN = 1000
 CLAIMS_PER_CALL = 20      # one call for a typical answer; splits only long outliers.
                           # Lower values re-send the context more often, and the
                           # context dominates cost on a per-day token budget.
 
 
 def _fit_output_budget(prompt: str, wanted: int) -> int:
-    """Shrink the output reservation to fit the request budget."""
-    approx_input = len(prompt) // 4
-    return max(MIN_OUTPUT_TOKENS, min(wanted, REQUEST_TOKEN_BUDGET - approx_input))
+    """Cap the output reservation at the model's real per-response limit."""
+    return min(wanted, MODEL_MAX_TOKENS - OUTPUT_SAFETY_MARGIN)
 
 
 def _ask(prompt: str, model: str, cache_dir: str, tag: str, max_tokens: int = 6000):
@@ -167,7 +170,7 @@ def _ask(prompt: str, model: str, cache_dir: str, tag: str, max_tokens: int = 60
 def decompose_claims(answer: str, model: str = JUDGE_MODEL,
                      cache_dir: str = CACHE_DIR) -> list[str]:
     """Split an answer into atomic claims for groundedness checking."""
-    data = _ask(DECOMPOSE_PROMPT.format(answer=answer), model, cache_dir, "decomp", 8000)
+    data = _ask(DECOMPOSE_PROMPT.format(answer=answer), model, cache_dir, "decomp", MODEL_MAX_TOKENS - OUTPUT_SAFETY_MARGIN)
     return [str(c) for c in data] if isinstance(data, list) else []
 
 
@@ -195,7 +198,7 @@ def check_supported_batch(claims: list[str], context: str,
         group = claims[start:start + CLAIMS_PER_CALL]
         numbered = "\n".join(f"{i}. {c}" for i, c in enumerate(group, 1))
         data = _ask(SUPPORT_BATCH_PROMPT.format(context=context, claims=numbered),
-                    model, cache_dir, "support", max_tokens=8000)
+                    model, cache_dir, "support", max_tokens=MODEL_MAX_TOKENS - OUTPUT_SAFETY_MARGIN)
         verdicts = {int(r["n"]): r.get("verdict") == "supported"
                     for r in data if isinstance(r, dict) and "n" in r}
         out.extend(verdicts.get(i, False) for i in range(1, len(group) + 1))

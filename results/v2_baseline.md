@@ -136,23 +136,43 @@ independent metrics. The fix is at rung 2 of the ladder (retrieval), not in the 
 CJK brackets `【id】` rather than the ASCII `[id]` the prompt requests; the citation regex
 accepts both, and matching only ASCII would have scored every citation invalid.
 
-### THE JUDGE IS NOT YET VALIDATED
+### JUDGE VALIDATED — kappa 0.900
 
-Every generation number above is produced by an unverified Qwen-27B. **217 verdicts
-(111 dev + 106 holdout) are exported to `results/judge_audit_*.json` and have not been
-hand-checked.** Until they are, treat these as provisional.
+Hand-checked 2026-09-04 against `qwen/qwen3.8-27b`, the same judge that produced the dev and
+holdout numbers above — so this validation applies directly to the table, not to a different
+run. 40 verdicts sampled (deliberately balanced present/absent, not random — a random draw is
+mostly "absent" and the verdicts worth checking are the "present" ones), with the actual
+question and full generated answer reconstructed alongside each claim so the check isn't
+limited to trusting the judge's own quoted evidence.
 
-```bash
-python scripts/validate_judge.py results/judge_audit_dev.json --sample 40
-# fill the "human" field in the generated .labels.json, then:
-python scripts/validate_judge.py results/judge_audit_dev.json --score
-```
+| | result |
+|---|---|
+| raw agreement | 0.950 (not the headline number — see below) |
+| **Cohen's kappa** | **0.900** — target was 0.7–0.8, the human-human ceiling |
+| recall (present) | 20/22 = 0.909 |
+| recall (absent) | 18/18 = 1.000 — zero false alarms |
 
-Reports **Cohen's kappa**, not raw agreement — a judge that answered "absent" to everything
-would score ~0.90 raw agreement and kappa 0.000 while catching zero hallucinations (verified
-against synthetic cases). Target is kappa **0.7–0.8**. The sampler deliberately balances
-present/absent rather than drawing randomly, because a random draw is mostly "absent" and the
-verdicts worth checking are the "present" ones.
+Kappa, not raw agreement, is the number that counts: a judge answering "absent" to everything
+scores ~0.90 raw agreement while catching zero hallucinations (verified against synthetic
+cases before trusting this on real data) — agreement alone can't distinguish a working judge
+from a lazy one on an imbalanced label set.
+
+**Two disagreements out of 40, both defensible, both erring toward under- rather than
+over-counting:**
+- **X03** (required claim, *"Code 120 normally creates a NOAA"*) — the answer ties code 120
+  to NOAA via *"the same condition is reflected in the NOAA-120 definition"* rather than
+  stating it directly; the judge wanted more explicit phrasing. Only makes claim recall read
+  a hair lower than reality.
+- **D03** (forbidden claim, *"the application remains open solely because an RFAI also
+  fired"*) — the phrase appears literally in a sub-bullet, but the rest of the answer
+  contextually overrides it with the real disposition (terminal decline via NOAA, RFAI logged
+  only). A genuine edge case in what "asserts" means under later qualification, not a judge
+  bug — but the more consequential of the two, since a missed forbidden claim is a missed
+  hallucination. Worth a second look if this pattern recurs at scale.
+
+Reproduce: `python scripts/validate_judge.py results/judge_audit_dev.json --sample 40`, fill
+`human` in the generated `.labels.json`, then `--score`. Holdout uses the same judge but was
+not independently hand-checked — reasonable to trust by extension, not verified directly.
 
 ## 4. Headline
 
@@ -185,9 +205,9 @@ matters: the fix is the cutoff, not the retriever. Full walkthrough in §7.
    ~0.10 are noise.
 2. **Stage accuracy rests on 2 cases per split.** Directionally striking, statistically thin.
    The dense 0.000 result is consistent across 4/4 cases, which is what makes it credible.
-3. **Generation numbers rest on an unvalidated judge** (see §3b). This is the largest
-   caveat in the document — the hallucination rate is a Qwen-27B's opinion until someone
-   checks it.
+3. **Judge validated at kappa 0.900 on dev** (see §3b) — the same judge that scored both
+   splits, so dev and holdout generation numbers are trustworthy, not provisional. Holdout was
+   not independently hand-checked.
 4. **Ground truth keys on positional chunk IDs.** Re-chunking renumbers them and silently
    invalidates labels.
 5. **Holdout was run once per version**, aggregates only, never used for tuning.
@@ -262,14 +282,14 @@ vocabulary, so this remains invisible to the eval.
 
 ## 8. Next
 
-1. **Validate the judge** (§3b) — every generation number is provisional until this is done.
-   ~40 verdicts, roughly an hour, and it is the cheapest way to make the numbers real.
+1. ~~Validate the judge~~ — **done, kappa 0.900** (§3b).
 2. **Sweep `k`** against the full eval — X08 needs 12, but raising `k` costs tokens, latency
    and distraction on all 27 cases. Measure, do not patch the one case.
 3. Metadata filtering for stage, with `stage_accuracy` as the instrument that proves it worked.
-4. Query decomposition (LangGraph) — addresses the compound-query failure class.
-5. Add abbreviation cases to ground truth **before** attempting HyDE, so any improvement is
-   measurable rather than assumed.
+4. Query decomposition (LangGraph) — addresses the compound-query failure class, evidence-backed
+   on X03 (full question → chunk `0024` rank 25; sub-question → rank 1).
+5. Add abbreviation cases to ground truth **before** attempting HyDE — HyDE is a hypothesis with
+   zero eval cases testing it, unlike decomposition.
 6. HyDE — targets the abbreviation gap.
 7. Fix `rule_codes_referenced` regex — `\b(1[0-4][0-9])\b` matches `$100` and "120 days".
 
