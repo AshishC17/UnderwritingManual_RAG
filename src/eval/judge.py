@@ -22,6 +22,8 @@ import os
 import re
 from pathlib import Path
 
+from langsmith import traceable
+
 JUDGE_MODEL = "qwen/qwen3.6-27b"
 CACHE_DIR = "data/interim/judgements"
 
@@ -167,6 +169,7 @@ def _ask(prompt: str, model: str, cache_dir: str, tag: str, max_tokens: int = 60
     return data
 
 
+@traceable(run_type="llm", name="decompose_claims (qwen judge)")
 def decompose_claims(answer: str, model: str = JUDGE_MODEL,
                      cache_dir: str = CACHE_DIR) -> list[str]:
     """Split an answer into atomic claims for groundedness checking."""
@@ -174,6 +177,7 @@ def decompose_claims(answer: str, model: str = JUDGE_MODEL,
     return [str(c) for c in data] if isinstance(data, list) else []
 
 
+@traceable(run_type="llm", name="check_supported_batch (qwen judge)")
 def check_supported_batch(claims: list[str], context: str,
                           model: str = JUDGE_MODEL,
                           cache_dir: str = CACHE_DIR) -> list[bool]:
@@ -205,6 +209,7 @@ def check_supported_batch(claims: list[str], context: str,
     return out
 
 
+@traceable(run_type="llm", name="check_relevance (qwen judge)")
 def check_relevance(question: str, answer: str, model: str = JUDGE_MODEL,
                     cache_dir: str = CACHE_DIR) -> bool:
     data = _ask(RELEVANCE_PROMPT.format(question=question, answer=answer),
@@ -212,6 +217,7 @@ def check_relevance(question: str, answer: str, model: str = JUDGE_MODEL,
     return data.get("verdict") == "addresses"
 
 
+@traceable(run_type="llm", name="judge_claim (qwen judge)")
 def judge_claim(
     claim: str,
     answer: str,

@@ -1,6 +1,8 @@
 anthropic==1.2.0
 fastembed==0.8.0
 groq==1.7.0
+langgraph==1.2.11
+langsmith==0.11.2
 pdfplumber==0.11.10
 pypdf==6.16.2
 python-dotenv==1.2.3

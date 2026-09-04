@@ -24,6 +24,8 @@ import os
 import time
 from pathlib import Path
 
+from langsmith import traceable
+
 MODEL = "rerank-2.5"
 CACHE_DIR = "data/interim/reranks"
 
@@ -96,6 +98,7 @@ def _fit_budget(candidates: list[dict], max_tokens: int) -> list[dict]:
     return kept
 
 
+@traceable(run_type="tool", name="rerank (cross-encoder)")
 def rerank(
     query: str,
     candidates: list[dict],

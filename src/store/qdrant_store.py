@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import uuid
 
+from langsmith import traceable
 from qdrant_client import QdrantClient, models
 
 COLLECTION = "uw_manual"
@@ -82,6 +83,7 @@ def upsert(
     return len(points)
 
 
+@traceable(run_type="retriever", name="search (dense)")
 def search(
     client: QdrantClient,
     vector: list[float],
@@ -99,6 +101,7 @@ def search(
     ).points
 
 
+@traceable(run_type="retriever", name="search_sparse (BM25)")
 def search_sparse(
     client: QdrantClient,
     vector: models.SparseVector,
@@ -116,6 +119,7 @@ def search_sparse(
     ).points
 
 
+@traceable(run_type="retriever", name="search_hybrid (RRF)")
 def search_hybrid(
     client: QdrantClient,
     dense_vector: list[float],

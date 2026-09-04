@@ -17,6 +17,8 @@ import json
 import os
 from pathlib import Path
 
+from langsmith import traceable
+
 MODEL = "openai/gpt-oss-120b"
 CACHE_DIR = "data/interim/generations"
 MAX_TOKENS = 4000
@@ -72,6 +74,7 @@ def _client():
     return groq.Groq()
 
 
+@traceable(run_type="llm", name="generate (gpt-oss-120b)")
 def generate(
     question: str,
     chunks: list[dict],

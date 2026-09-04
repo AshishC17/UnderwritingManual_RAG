@@ -21,6 +21,8 @@ import os
 import time
 from pathlib import Path
 
+from langsmith import traceable
+
 MODEL = "voyage-context-4"
 DIMS = 1024
 CACHE_DIR = "data/interim/embeddings"
@@ -93,6 +95,7 @@ def _approx_tokens(text: str) -> int:
     return max(1, len(text) // 4)
 
 
+@traceable(run_type="embedding", name="embed_document (dense)")
 def embed_document(
     texts: list[str],
     model: str = MODEL,
@@ -128,6 +131,7 @@ def embed_document(
     return vectors
 
 
+@traceable(run_type="embedding", name="embed_query (dense)")
 def embed_query(
     text: str,
     model: str = MODEL,
