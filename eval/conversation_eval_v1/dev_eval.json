@@ -1,0 +1,1174 @@
+{
+  "$schema": "./schema.json",
+  "schema_version": "1.0",
+  "dataset_name": "underwriting_conversation_eval",
+  "dataset_version": "v1",
+  "evaluation_date": "2026-09-07",
+  "split": "dev",
+  "source_catalog": "sources.json",
+  "review_status": "machine_authored_source_checked_pending_human_review",
+  "execution_status": "not_run",
+  "fixtures": {
+    "block_long": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "block_long:t0",
+          "question": "What are the NovaCred V1 Blocked SSN exception conditions?",
+          "answer": "For NovaCred V1, this concerns an active Blocked SSN result at Prescreen prequalification. Prequalification and full underwriting are separate stages, and a rule that permits continuation does not itself establish final approval. The relevant result must be interpreted using the lender and version that governed the evaluation; rule identifiers are not severity rankings. These points identify the setting before describing the exception. [NovaCred_UW_V1_pdf.pdf::0006] The block must be a resolved administrative duplicate older than 48 months, the current identity comparison must be exact, and a clean secondary identity source must corroborate the match. All conditions are required; continuation is not approval. [NovaCred_UW_V1_pdf.pdf::0008]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "nc1_skip",
+            "nc1_exception"
+          ]
+        }
+      ]
+    },
+    "block_missing_artifact": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "block_missing_artifact:t0",
+          "question": "What are the NovaCred V1 Blocked SSN exception conditions?",
+          "answer": "The block must be a resolved administrative duplicate older than 48 months, with an exact current identity comparison and clean secondary corroboration. This permits continuation only. [NovaCred_UW_V1_pdf.pdf::0008]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V1"
+          },
+          "context_source_refs": []
+        }
+      ]
+    },
+    "double_correct": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "double_correct:t0",
+          "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded for NovaCred current version?",
+          "answer": "For NovaCred V1 Prescreen, retain Code 101 with NOAA for Blocked SSN and Code 105 with RFAI for Credit Freeze. Both fired in this scenario, so both are evaluated results. [NovaCred_UW_V1_pdf.pdf::0007] [NovaCred_UW_V1_pdf.pdf::0030] No Blocked SSN exception applies, so processing cannot continue through that block. [NovaCred_UW_V1_pdf.pdf::0008] Preserve both results with their source data, timestamps, actions, policy version and reviewer/system identifiers. [NovaCred_UW_V1_pdf.pdf::0038] A later rule genuinely not run after a terminal outcome may be logged as not evaluated with its skip reason; that does not turn the already-fired Credit Freeze into a skipped evaluation. Do not invent the order in which these two rules ran. [NovaCred_UW_V1_pdf.pdf::0006]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "nc1_prescreen",
+            "nc1_exception",
+            "nc1_noaa",
+            "nc1_rfai",
+            "nc1_skip",
+            "nc1_history"
+          ]
+        }
+      ]
+    },
+    "double_faulty": {
+      "quality": "deliberately_incorrect",
+      "provenance": "Adapted from the actual saved NovaCred answer in data/conversations.db. The contradictory skipped-evaluation claim is intentional; citations and evidence package here are authored, not a reconstruction of the original generator context.",
+      "history": [
+        {
+          "turn_id": "double_faulty:t0",
+          "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded for NovaCred current version?",
+          "answer": "Keep 101 (NOAA) and 105 (RFAI). The Credit Freeze rule, although it also fired, must be recorded as skipped with the reason \"not evaluated due to prior terminal result (NOAA)\". [NovaCred_UW_V1_pdf.pdf::0006]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "nc1_prescreen",
+            "nc1_exception",
+            "nc1_noaa",
+            "nc1_rfai",
+            "nc1_skip",
+            "nc1_history"
+          ]
+        }
+      ]
+    },
+    "lt_mismatch": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_mismatch:t0",
+          "question": "What does Code 105 mean for LumenTrail V1?",
+          "answer": "Code 105 is Income Source Mismatch: stated source and approved evidence do not reconcile. It creates Evidence Required. [LumenTrail_UW_V1_pdf.pdf::0029]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_dictionary"
+          ]
+        }
+      ]
+    },
+    "lt_ownership1": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_ownership1:t0",
+          "question": "How does LumenTrail V1 Code 120 route different ownership mismatches?",
+          "answer": "An unrelated account holder requires Specialist Review; a name-format-only mismatch with matching account and routing tokens remains Evidence Required. Resolving this rule only permits remaining Funding Readiness checks; it is not approval. [LumenTrail_UW_V1_pdf.pdf::0044]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_ownership"
+          ]
+        }
+      ]
+    },
+    "lt_partner0": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_partner0:t0",
+          "question": "How fresh must LumenTrail V0 partner attestation be?",
+          "answer": "No older than 30 days. Absent or expired attestation fires Code 116 and requires evidence. [LumenTrail_UW_V0_pdf.pdf::0003]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "lt0_partner"
+          ]
+        }
+      ]
+    },
+    "lt_thin0": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_thin0:t0",
+          "question": "How is a thin credit file handled in LumenTrail V0?",
+          "answer": "Code 106 creates Evidence Required for fewer than two qualifying tradelines. V0 has no automated rent-history continuation exception. [LumenTrail_UW_V0_pdf.pdf::0029]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "lt0_dictionary"
+          ]
+        }
+      ]
+    },
+    "nc_freeze": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "nc_freeze:t0",
+          "question": "What does Code 105 mean for NovaCred V1?",
+          "answer": "Code 105 is Credit Freeze and its disposition is RFAI. [NovaCred_UW_V1_pdf.pdf::0007] [NovaCred_UW_V1_pdf.pdf::0030]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "nc1_prescreen",
+            "nc1_rfai"
+          ]
+        }
+      ]
+    },
+    "nc_offer_age": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "nc_offer_age:t0",
+          "question": "What is the Offer Age threshold for NovaCred V0?",
+          "answer": "RFAI 128 concerns an offer/campaign artifact: older than 45 days for Prescreen or older than 30 days for Non-Prescreen. [NovaCred_UW_V0_pdf.pdf::0039]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "nc0_rfai_dictionary"
+          ]
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "C-D01",
+      "split": "dev",
+      "scenario_family": "nc_simultaneous_results",
+      "difficulty": "difficult",
+      "provenance": "adapted_from_user_report",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "double_correct"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "explain that in simpler words",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "For NovaCred V1 Prescreen, retain Code 101 with NOAA for Blocked SSN and Code 105 with RFAI for Credit Freeze. Both fired in this scenario, so both are evaluated results. [NovaCred_UW_V1_pdf.pdf::0007] [NovaCred_UW_V1_pdf.pdf::0030] No Blocked SSN exception applies, so processing cannot continue through that block. [NovaCred_UW_V1_pdf.pdf::0008] Preserve both results with their source data, timestamps, actions, policy version and reviewer/system identifiers. [NovaCred_UW_V1_pdf.pdf::0038] A later rule genuinely not run after a terminal outcome may be logged as not evaluated with its skip reason; that does not turn the already-fired Credit Freeze into a skipped evaluation. Do not invent the order in which these two rules ran. [NovaCred_UW_V1_pdf.pdf::0006]",
+            "required_claims": [
+              "Retain Blocked SSN Code 101 with NOAA.",
+              "Retain Credit Freeze Code 105 with RFAI.",
+              "Both rules already fired; neither evaluated result can be relabelled as not evaluated.",
+              "The non-exempt active identity block prevents continuation; it is not a pass or approval.",
+              "Log actually unexecuted later work with its real skip reason, distinguishing not applicable from not evaluated.",
+              "Retain source data, timestamps, code, action, policy version and reviewer/system identifiers for the results."
+            ],
+            "forbidden_claims": [
+              "Credit Freeze itself was not evaluated or did not fire in this scenario.",
+              "The RFAI clears or overrides the active non-exempt identity block.",
+              "Discard one of the two results.",
+              "The exact runtime execution order or all later executed/skipped rule IDs are known from this hypothetical.",
+              "The V1 diagram explicitly specifies Send Notification then Expire Application for NOAA."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_prescreen",
+                "any_of_source_refs": [
+                  "nc1_prescreen"
+                ]
+              },
+              {
+                "name": "nc1_rfai",
+                "any_of_source_refs": [
+                  "nc1_rfai"
+                ]
+              },
+              {
+                "name": "nc1_skip",
+                "any_of_source_refs": [
+                  "nc1_skip"
+                ]
+              },
+              {
+                "name": "nc1_exception",
+                "any_of_source_refs": [
+                  "nc1_exception"
+                ]
+              },
+              {
+                "name": "nc1_history",
+                "any_of_source_refs": [
+                  "nc1_history"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [
+              "Retain BOTH fired rules, no applicable exception, Prescreen, NovaCred V1, and skipped-work question."
+            ],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "Now shorten that to exactly 3 bullets, keeping the codes and audit distinction.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "- Record 101 = NOAA and 105 = RFAI; both fired.\n- The active SSN block prevents continuation; the freeze request does not remove it.\n- Preserve both results and their audit details. Only later work that really did not run may be recorded as not evaluated, with the actual reason.",
+            "required_claims": [
+              "Retain Blocked SSN Code 101 with NOAA.",
+              "Retain Credit Freeze Code 105 with RFAI.",
+              "Both rules already fired; neither evaluated result can be relabelled as not evaluated.",
+              "The non-exempt active identity block prevents continuation; it is not a pass or approval.",
+              "Log actually unexecuted later work with its real skip reason, distinguishing not applicable from not evaluated.",
+              "Retain source data, timestamps, code, action, policy version and reviewer/system identifiers for the results."
+            ],
+            "forbidden_claims": [
+              "Credit Freeze itself was not evaluated or did not fire in this scenario.",
+              "The RFAI clears or overrides the active non-exempt identity block.",
+              "Discard one of the two results.",
+              "The exact runtime execution order or all later executed/skipped rule IDs are known from this hypothetical.",
+              "The V1 diagram explicitly specifies Send Notification then Expire Application for NOAA."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_prescreen",
+                "any_of_source_refs": [
+                  "nc1_prescreen"
+                ]
+              },
+              {
+                "name": "nc1_rfai",
+                "any_of_source_refs": [
+                  "nc1_rfai"
+                ]
+              },
+              {
+                "name": "nc1_skip",
+                "any_of_source_refs": [
+                  "nc1_skip"
+                ]
+              },
+              {
+                "name": "nc1_exception",
+                "any_of_source_refs": [
+                  "nc1_exception"
+                ]
+              },
+              {
+                "name": "nc1_history",
+                "any_of_source_refs": [
+                  "nc1_history"
+                ]
+              }
+            ],
+            "output_format": "exactly_3_bullets",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Exact user-reported simplification followed by formatting. Correctness and unnecessary retrieval are graded separately."
+    },
+    {
+      "id": "C-D02",
+      "split": "dev",
+      "scenario_family": "nc_simultaneous_results",
+      "difficulty": "extreme",
+      "provenance": "fault_injection_based_on_saved_answer",
+      "execution_modes": [
+        "fixture"
+      ],
+      "fixture_sessions": {
+        "A": "double_faulty"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "explain that in simpler words",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "correct_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "Correction: since the question says both rules fired, Credit Freeze was evaluated. Keep 101/NOAA and 105/RFAI. The identity block stops continuation. Only genuinely unexecuted later work is skipped; preserve the result and audit details.",
+            "required_claims": [
+              "Retain Blocked SSN Code 101 with NOAA.",
+              "Retain Credit Freeze Code 105 with RFAI.",
+              "Both rules already fired; neither evaluated result can be relabelled as not evaluated.",
+              "The non-exempt active identity block prevents continuation; it is not a pass or approval.",
+              "Log actually unexecuted later work with its real skip reason, distinguishing not applicable from not evaluated.",
+              "Retain source data, timestamps, code, action, policy version and reviewer/system identifiers for the results.",
+              "Explicitly identify and correct the earlier claim that the already-fired Credit Freeze was not evaluated."
+            ],
+            "forbidden_claims": [
+              "Credit Freeze itself was not evaluated or did not fire in this scenario.",
+              "The RFAI clears or overrides the active non-exempt identity block.",
+              "Discard one of the two results.",
+              "The exact runtime execution order or all later executed/skipped rule IDs are known from this hypothetical.",
+              "The V1 diagram explicitly specifies Send Notification then Expire Application for NOAA."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_prescreen",
+                "any_of_source_refs": [
+                  "nc1_prescreen"
+                ]
+              },
+              {
+                "name": "nc1_rfai",
+                "any_of_source_refs": [
+                  "nc1_rfai"
+                ]
+              },
+              {
+                "name": "nc1_skip",
+                "any_of_source_refs": [
+                  "nc1_skip"
+                ]
+              },
+              {
+                "name": "nc1_exception",
+                "any_of_source_refs": [
+                  "nc1_exception"
+                ]
+              },
+              {
+                "name": "nc1_history",
+                "any_of_source_refs": [
+                  "nc1_history"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Do not train rephrasing to preserve an earlier hallucination. Verified evidence outranks prior assistant text."
+    },
+    {
+      "id": "C-D03",
+      "split": "dev",
+      "scenario_family": "nc_block_exception_provenance",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "block_long"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Which chunk did the 48-month number in your answer come from?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "inspect_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "It comes from NovaCred V1, page 4, the Blocked SSN footnote [1], chunk NovaCred_UW_V1_pdf.pdf::0008. It says older than 48 months, plus exact current identity and clean secondary corroboration.",
+            "required_claims": [
+              "The source is NovaCred V1 page 4, Blocked SSN footnote [1].",
+              "The cited evidence supports older than 48 months, with exact current identity and clean secondary corroboration."
+            ],
+            "forbidden_claims": [
+              "36 months is the NovaCred V1 threshold.",
+              "The citation came from LumenTrail or a source never used in the stored answer."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_exception",
+                "any_of_source_refs": [
+                  "nc1_exception"
+                ]
+              }
+            ],
+            "output_format": "citation_explanation",
+            "context_requirements": [
+              "The cited 48-month statement occurs after character 300 in the full previous answer. Read the actual prior answer/citation record."
+            ],
+            "required_citation_source_refs": [
+              "nc1_exception"
+            ]
+          }
+        }
+      ],
+      "why_in_eval": "Catches the current 300-character history truncation and distinguishes source attribution from a new general policy lookup."
+    },
+    {
+      "id": "C-D04",
+      "split": "dev",
+      "scenario_family": "nc_block_exception_provenance",
+      "difficulty": "extreme",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture"
+      ],
+      "fixture_sessions": {
+        "A": "block_missing_artifact"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Show me the source text behind the 48-month exception you just cited.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "inspect_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "recover_cited_evidence",
+            "reference_answer": "Recover the exact cited NovaCred V1 page-4 footnote before quoting it. If it cannot be recovered, state that the prior answer cites that source but its text cannot currently be verified.",
+            "required_claims": [
+              "Identify the prior citation to NovaCred V1 page 4 footnote [1].",
+              "Either recover and accurately quote/paraphrase the cited footnote, or explicitly say its text cannot be verified from the available record."
+            ],
+            "forbidden_claims": [
+              "A made-up verbatim quotation.",
+              "A different newly retrieved chunk is claimed to have been the original citation.",
+              "The assistant's previous assertion is treated as proof that the source was inspected."
+            ],
+            "evidence_groups": [],
+            "output_format": "citation_explanation",
+            "context_requirements": [
+              "The history retains an answer with a citation, but zero evidence chunks are supplied. Source recovery and honest unavailability are both acceptable."
+            ],
+            "required_citation_source_refs": [],
+            "conditional_evidence_groups": [
+              {
+                "when": "the response verifies or quotes policy content",
+                "any_of_source_refs": [
+                  "nc1_exception"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "why_in_eval": "Stored answer text is not the same as stored source evidence. Tests a missing artifact, not merely routing accuracy."
+    },
+    {
+      "id": "C-D05",
+      "split": "dev",
+      "scenario_family": "nc_offer_age_cross_lender",
+      "difficulty": "extreme",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "nc_offer_age"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "What about the offer age threshold for the other lender?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "lender_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "Use LumenTrail V1. Do not reinterpret offer/campaign age as applicant age. The inspected LumenTrail evidence does not establish the same NovaCred Offer Age rule; explain that limitation and, if useful, ask whether the user means partner-attestation freshness or identity-document validity.",
+            "required_claims": [
+              "Resolve other lender to LumenTrail V1.",
+              "Keep offer/campaign artifact age distinct from applicant age.",
+              "Do not invent an equivalent offer-age threshold; explain the missing mapping or request clarification of the LumenTrail concept."
+            ],
+            "forbidden_claims": [
+              "21 years is the offer/campaign age threshold.",
+              "NovaCred's 45/30-day limits apply to LumenTrail.",
+              "LumenTrail Code 128 is NovaCred Offer Age."
+            ],
+            "evidence_groups": [],
+            "output_format": "unconstrained",
+            "context_requirements": [
+              "New LumenTrail evidence must be inspected before a corpus-absence claim; zero evidence-group targets does not authorize answering from no evidence."
+            ],
+            "required_citation_source_refs": [],
+            "acceptable_alternative": "Clarify the intended LumenTrail concept without making a policy claim; a pre-retrieval clarification is safe, not a false refusal."
+          }
+        }
+      ],
+      "why_in_eval": "Observed topic-substitution trap: other lender preserves the requested concept, not an arbitrary similar age field."
+    },
+    {
+      "id": "C-D06",
+      "split": "dev",
+      "scenario_family": "nc_simultaneous_results",
+      "difficulty": "medium",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "double_correct"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Instead, explain the Tier 2 income documents for the same lender and version in simple words.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "NovaCred V1 Tier 2 requires two recent pay statements plus employment-status confirmation.",
+            "required_claims": [
+              "Two recent pay statements.",
+              "Employment-status confirmation.",
+              "Keep NovaCred V1."
+            ],
+            "forbidden_claims": [
+              "Only one pay statement.",
+              "Rephrase the Blocked SSN answer instead of answering the changed topic."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_income_docs",
+                "any_of_source_refs": [
+                  "nc1_income_docs"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [
+              "The supplied prior evidence package does not contain Table 8. The word 'explain' does not authorize evidence reuse for a different topic."
+            ],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Topic change with a style instruction; catches overly broad rephrase classification."
+    },
+    {
+      "id": "C-D07",
+      "split": "dev",
+      "scenario_family": "missing_antecedent",
+      "difficulty": "easy",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {},
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Shorten that to three bullets.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "clarify",
+            "scope": null,
+            "scope_relationship": "unresolved",
+            "evidence_policy": "blocked_until_clarified",
+            "reference_answer": "What text or earlier answer would you like me to shorten?",
+            "required_claims": [
+              "Ask for the text or answer to shorten because this is a fresh chat."
+            ],
+            "forbidden_claims": [
+              "Invent a previous answer.",
+              "Assume NovaCred or LumenTrail from another thread."
+            ],
+            "evidence_groups": [],
+            "output_format": "unconstrained",
+            "context_requirements": [
+              "No history, scope or prior answer exists in thread A."
+            ],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "No-history follow-up must not borrow global state."
+    },
+    {
+      "id": "C-D08",
+      "split": "dev",
+      "scenario_family": "code105_thread_isolation",
+      "difficulty": "extreme",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "nc_freeze",
+        "B": "lt_mismatch"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Explain that code in simpler words.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "In this NovaCred V1 chat, Code 105 means a credit-file freeze and asks for additional information or a refreshed state.",
+            "required_claims": [
+              "NovaCred V1 Code 105 is Credit Freeze, RFAI."
+            ],
+            "forbidden_claims": [
+              "Code 105 here means Income Source Mismatch."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_rfai",
+                "any_of_source_refs": [
+                  "nc1_rfai"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "B",
+          "user_message": "Explain that code in simpler words.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "In this LumenTrail V1 chat, Code 105 means the stated income source does not match approved evidence; more evidence is needed.",
+            "required_claims": [
+              "LumenTrail V1 Code 105 is Income Source Mismatch, Evidence Required."
+            ],
+            "forbidden_claims": [
+              "Code 105 here means Credit Freeze."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_dictionary",
+                "any_of_source_refs": [
+                  "lt1_dictionary"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s3",
+          "thread": "C",
+          "user_message": "What does that code mean?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "clarify",
+            "scope": null,
+            "scope_relationship": "unresolved",
+            "evidence_policy": "blocked_until_clarified",
+            "reference_answer": "Which code and lender do you mean?",
+            "required_claims": [
+              "Ask which code and lender; thread C has no history."
+            ],
+            "forbidden_claims": [
+              "Inherit Code 105 or either lender from A/B."
+            ],
+            "evidence_groups": [],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Interleave independent conversations, then open an empty one; thread isolation must be visible in the outcome."
+    },
+    {
+      "id": "C-D09",
+      "split": "dev",
+      "scenario_family": "code105_thread_isolation",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {},
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "What does Code 105 mean?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "clarify",
+            "scope": null,
+            "scope_relationship": "unresolved",
+            "evidence_policy": "blocked_until_clarified",
+            "reference_answer": "Which lender should I use: NovaCred or LumenTrail?",
+            "required_claims": [
+              "Ask for the lender before resolving Code 105."
+            ],
+            "forbidden_claims": [
+              "Choose one lender by semantic similarity.",
+              "Merge both meanings as one policy."
+            ],
+            "evidence_groups": [],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "NovaCred V0.",
+          "input_kind": "clarification_reply",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V0"
+            },
+            "scope_relationship": "clarified",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "NovaCred V0 Code 105 is Credit Freeze, an RFAI. Additional information or a refreshed bureau state is required.",
+            "required_claims": [
+              "Credit Freeze.",
+              "RFAI.",
+              "Use NovaCred V0."
+            ],
+            "forbidden_claims": [
+              "Income Source Mismatch."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc0_rfai_dictionary",
+                "any_of_source_refs": [
+                  "nc0_rfai_dictionary"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s3",
+          "thread": "A",
+          "user_message": "Explain it simply.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V0"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "Your credit file is frozen, so more information or an updated bureau state is needed. This is NovaCred V0 Code 105, an RFAI.",
+            "required_claims": [
+              "Preserve NovaCred V0, Code 105, Credit Freeze and RFAI."
+            ],
+            "forbidden_claims": [
+              "Treat 'NovaCred V0' as the standalone policy question.",
+              "Switch to current V1 without request."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc0_rfai_dictionary",
+                "any_of_source_refs": [
+                  "nc0_rfai_dictionary"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Clarification resumes the pending question on the same thread; it is not a new topical turn."
+    },
+    {
+      "id": "C-D10",
+      "split": "dev",
+      "scenario_family": "lt_thin_file",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_thin0"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Explain the current-version exception instead, in plain English.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "version_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "LumenTrail V1 may allow a thin-file case to continue with twelve months of verified rent history. This clears only the thin-file condition, does not create a score and is not approval; other controls remain.",
+            "required_claims": [
+              "Use LumenTrail V1.",
+              "Twelve months of verified rent history may permit continuation.",
+              "The exception is not approval and other controls remain."
+            ],
+            "forbidden_claims": [
+              "V0 already had this exception.",
+              "Rent history automatically approves the application."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_dictionary",
+                "any_of_source_refs": [
+                  "lt1_dictionary"
+                ]
+              },
+              {
+                "name": "lt1_footnotes",
+                "any_of_source_refs": [
+                  "lt1_footnotes"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "Use V9 instead.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "clarify",
+            "scope": null,
+            "scope_relationship": "unresolved",
+            "evidence_policy": "blocked_until_clarified",
+            "reference_answer": "There is no LumenTrail V9 in the corpus. Which available version, V0 or V1, should I use?",
+            "required_claims": [
+              "State V9 is unavailable and ask for an available version."
+            ],
+            "forbidden_claims": [
+              "Silently fall back to V1.",
+              "Invent a V9 policy."
+            ],
+            "evidence_groups": [],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Current-version switching followed by an invalid version must not silently retain an old answer."
+    },
+    {
+      "id": "C-D11",
+      "split": "dev",
+      "scenario_family": "lt_ownership",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_ownership1"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Make those two possibilities into a small table.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "Unrelated holder: Specialist Review. Name-format-only mismatch with matching account/routing tokens: Evidence Required. Resolving either permits remaining Funding Readiness checks, not approval.",
+            "required_claims": [
+              "Unrelated holder maps to Specialist Review.",
+              "Name-format-only mismatch with matching account and routing tokens maps to Evidence Required.",
+              "Resolution is continuation, not approval."
+            ],
+            "forbidden_claims": [
+              "Both branches use Evidence Required.",
+              "A formatting mismatch needs no matching account/routing tokens."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_ownership",
+                "any_of_source_refs": [
+                  "lt1_ownership"
+                ]
+              }
+            ],
+            "output_format": "comparison_table",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "Assume the account holder is unrelated. Is this just a formatting fix?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "No. An unrelated account holder requires Specialist Review under LumenTrail V1 Code 120; the format-only path does not apply.",
+            "required_claims": [
+              "Unrelated holder requires Specialist Review.",
+              "Do not use the name-format-only evidence path."
+            ],
+            "forbidden_claims": [
+              "Treat the unrelated holder as a minor formatting issue.",
+              "A supervisor's NovaCred network-anomaly exception applies."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_ownership",
+                "any_of_source_refs": [
+                  "lt1_ownership"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "A changed scenario can be a new question while already-held evidence remains sufficient."
+    },
+    {
+      "id": "C-D12",
+      "split": "dev",
+      "scenario_family": "lt_partner_attestation",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_partner0"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Explain the limit for an evaluation on 2026-09-01.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "date_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "LumenTrail V1 applies on 2026-09-01. Attestation must be no older than 14 days; missing or expired evidence triggers Code 116 Evidence Required.",
+            "required_claims": [
+              "Select LumenTrail V1 on 2026-09-01.",
+              "No older than 14 days; missing or expired attestation triggers Code 116 Evidence Required."
+            ],
+            "forbidden_claims": [
+              "Carry V0's 30-day window into 2026-09-01."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_partner",
+                "any_of_source_refs": [
+                  "lt1_partner"
+                ]
+              },
+              {
+                "name": "lt1_dates",
+                "any_of_source_refs": [
+                  "lt1_dates"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "I meant 2026-08-31. Correct that.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V0"
+            },
+            "scope_relationship": "date_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "For 2026-08-31 use LumenTrail V0: no older than 30 days, with Code 116 Evidence Required for missing or expired attestation.",
+            "required_claims": [
+              "Correct the scope to LumenTrail V0 for 2026-08-31.",
+              "Use the 30-day window."
+            ],
+            "forbidden_claims": [
+              "Interpret correct that as a stylistic rephrase with V1 evidence.",
+              "Use 14 days on 2026-08-31."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt0_partner",
+                "any_of_source_refs": [
+                  "lt0_partner"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "A user correction changes the authoritative date and must not leave a contradictory inherited version."
+    }
+  ]
+}

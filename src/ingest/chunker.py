@@ -6,8 +6,14 @@ and repeat their header row when they do not.
 
 from __future__ import annotations
 
+import hashlib
 import re
+import unicodedata
+from collections import defaultdict
 from dataclasses import asdict, dataclass, field
+from functools import lru_cache
+from pathlib import Path
+from typing import Any
 
 import tiktoken
 
@@ -17,12 +23,18 @@ MAX_TOKENS = 512
 OVERLAP_RATIO = 0.15
 CODE_RE = re.compile(r"\b(1[0-4][0-9])\b")
 CRITERION_RE = re.compile(r"\b(FC-\d{2})\b")
+VERSION_WORD_RE = re.compile(r"\bversion\s+\d+\b|\bv\d+\b", re.I)
+TABLE_ID_RE = re.compile(r"^(table|exhibit)\s+([a-z0-9]+)\b", re.I)
 
-_enc = tiktoken.get_encoding("cl100k_base")
+
+@lru_cache(maxsize=1)
+def _encoder():
+    """Load the tokenizer only when chunk sizing is actually requested."""
+    return tiktoken.get_encoding("cl100k_base")
 
 
 def n_tokens(text: str) -> int:
-    return len(_enc.encode(text))
+    return len(_encoder().encode(text))
 
 
 @dataclass
@@ -40,6 +52,28 @@ class Chunk:
     position_in_doc: int
     token_count: int
     parent_context: str | None = None
+    lender_id: str | None = None
+    lender_name: str | None = None
+    product_id: str | None = None
+    product_name: str | None = None
+    document_family: str | None = None
+    document_id: str | None = None
+    document_version: str | None = None
+    version_order: int | None = None
+    effective_from: str | None = None
+    effective_to: str | None = None
+    version_status: str | None = None
+    supersedes_version: str | None = None
+    authority_level: str | None = None
+    section_key: str | None = None
+    subsection_key: str | None = None
+    lineage_id: str | None = None
+    chunk_revision: int = 1
+    content_hash: str | None = None
+    chunking_version: str | None = None
+    embedding_model: str | None = None
+    embedding_dimension: int | None = None
+    embedding_version: str | None = None
 
 
 @dataclass
@@ -60,6 +94,28 @@ def _classify(section: str) -> str:
     if upper.startswith("EXHIBIT") or upper.startswith("APPENDIX"):
         return "appendix"
     return "primary"
+
+
+def _stable_key(text: str | None) -> str | None:
+    """Normalize a structural label into a version-independent metadata key."""
+    if text is None:
+        return None
+    text = VERSION_WORD_RE.sub("", text)
+    text = re.sub(r"\bpre[\s-]?qual\b", "prequalification", text, flags=re.I)
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
+    key = re.sub(r"[^a-z0-9]+", ".", text.lower()).strip(".")
+    return key or "untitled"
+
+
+def _lineage_anchor(kind: str, table_name: str | None, text: str) -> str:
+    if kind == "table" and table_name:
+        match = TABLE_ID_RE.match(table_name)
+        if match:
+            return f"{match.group(1).lower()}.{match.group(2).lower()}"
+        return _stable_key(table_name) or "table"
+    if kind == "flowchart":
+        return _stable_key(text.splitlines()[0] if text else None) or "flowchart"
+    return "prose"
 
 
 def _split_prose(text: str) -> list[str]:
@@ -172,13 +228,24 @@ def _group(doc: Document) -> list[_Section]:
     return groups
 
 
-def chunk(doc: Document) -> list[Chunk]:
+def chunk(doc: Document, metadata: dict[str, Any] | None = None) -> list[Chunk]:
+    """Create chunks and attach document/version metadata when supplied.
+
+    ``chunk_id`` deliberately keeps the original source-file-plus-position format.
+    ``lineage_id`` is structural and version independent, so it can match the same
+    logical chunk in V0 and V1 even when their positional IDs differ.
+    """
+    metadata = metadata or {}
     chunks: list[Chunk] = []
+    lineage_counts: dict[tuple[str, str | None, str, str], int] = defaultdict(int)
     pos = 0
+    document_id = metadata.get("document_id") or Path(doc.source).stem
 
     for grp in _group(doc):
         blocks = _stitch(grp.blocks)
         ctype_base = _classify(grp.section)
+        section_key = _stable_key(grp.section) or "untitled"
+        subsection_key = _stable_key(grp.subsection)
 
         for b in blocks:
             if b.kind == "table":
@@ -195,6 +262,17 @@ def chunk(doc: Document) -> list[Chunk]:
                 table_name = None
 
             for t in texts:
+                anchor = _lineage_anchor(kind, table_name, t)
+                # Tables and diagrams have their own stable named identity; their
+                # parent heading may move between versions without changing them.
+                lineage_section = "_" if kind in {"table", "flowchart"} else section_key
+                lineage_subsection = None if kind in {"table", "flowchart"} else subsection_key
+                lineage_key = (lineage_section, lineage_subsection, kind, anchor)
+                lineage_counts[lineage_key] += 1
+                lineage_id = (
+                    f"{document_id}::{lineage_section}::{lineage_subsection or '_'}::"
+                    f"{kind}::{anchor}::{lineage_counts[lineage_key]:03d}"
+                )
                 chunks.append(
                     Chunk(
                         chunk_id=f"{doc.source}::{pos:04d}",
@@ -209,6 +287,24 @@ def chunk(doc: Document) -> list[Chunk]:
                         source_doc=doc.source,
                         position_in_doc=pos,
                         token_count=n_tokens(t),
+                        lender_id=metadata.get("lender_id"),
+                        lender_name=metadata.get("lender_name"),
+                        product_id=metadata.get("product_id"),
+                        product_name=metadata.get("product_name"),
+                        document_family=metadata.get("document_family"),
+                        document_id=document_id,
+                        document_version=metadata.get("document_version"),
+                        version_order=metadata.get("version_order"),
+                        effective_from=metadata.get("effective_from"),
+                        effective_to=metadata.get("effective_to"),
+                        version_status=metadata.get("version_status"),
+                        supersedes_version=metadata.get("supersedes_version"),
+                        authority_level=metadata.get("authority_level"),
+                        section_key=section_key,
+                        subsection_key=subsection_key,
+                        lineage_id=lineage_id,
+                        content_hash=hashlib.sha256(t.encode("utf-8")).hexdigest(),
+                        chunking_version=metadata.get("chunking_version"),
                     )
                 )
                 pos += 1

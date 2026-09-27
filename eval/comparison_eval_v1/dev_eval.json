@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.0",
+  "suite": "comparison_eval_v1",
+  "split": "dev",
+  "frozen": false,
+  "cases": [
+    {
+      "id": "C-D01",
+      "family": "current_credit_freeze",
+      "difficulty": "medium",
+      "question": "Compare what happens when a bureau credit freeze is found during current NovaCred prescreen prequalification versus current LumenTrail Direct eligibility. Include the action and code for each lender.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V1 maps Credit Freeze at prescreen prequalification to RFAI 105. LumenTrail V1 maps Bureau Freeze at Direct Eligibility to Evidence Required 110. Both pause normal progress for missing bureau access/evidence, but the lender-specific code and disposition labels differ.",
+        "required_claims": [
+          "NovaCred V1 Prescreen Prequalification uses RFAI code 105 for Credit Freeze.",
+          "NovaCred RFAI 105 means the bureau security freeze prevents normal access or remains active at refresh.",
+          "LumenTrail V1 Direct Eligibility uses Evidence Required code 110 for Bureau Freeze.",
+          "LumenTrail Evidence 110 means file access is prevented until a refreshed bureau state is available.",
+          "The systems use different lender-scoped codes and labels for the freeze condition."
+        ],
+        "forbidden_claims": [
+          "NovaCred uses code 110 for Credit Freeze.",
+          "LumenTrail uses code 105 for Bureau Freeze.",
+          "Either freeze is an automatic final decline."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_freeze_rule", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0007"]},
+          {"name": "novacred_freeze_definition", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0030"]},
+          {"name": "lumentrail_freeze_rule", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0006"]},
+          {"name": "lumentrail_freeze_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0029"]}
+        ]
+      },
+      "author_notes": "Baseline two-scope comparison with parallel concepts but deliberately different codes."
+    },
+    {
+      "id": "C-D02",
+      "family": "current_code_128_collision",
+      "difficulty": "difficult",
+      "question": "In the current manuals, compare code 128 for NovaCred and LumenTrail: what does it mean, at which stage is it used, what disposition applies, and what threshold or trigger defines it for each lender?",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V1 code 128 is RFAI Offer Age in full underwriting: a Prescreen artifact older than 30 days or a Non-Prescreen artifact older than 21 days. LumenTrail V1 code 128 is Evidence Required for Identity Document Validity in Final Underwriting: the evidence expires before expected funding or has fewer than 30 validity days remaining on the expected funding date.",
+        "required_claims": [
+          "NovaCred V1 code 128 is RFAI Offer Age in full underwriting.",
+          "NovaCred V1 triggers code 128 when a Prescreen artifact is older than 30 days or a Non-Prescreen artifact is older than 21 days.",
+          "LumenTrail V1 code 128 is Evidence Required for Identity Document Validity in Final Underwriting.",
+          "LumenTrail V1 triggers code 128 when evidence expires before expected funding or has fewer than 30 validity days remaining on the expected funding date.",
+          "The identical number does not identify the same rule across lenders."
+        ],
+        "forbidden_claims": [
+          "NovaCred code 128 concerns identity-document validity.",
+          "LumenTrail code 128 concerns offer age.",
+          "Both lenders use a 30-day offer-age threshold."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_128_rule", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0009", "NovaCred_UW_V1_pdf.pdf::0013"]},
+          {"name": "novacred_128_definition", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0030"]},
+          {"name": "lumentrail_128_rule", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0011"]},
+          {"name": "lumentrail_128_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0029"]}
+        ]
+      },
+      "author_notes": "Collision trap: the number is identical while rule, stage, action, and trigger differ."
+    },
+    {
+      "id": "C-D03",
+      "family": "current_eligibility_thresholds",
+      "difficulty": "difficult",
+      "question": "Compare the current NovaCred prescreen-selection baseline with the current LumenTrail Eligibility Gate on minimum age, monthly income, existing exposure, and recent-delinquency lookback.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V1 requires age at least 20, income proxy at least $2,100 monthly, no active Flex balance above $5,800, and no 60+ day delinquency in the prior 180 days. LumenTrail V1 requires age 21, normalized monthly income at least $2,350, no active LumenTrail exposure above $4,500, and no 60+ day delinquency in the prior 120 days.",
+        "required_claims": [
+          "NovaCred V1 uses age 20, $2,100 monthly income proxy, $5,800 exposure, and a 180-day 60+ delinquency lookback.",
+          "LumenTrail V1 uses age 21, $2,350 normalized monthly income, $4,500 exposure, and a 120-day 60+ delinquency lookback.",
+          "LumenTrail's stated income and age thresholds are higher, its exposure ceiling is lower, and its delinquency lookback is shorter than NovaCred's."
+        ],
+        "forbidden_claims": [
+          "Both lenders use identical baseline thresholds.",
+          "NovaCred requires age 21 and $2,350 monthly income.",
+          "LumenTrail uses a $5,800 exposure ceiling."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_baseline", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0003"]},
+          {"name": "lumentrail_baseline", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0005"]}
+        ]
+      },
+      "author_notes": "One dense table/prose pair tests balanced retrieval without expanding global top-k."
+    },
+    {
+      "id": "C-D04",
+      "family": "followup_preserve_historical_antecedent",
+      "difficulty": "extreme",
+      "question": "Compare that with NovaCred.",
+      "setup": {
+        "history": [{
+          "question": "What does LumenTrail V0 code 128 mean?",
+          "answer": "LumenTrail V0 code 128 is Evidence Required for Identity Document Validity when evidence expires before the expected funding date [LumenTrail_UW_V0_pdf.pdf::0029].",
+          "chunk_ids": ["LumenTrail_UW_V0_pdf.pdf::0011", "LumenTrail_UW_V0_pdf.pdf::0029"],
+          "scope": {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V0"},
+          "turn_type": "policy_answer"
+        }],
+        "prior_scope": {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V0"}
+      },
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V0"},
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "The antecedent remains LumenTrail V0: code 128 is Evidence Required for Identity Document Validity when evidence expires before expected funding. NovaCred defaults to current V1: code 128 is RFAI Offer Age, triggered by a Prescreen artifact older than 30 days or Non-Prescreen artifact older than 21 days.",
+        "required_claims": [
+          "The LumenTrail comparison side remains V0 rather than silently changing to V1.",
+          "LumenTrail V0 code 128 is Evidence Required for Identity Document Validity when evidence expires before expected funding.",
+          "The newly introduced NovaCred side resolves to current V1.",
+          "NovaCred V1 code 128 is RFAI Offer Age with 30-day Prescreen and 21-day Non-Prescreen thresholds."
+        ],
+        "forbidden_claims": [
+          "LumenTrail is silently upgraded to V1 and gains the fewer-than-30-validity-days trigger.",
+          "NovaCred inherits version V0 from the prior LumenTrail turn.",
+          "Both code 128 definitions concern identity documents."
+        ],
+        "evidence_groups": [
+          {"name": "lumentrail_v0_128_rule", "scope_key": "lumentrail::lumentrail_pathway_uw::V0", "any_of_chunk_ids": ["LumenTrail_UW_V0_pdf.pdf::0011"]},
+          {"name": "lumentrail_v0_128_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V0", "any_of_chunk_ids": ["LumenTrail_UW_V0_pdf.pdf::0029"]},
+          {"name": "novacred_v1_128_rule", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0009", "NovaCred_UW_V1_pdf.pdf::0013"]},
+          {"name": "novacred_v1_128_definition", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0030"]}
+        ]
+      },
+      "author_notes": "Conversation orchestration case: exact historical version must survive while the new lender defaults independently."
+    },
+    {
+      "id": "C-D05",
+      "family": "missing_comparison_antecedent",
+      "difficulty": "medium",
+      "question": "Compare that with NovaCred.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "clarify",
+        "outcome": "clarification",
+        "scopes": [],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "The system should ask which second lender/topic the word 'that' refers to and must not retrieve.",
+        "required_claims": [],
+        "forbidden_claims": ["A policy comparison is answered without an antecedent."],
+        "evidence_groups": []
+      },
+      "author_notes": "Fail-closed routing control; no model answer or vector search should occur."
+    },
+    {
+      "id": "C-D06",
+      "family": "current_code_120_collision",
+      "difficulty": "extreme",
+      "question": "Compare current NovaCred code 120 with current LumenTrail code 120, including the rule, stage, action, and available exception or conditional route. Do not treat the shared number as a shared meaning.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V1 code 120 is NOAA Blocked Routing at full underwriting; a temporary network anomaly can be overridden only with two clean observations 24 hours apart and supervisor authorization. LumenTrail V1 code 120 is conditional Funding Account Ownership in Final Underwriting: an unrelated holder goes to Specialist Review, while a name-format-only mismatch with matching account and routing tokens remains Evidence Required.",
+        "required_claims": [
+          "NovaCred V1 code 120 is NOAA Blocked Routing at full underwriting.",
+          "NovaCred's V1 override requires a temporary network anomaly, two clean observations 24 hours apart, and supervisor authorization.",
+          "LumenTrail V1 code 120 is Funding Account Ownership in Final Underwriting.",
+          "LumenTrail routes an unrelated holder to Specialist Review and a name-format-only mismatch with matching account and routing tokens to Evidence Required.",
+          "The code meanings and exception/conditional logic must remain lender-specific."
+        ],
+        "forbidden_claims": [
+          "NovaCred code 120 is Funding Account Ownership.",
+          "LumenTrail code 120 is Blocked Routing.",
+          "The NovaCred override itself approves or funds the application."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_120_rule", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0009", "NovaCred_UW_V1_pdf.pdf::0013"]},
+          {"name": "novacred_120_definition", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0028"]},
+          {"name": "lumentrail_120_rule", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0011"]},
+          {"name": "lumentrail_120_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0029"]}
+        ]
+      },
+      "author_notes": "Hard collision with different actions and exception semantics on both sides."
+    }
+  ]
+}

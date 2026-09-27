@@ -1,0 +1,435 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Conversation eval result record (one scored message)",
+  "type": "object",
+  "properties": {
+    "response_assessment": {
+      "type": ["object", "null"],
+      "description": "Evaluation-only response kind, evidence and rationale; separate from graph completion and correctness."
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "step_id": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "fixture",
+        "closed_loop"
+      ]
+    },
+    "thread_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "error",
+        "blocked",
+        "not_completed"
+      ]
+    },
+    "trace_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "user_message": {
+      "type": "string"
+    },
+    "resolved_question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "predicted_operation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "scope": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "nodes_executed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "chunk_id": {
+            "type": "string"
+          },
+          "source_doc": {
+            "type": "string"
+          },
+          "document_version": {
+            "type": "string"
+          },
+          "content_hash": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "new_retrieval",
+              "prior_turn",
+              "exact_source_recovery",
+              "validated_cache"
+            ]
+          },
+          "supplied_to_answer_model": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "chunk_id",
+          "source_doc",
+          "document_version",
+          "content_hash",
+          "origin",
+          "supplied_to_answer_model"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "prior_answer_turn_ids_read": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "retrieved_candidate_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reranked_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "answer": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_judgments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "required",
+              "forbidden",
+              "generated"
+            ]
+          },
+          "claim_index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "claim_text": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "present",
+              "absent",
+              "contradicted",
+              "unsupported",
+              "supported",
+              "unjudgeable"
+            ]
+          },
+          "answer_evidence": {
+            "type": "string"
+          },
+          "source_evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "rationale": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "claim_index",
+          "claim_text",
+          "verdict",
+          "answer_evidence",
+          "source_evidence",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "claim_recall": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "groundedness": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "forbidden_claim_present": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "citation_validity": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "citation_support": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "behavior_pass": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "scope_pass": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "format_pass": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "citation_compliance_pass": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "unnecessary_lookup": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "effective_context_group_coverage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "retrieval_group_recall_at_k": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      },
+      "required": [
+        "claim_recall",
+        "groundedness",
+        "forbidden_claim_present",
+        "citation_validity",
+        "citation_support",
+        "behavior_pass",
+        "scope_pass",
+        "format_pass",
+        "citation_compliance_pass",
+        "unnecessary_lookup",
+        "effective_context_group_coverage",
+        "retrieval_group_recall_at_k"
+      ],
+      "additionalProperties": false
+    },
+    "not_applicable_reasons": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "operations": {
+      "type": "object",
+      "properties": {
+        "elapsed_ms": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "model_call_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "search_call_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "rerank_pair_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cache_condition": {
+          "type": "string",
+          "enum": [
+            "cold",
+            "warm",
+            "mixed",
+            "unknown"
+          ]
+        },
+        "retry_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "rate_limit_wait_ms": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "required": [
+        "elapsed_ms",
+        "model_call_count",
+        "search_call_count",
+        "rerank_pair_count",
+        "cache_condition",
+        "retry_count",
+        "rate_limit_wait_ms"
+      ],
+      "additionalProperties": false
+    },
+    "judge": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rubric_version": {
+          "type": "string"
+        },
+        "human_review_status": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "reviewed"
+          ]
+        },
+        "human_notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "model",
+        "rubric_version",
+        "human_review_status",
+        "human_notes"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "run_id",
+    "case_id",
+    "step_id",
+    "mode",
+    "thread_id",
+    "status",
+    "trace_url",
+    "user_message",
+    "resolved_question",
+    "predicted_operation",
+    "scope",
+    "nodes_executed",
+    "evidence_used",
+    "prior_answer_turn_ids_read",
+    "retrieved_candidate_ids",
+    "reranked_ids",
+    "answer",
+    "claim_judgments",
+    "metrics",
+    "not_applicable_reasons",
+    "operations",
+    "judge"
+  ],
+  "additionalProperties": false
+}

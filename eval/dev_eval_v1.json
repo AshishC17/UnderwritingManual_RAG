@@ -1,0 +1,774 @@
+{
+  "schema_version": "1.0",
+  "split": "dev",
+  "source_dataset": "ground_truth_v1.json",
+  "split_manifest": "split_manifest_v1.json",
+  "source_document": "NovaCred_UW_V0_pdf.pdf",
+  "cases": [
+    {
+      "id": "E05",
+      "difficulty": "easy",
+      "stress_type": "single_table_document_lookup",
+      "question": "Which documents are required for Tier 2 income verification?",
+      "ground_truth_answer": "Tier 2 requires two recent pay statements and one employment-status confirmation.",
+      "required_claims": [
+        "Two recent pay statements are required.",
+        "One employment-status confirmation is required."
+      ],
+      "forbidden_claims": [
+        "Tier 2 requires only one pay statement.",
+        "Tier 2 requires bank statements and a self-employment attestation.",
+        "Tier 2 is the complex disputed-income Manual Review tier."
+      ],
+      "evidence_groups": [
+        {
+          "name": "tier_2_documents",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0026"
+          ],
+          "pages": [
+            9
+          ],
+          "tables": [
+            "Table 8: Income Verification Tiers"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0025"
+      ],
+      "metadata_signals": {
+        "rule_codes": [],
+        "chunk_types": [
+          "table"
+        ]
+      },
+      "why_in_eval": "Adds a second direct table-row case with similar neighbouring tiers that can distract retrieval or generation."
+    },
+    {
+      "id": "E04",
+      "difficulty": "easy",
+      "stress_type": "single_table_threshold_lookup",
+      "question": "What monthly Income Proxy is required for Prescreen selection, and which source supplies it?",
+      "ground_truth_answer": "The synthetic monthly Income Proxy must be at least $1,900 and must not be missing. Its source is the NovaCred Affordability Index.",
+      "required_claims": [
+        "The threshold is at least $1,900 monthly.",
+        "The value must not be missing.",
+        "The source is NovaCred Affordability Index."
+      ],
+      "forbidden_claims": [
+        "The Prescreen Income Proxy threshold is $1,850.",
+        "The source is Income Verification Service.",
+        "Passing this selection criterion guarantees approval."
+      ],
+      "evidence_groups": [
+        {
+          "name": "prescreen_income_proxy_row",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0005"
+          ],
+          "pages": [
+            2,
+            3
+          ],
+          "tables": [
+            "Table 1: Prescreen Criteria"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0004"
+      ],
+      "metadata_signals": {
+        "rule_codes": [],
+        "chunk_types": [
+          "table"
+        ]
+      },
+      "why_in_eval": "Tests exact threshold retrieval while distinguishing a selection proxy from the lower underwriting income rule threshold."
+    },
+    {
+      "id": "E02",
+      "difficulty": "easy",
+      "stress_type": "definition_with_negative_constraint",
+      "question": "Does an Authorized Payer become a borrower or independently satisfy borrower underwriting requirements?",
+      "ground_truth_answer": "No. An Authorized Payer may provide a payment account or payment instruction without becoming a borrower. The role does not independently satisfy borrower underwriting requirements and must not be treated as an additional borrower merely because a payer account is attached.",
+      "required_claims": [
+        "An Authorized Payer does not become a borrower.",
+        "The role does not independently satisfy borrower underwriting requirements.",
+        "The role may provide a payment account or payment instruction."
+      ],
+      "forbidden_claims": [
+        "An Authorized Payer is a co-applicant.",
+        "The payer's income or identity automatically counts as an obligor's."
+      ],
+      "evidence_groups": [
+        {
+          "name": "authorized_payer_definition",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0007",
+            "NovaCred_UW_V0_pdf.pdf::0008"
+          ],
+          "pages": [
+            3,
+            4
+          ],
+          "tables": [
+            "Table 2: Applicant Types"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0008"
+      ],
+      "metadata_signals": {
+        "rule_codes": [],
+        "chunk_types": [
+          "table",
+          "primary"
+        ]
+      },
+      "why_in_eval": "Tests a straightforward definition while penalizing role conflation."
+    },
+    {
+      "id": "M04",
+      "difficulty": "medium",
+      "stress_type": "stage_specific_threshold_comparison",
+      "question": "Compare the bureau-score decline controls at prequalification and full underwriting: what are their codes and exact thresholds?",
+      "ground_truth_answer": "At prequalification, Score Floor is NOAA Code 107 when the representative bureau score is below 566. At full underwriting, Credit Score Confirmation is NOAA Code 121 when the refreshed representative bureau score is below 580. The controls are stage-specific and the higher code number is not a severity ranking.",
+      "required_claims": [
+        "Prequalification uses NOAA Code 107.",
+        "Code 107 triggers below 566.",
+        "Full underwriting uses NOAA Code 121.",
+        "Code 121 triggers when the refreshed score is below 580.",
+        "The codes represent stage-specific controls, not severity rank."
+      ],
+      "forbidden_claims": [
+        "Both stages use the same threshold.",
+        "Code 107 triggers below 580.",
+        "Code 121 triggers below 566.",
+        "Code 121 is more severe because its number is higher."
+      ],
+      "evidence_groups": [
+        {
+          "name": "authoritative_score_thresholds",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0037"
+          ],
+          "pages": [
+            13,
+            14
+          ],
+          "tables": [
+            "Table 9: Available NOAAs"
+          ]
+        },
+        {
+          "name": "stage_rule_rows",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0011",
+            "NovaCred_UW_V0_pdf.pdf::0013",
+            "NovaCred_UW_V0_pdf.pdf::0016",
+            "NovaCred_UW_V0_pdf.pdf::0018"
+          ],
+          "pages": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "tables": [
+            "Tables 3-6"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0009"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "107",
+          "121"
+        ],
+        "chunk_types": [
+          "table",
+          "primary"
+        ]
+      },
+      "why_in_eval": "Tests two similar rules whose meaning differs by stage and threshold."
+    },
+    {
+      "id": "M05",
+      "difficulty": "medium",
+      "stress_type": "reused_code_across_stages",
+      "question": "How is FACTA handled at prequalification and at full-underwriting refresh, and why does both use the same Code 114?",
+      "ground_truth_answer": "At prequalification, FACTA Alert is RFAI Code 114; at full underwriting, FACTA Resolution also uses RFAI Code 114. Additional identity evidence may resolve the alert, and the same code is reused so downstream monitoring can compare the control across stages even though the source event, timestamp, and evaluated state may differ.",
+      "required_claims": [
+        "FACTA Alert at prequalification is RFAI Code 114.",
+        "FACTA Resolution at full underwriting is also RFAI Code 114.",
+        "Additional identity evidence may resolve the condition.",
+        "Code reuse supports comparison across stages while stage-specific evidence may differ."
+      ],
+      "forbidden_claims": [
+        "FACTA is a NOAA or automatic decline.",
+        "A new code is required at full underwriting.",
+        "Reusing Code 114 means the full-stage check is redundant or skipped."
+      ],
+      "evidence_groups": [
+        {
+          "name": "facta_stage_rows",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0011",
+            "NovaCred_UW_V0_pdf.pdf::0013",
+            "NovaCred_UW_V0_pdf.pdf::0016",
+            "NovaCred_UW_V0_pdf.pdf::0018"
+          ],
+          "pages": [
+            4,
+            5,
+            6,
+            7
+          ],
+          "tables": [
+            "Tables 3-6"
+          ]
+        },
+        {
+          "name": "facta_definition_and_reuse",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0039",
+            "NovaCred_UW_V0_pdf.pdf::0076"
+          ],
+          "pages": [
+            14,
+            24
+          ],
+          "tables": [
+            "Table 10: Available RFAIs"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0012",
+        "NovaCred_UW_V0_pdf.pdf::0055"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "114"
+        ],
+        "chunk_types": [
+          "table",
+          "primary"
+        ]
+      },
+      "why_in_eval": "Tests code reuse without treating repeated identifiers as duplicate evidence."
+    },
+    {
+      "id": "M01",
+      "difficulty": "medium",
+      "stress_type": "code_definition_and_rule_usage",
+      "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?",
+      "ground_truth_answer": "Code 128 is RFAI - Offer Age. It means an offer or campaign artifact is too old at application intake. The threshold is older than 45 days for Prescreen and older than 30 days for Non-Prescreen. Offer Age appears in the full-underwriting rule tables for both paths (Tables 4 and 6), uses the NovaCred Marketing Ledger, and creates an RFAI rather than a decline.",
+      "required_claims": [
+        "Code 128 is RFAI - Offer Age.",
+        "Prescreen uses an older-than-45-day threshold.",
+        "Non-Prescreen uses an older-than-30-day threshold.",
+        "The rule appears in full underwriting for both paths.",
+        "The source is NovaCred Marketing Ledger."
+      ],
+      "forbidden_claims": [
+        "Code 128 is a NOAA or automatic decline.",
+        "The same age threshold applies to both paths.",
+        "Table 13 alone defines Code 128."
+      ],
+      "evidence_groups": [
+        {
+          "name": "authoritative_code_definition",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0039"
+          ],
+          "pages": [
+            14
+          ],
+          "tables": [
+            "Table 10: Available RFAIs"
+          ]
+        },
+        {
+          "name": "rule_usage",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0013",
+            "NovaCred_UW_V0_pdf.pdf::0018"
+          ],
+          "pages": [
+            5,
+            7
+          ],
+          "tables": [
+            "Table 4: Prescreen Full Underwriting Rules",
+            "Table 6: Non-Prescreen Full Underwriting Rules"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0042"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "128"
+        ],
+        "chunk_types": [
+          "table"
+        ]
+      },
+      "why_in_eval": "Tests the intended rule-row plus appendix-definition retrieval pattern."
+    },
+    {
+      "id": "D02",
+      "difficulty": "difficult",
+      "stress_type": "narrow_override_and_missing_data",
+      "question": "The Credit Risk Model score vector is unavailable, but the Null Score condition did not trigger. May the system treat scoring as passed, assign a line from an invented score band, or approve the applicant?",
+      "ground_truth_answer": "The narrow Footnote 3 override may treat the scoring result as passed only for continuing to non-score controls. For the missing Credit Risk Model vector, Code 115 identifies the RFAI condition. The override creates no score and guarantees no approval. A line cannot be assigned from an invented, stale, highest, or lowest band; both score bands must be safely normalized, otherwise the applicable information-request or Manual Review path is required.",
+      "required_claims": [
+        "The continuation override is allowed only because the Null Score condition did not trigger.",
+        "The override permits continuation to non-score controls only.",
+        "No score is created and approval is not guaranteed.",
+        "Code 115 corresponds to the missing Credit Risk Model vector.",
+        "An invented or default score band cannot be used for line assignment."
+      ],
+      "forbidden_claims": [
+        "The applicant is approved because scoring passed.",
+        "The missing score should default to the lowest or highest band.",
+        "The override manufactures a replacement score.",
+        "Code 116 is the Credit Risk Model vector code."
+      ],
+      "evidence_groups": [
+        {
+          "name": "scoring_override",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0014",
+            "NovaCred_UW_V0_pdf.pdf::0045",
+            "NovaCred_UW_V0_pdf.pdf::0079"
+          ],
+          "pages": [
+            6,
+            16,
+            25
+          ],
+          "tables": [
+            "Table 15: Override Footnote Register"
+          ]
+        },
+        {
+          "name": "model_specific_code",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0039",
+            "NovaCred_UW_V0_pdf.pdf::0078"
+          ],
+          "pages": [
+            14,
+            25
+          ],
+          "tables": [
+            "Table 10: Available RFAIs"
+          ]
+        },
+        {
+          "name": "line_assignment_constraint",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0022",
+            "NovaCred_UW_V0_pdf.pdf::0054"
+          ],
+          "pages": [
+            8,
+            18
+          ],
+          "tables": []
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0013",
+        "NovaCred_UW_V0_pdf.pdf::0018"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "115"
+        ],
+        "chunk_types": [
+          "primary",
+          "table",
+          "appendix"
+        ]
+      },
+      "why_in_eval": "Tests a narrow exception that must not be converted into approval or fabricated data."
+    },
+    {
+      "id": "D01",
+      "difficulty": "difficult",
+      "stress_type": "exception_propagation_across_paths",
+      "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?",
+      "ground_truth_answer": "The normal rule is Blocked SSN, NOAA Code 101. Because all three narrow exception conditions are satisfied - older than 36 months, resolved administrative duplicate, and exact current identity comparison - the result may be overridden and treated as passed. The Non-Prescreen Blocked SSN rule follows the same Table 3 exception. This is not a general reviewer-discretion override.",
+      "required_claims": [
+        "The normal disposition is NOAA Code 101.",
+        "All three exception conditions are identified.",
+        "The rule may be treated as passed when all conditions hold.",
+        "The same exception applies to Non-Prescreen.",
+        "The exception is narrow, not general reviewer discretion."
+      ],
+      "forbidden_claims": [
+        "Every identity block older than 36 months automatically passes.",
+        "The exception is limited to Prescreen.",
+        "A reviewer may override any block whenever they disagree with it."
+      ],
+      "evidence_groups": [
+        {
+          "name": "exception_conditions",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0012",
+            "NovaCred_UW_V0_pdf.pdf::0037",
+            "NovaCred_UW_V0_pdf.pdf::0064"
+          ],
+          "pages": [
+            5,
+            13,
+            21
+          ],
+          "tables": [
+            "Table 9: Available NOAAs"
+          ]
+        },
+        {
+          "name": "non_prescreen_propagation",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0017",
+            "NovaCred_UW_V0_pdf.pdf::0045"
+          ],
+          "pages": [
+            7,
+            16
+          ],
+          "tables": [
+            "Table 15: Override Footnote Register"
+          ]
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0011",
+        "NovaCred_UW_V0_pdf.pdf::0016"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "101"
+        ],
+        "chunk_types": [
+          "primary",
+          "table",
+          "appendix"
+        ]
+      },
+      "why_in_eval": "Tests exception retrieval, footnote propagation, and resistance to overgeneralizing an override."
+    },
+    {
+      "id": "D03",
+      "difficulty": "difficult",
+      "stress_type": "multi_fire_and_terminality",
+      "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded?",
+      "ground_truth_answer": "The engine must retain both NOAA 101 for Blocked SSN and RFAI 105 for Credit Freeze. The high-confidence identity block is terminal and can determine the immediate NOAA route, allowing downstream work such as scoring to be short-circuited. The system must still preserve the secondary 105 event, the exact termination point, and whether later rules were not applicable or not evaluated because of the terminal decision. It must not erase the RFAI merely because NOAA 101 controls the immediate action.",
+      "required_claims": [
+        "Both Code 101/NOAA and Code 105/RFAI are retained.",
+        "The Blocked SSN can determine the immediate terminal NOAA route.",
+        "The exact termination point and skipped-rule reason are recorded.",
+        "The secondary RFAI event is not erased."
+      ],
+      "forbidden_claims": [
+        "Only Code 101 should be retained.",
+        "The credit freeze converts into a NOAA.",
+        "All later rules must be reported as passed.",
+        "The application remains open solely because an RFAI also fired."
+      ],
+      "evidence_groups": [
+        {
+          "name": "rule_dispositions",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0011"
+          ],
+          "pages": [
+            4
+          ],
+          "tables": [
+            "Table 3: Prescreen Prequalification Rules"
+          ]
+        },
+        {
+          "name": "multi_fire_preservation",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0058",
+            "NovaCred_UW_V0_pdf.pdf::0030"
+          ],
+          "pages": [
+            10,
+            19
+          ],
+          "tables": []
+        },
+        {
+          "name": "short_circuit_semantics",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0009",
+            "NovaCred_UW_V0_pdf.pdf::0057"
+          ],
+          "pages": [
+            4,
+            19
+          ],
+          "tables": []
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0033"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "101",
+          "105"
+        ],
+        "chunk_types": [
+          "table",
+          "primary",
+          "flowchart"
+        ]
+      },
+      "why_in_eval": "Tests simultaneous rules, terminal precedence, audit preservation, and generation discipline."
+    },
+    {
+      "id": "X07",
+      "difficulty": "extreme",
+      "stress_type": "production_monitoring_causal_confounding",
+      "question": "After a configuration release, Code 105 firing rises sharply only in Non-Prescreen. During the same period, bureau-source completeness falls and fallback usage rises. Can analysts conclude that applicant credit risk worsened, and what comparisons are required before making a policy conclusion?",
+      "ground_truth_answer": "No. A rise in Code 105 firing cannot by itself establish worsening applicant risk. Analysts must segment by underwriting path, acquisition source, configuration version, month, score band, and application type; use path-aware denominators because Prescreen and Non-Prescreen populations differ; and compare firing rates with bureau-source completeness, latency, refresh timing, and fallback usage. They must also inspect configuration and rule-order changes because the code can retain its meaning while thresholds, mappings, or observable outcomes change. The evidence should distinguish applicant-mix movement from upstream source behavior and policy/configuration effects before drawing a conclusion.",
+      "required_claims": [
+        "The observed firing-rate increase alone does not prove worsening applicant risk.",
+        "Analysis must segment by path and use path-aware denominators.",
+        "Acquisition source, configuration version, month, score band, and application type must be considered.",
+        "Source completeness, latency, refresh timing, and fallback usage must be compared.",
+        "Configuration and rule-order changes must be inspected.",
+        "Applicant-mix, source-behavior, and policy/configuration causes must be separated."
+      ],
+      "forbidden_claims": [
+        "Higher Code 105 volume proves applicants became riskier.",
+        "Prescreen and Non-Prescreen rates can be compared with identical unadjusted denominators.",
+        "A stable code guarantees unchanged thresholds and ordering.",
+        "Source completeness and fallback behavior are irrelevant to rule firing."
+      ],
+      "evidence_groups": [
+        {
+          "name": "configuration_versioning",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0048",
+            "NovaCred_UW_V0_pdf.pdf::0059"
+          ],
+          "pages": [
+            17,
+            19
+          ],
+          "tables": []
+        },
+        {
+          "name": "monitoring_source_health",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0050",
+            "NovaCred_UW_V0_pdf.pdf::0061"
+          ],
+          "pages": [
+            17,
+            20
+          ],
+          "tables": []
+        },
+        {
+          "name": "cross_path_comparability",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0055"
+          ],
+          "pages": [
+            18
+          ],
+          "tables": []
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0082"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "105"
+        ],
+        "chunk_types": [
+          "appendix",
+          "primary"
+        ]
+      },
+      "why_in_eval": "Tests production-style causal restraint across shared codes, path mix, source degradation, and configuration drift."
+    },
+    {
+      "id": "X01",
+      "difficulty": "extreme",
+      "stress_type": "multi_hop_code_join_and_rework",
+      "question": "During Non-Prescreen full underwriting, the offer is 35 days old, automated checks cannot reconcile the current address, and the requested funding method needs additional ownership or destination verification. Identify every applicable code and disposition, explain whether the evidence requests may be consolidated, and describe what happens after the evidence is resolved.",
+      "ground_truth_answer": "All three conditions are RFAIs: Code 128 for Offer Age because the Non-Prescreen threshold is older than 30 days; Code 139 for insufficient Address Evidence after automated checks; and Code 140 for Funding Method Verification. Operations may consolidate requests when the same document can satisfy more than one rule, but the audit record must preserve the link from each request to Codes 128, 139, and 140. The application enters Evidence/Verification rather than decline. Once resolved, it loops back to Run Full Underwriting Policy & Credit Checks for re-evaluation, and the earlier RFAI events remain in history.",
+      "required_claims": [
+        "Code 128/RFAI applies because 35 days exceeds the Non-Prescreen 30-day threshold.",
+        "Code 139/RFAI applies to Address Evidence.",
+        "Code 140/RFAI applies to Funding Method Verification.",
+        "Requests may be consolidated only while preserving each source-code relationship.",
+        "Resolution leads through Evidence/Verification back to full-underwriting checks.",
+        "Prior RFAI events remain in history."
+      ],
+      "forbidden_claims": [
+        "Code 135 applies merely because extra funding-method verification is needed.",
+        "Any of the three conditions is automatically a NOAA.",
+        "One consolidated document permits deleting the individual code relationships.",
+        "Resolved evidence produces automatic approval without re-evaluation."
+      ],
+      "evidence_groups": [
+        {
+          "name": "non_prescreen_rule_rows",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0018"
+          ],
+          "pages": [
+            7
+          ],
+          "tables": [
+            "Table 6: Non-Prescreen Full Underwriting Rules"
+          ]
+        },
+        {
+          "name": "authoritative_rfai_definitions",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0039"
+          ],
+          "pages": [
+            14
+          ],
+          "tables": [
+            "Table 10: Available RFAIs"
+          ]
+        },
+        {
+          "name": "multiple_request_handling",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0084"
+          ],
+          "pages": [
+            27
+          ],
+          "tables": []
+        },
+        {
+          "name": "rework_loop",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0034",
+            "NovaCred_UW_V0_pdf.pdf::0035",
+            "NovaCred_UW_V0_pdf.pdf::0083"
+          ],
+          "pages": [
+            12,
+            27
+          ],
+          "tables": []
+        }
+      ],
+      "supporting_chunk_ids": [],
+      "metadata_signals": {
+        "rule_codes": [
+          "128",
+          "139",
+          "140"
+        ],
+        "chunk_types": [
+          "table",
+          "primary",
+          "flowchart"
+        ]
+      },
+      "why_in_eval": "Forces a three-code join across rule table, appendix, lifecycle prose, and flowchart loop."
+    },
+    {
+      "id": "X03",
+      "difficulty": "extreme",
+      "stress_type": "exception_reference_and_non_final_pass",
+      "question": "At full underwriting, Blocked Routing Code 120 persists, but the prior block was caused solely by a temporary network anomaly and the current application passes Intraday Account Review. Can the rule be overridden, what evidence history must remain, and does the override mean the application is approved?",
+      "ground_truth_answer": "Code 120 normally produces a NOAA. It may be overridden and treated as passed only when both documented conditions hold: the prior block was solely a temporary network anomaly and the current application passed the Intraday Account Review criteria. The original block event, original decision, current event snapshot, accepted exception rationale, and any subsequent reversal reason must remain auditable rather than being overwritten. Passing this one rule is not final approval; the full-underwriting flow must continue through scoring, affordability, fraud/compliance, acceptance, Intraday Account Review, and required verification checks as applicable.",
+      "required_claims": [
+        "Code 120 normally creates a NOAA.",
+        "Both the temporary-network-anomaly and passed-Intraday-review conditions are required.",
+        "The rule may be treated as passed only under that narrow exception.",
+        "The original and subsequent evidence/decision history must be preserved.",
+        "The override does not itself approve or fund the application."
+      ],
+      "forbidden_claims": [
+        "Any network anomaly permits an automatic override.",
+        "This is the 36-month administrative-duplicate exception.",
+        "The original block record should be deleted after override.",
+        "Passing Code 120 guarantees approval."
+      ],
+      "evidence_groups": [
+        {
+          "name": "blocked_routing_rule_and_exception",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0012",
+            "NovaCred_UW_V0_pdf.pdf::0037",
+            "NovaCred_UW_V0_pdf.pdf::0045"
+          ],
+          "pages": [
+            5,
+            13,
+            16
+          ],
+          "tables": [
+            "Table 9: Available NOAAs",
+            "Table 15: Override Footnote Register"
+          ]
+        },
+        {
+          "name": "intraday_audit_semantics",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0024"
+          ],
+          "pages": [
+            8
+          ],
+          "tables": []
+        },
+        {
+          "name": "remaining_full_underwriting_flow",
+          "any_of_chunk_ids": [
+            "NovaCred_UW_V0_pdf.pdf::0034",
+            "NovaCred_UW_V0_pdf.pdf::0035"
+          ],
+          "pages": [
+            12
+          ],
+          "tables": []
+        }
+      ],
+      "supporting_chunk_ids": [
+        "NovaCred_UW_V0_pdf.pdf::0013",
+        "NovaCred_UW_V0_pdf.pdf::0030"
+      ],
+      "metadata_signals": {
+        "rule_codes": [
+          "120"
+        ],
+        "chunk_types": [
+          "primary",
+          "table",
+          "appendix",
+          "flowchart"
+        ]
+      },
+      "why_in_eval": "Combines a footnoted exception, operational audit requirements, and the distinction between a rule pass and final approval."
+    }
+  ]
+}

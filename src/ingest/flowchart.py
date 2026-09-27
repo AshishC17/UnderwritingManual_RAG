@@ -14,6 +14,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from pypdf import PdfReader
+from src.guardrails.core import policy, reject
+from src.guardrails.privacy import redact
+from src.guardrails.checks import evidence_check
 
 MODEL = "claude-opus-5"
 
@@ -64,13 +67,16 @@ def caption(ref: ImageRef, cache_dir: str, allow_api: bool = True) -> str | None
     """
     cached = _cache_path(cache_dir, ref.sha)
     if cached.exists():
-        return cached.read_text().strip()
+        text = cached.read_text().strip()
+        evidence_check([{"text": text}])
+        return text
 
     if not allow_api:
         return None
 
     text = _call_vision(ref)
     if text:
+        evidence_check([{"text": text}])
         cached.parent.mkdir(parents=True, exist_ok=True)
         cached.write_text(text)
     return text
@@ -86,13 +92,19 @@ def _call_vision(ref: ImageRef) -> str | None:
     if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
         return None
 
+    image_bytes = ref.path.read_bytes()
+    # Text PII checks cannot establish image safety. Explicit content-hash
+    # review is required before any new image leaves this machine.
+    if hashlib.sha256(image_bytes).hexdigest() not in policy().reviewed_image_sha256:
+        reject("image_review_required", "vision_input")
     client = anthropic.Anthropic()
-    b64 = base64.standard_b64encode(ref.path.read_bytes()).decode("utf-8")
+    b64 = base64.standard_b64encode(image_bytes).decode("utf-8")
 
     response = client.messages.create(
         model=MODEL,
         max_tokens=16000,
         thinking={"type": "adaptive"},
+        system=CAPTION_PROMPT,
         messages=[
             {
                 "role": "user",
@@ -105,9 +117,12 @@ def _call_vision(ref: ImageRef) -> str | None:
                             "data": b64,
                         },
                     },
-                    {"type": "text", "text": CAPTION_PROMPT},
+                    {"type": "text", "text": "Process this image according to the system instructions."},
                 ],
             }
         ],
     )
-    return "".join(b.text for b in response.content if b.type == "text").strip()
+    text = "".join(b.text for b in response.content if b.type == "text").strip()
+    if redact(text, "vision_output") != text:
+        reject("sensitive_source", "vision_output")
+    return text

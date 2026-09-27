@@ -21,7 +21,10 @@ import os
 import time
 from pathlib import Path
 
-from langsmith import traceable
+from src.guardrails.tracing import traceable
+
+from src.util.ratelimit import voyage_gate
+from src.util.telemetry import cache_hit, tracked_call
 
 MODEL = "voyage-context-4"
 DIMS = 1024
@@ -140,7 +143,9 @@ def embed_query(
 ) -> list[float]:
     """Embed a single query. `input_type="query"` matters: Voyage encodes queries
     and documents differently, and mixing them measurably degrades retrieval."""
-    return _embed([text], model, dims, "query", cache_dir)[0]
+    from src.store.index_context import current
+    dense = current().get("dense", {})
+    return _embed([text], dense.get("model", model), dense.get("dims", dims), "query", cache_dir)[0]
 
 
 def _cache_file(
@@ -164,11 +169,15 @@ def _embed(
 ) -> list[list[float]]:
     cache = _cache_file(texts, model, dims, input_type, cache_dir)
     if cache.exists():
+        cache_hit("voyage", f"embed_{input_type}", model)
         return json.loads(cache.read_text())
 
+    # After the cache check on purpose: pacing a cache hit would make a fully
+    # cached eval run crawl for no reason.
+    voyage_gate()
     client = _client()
     if model in CONTEXTUAL_MODELS:
-        result = client.contextualized_embed(
+        result = tracked_call("voyage", f"embed_{input_type}", model, client.contextualized_embed,
             inputs=[texts],
             model=model,
             input_type=input_type,
@@ -176,9 +185,10 @@ def _embed(
         )
         vectors = result.results[0].embeddings
     else:
-        vectors = client.embed(
+        result = tracked_call("voyage", f"embed_{input_type}", model, client.embed,
             texts, model=model, input_type=input_type, output_dimension=dims
-        ).embeddings
+        )
+        vectors = result.embeddings
 
     cache.parent.mkdir(parents=True, exist_ok=True)
     cache.write_text(json.dumps(vectors))

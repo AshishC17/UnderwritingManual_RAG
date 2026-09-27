@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.0",
+  "source_dataset": "ground_truth_v2.json",
+  "extends_manifest": "split_manifest_v1.json",
+  "strategy": "Preserve the frozen V1 split exactly. Add M06 and X08 to dev for visible tuning, and add the distinct M07 and X09 cases to holdout. The four additions are manually assigned because they were designed as paired stage-disambiguation shapes and must not duplicate questions across splits.",
+  "seed": "novacred-ground-truth-v1",
+  "dev": {
+    "easy": ["E05", "E04", "E02"],
+    "medium": ["M04", "M05", "M01", "M06"],
+    "difficult": ["D02", "D01", "D03"],
+    "extreme": ["X07", "X01", "X03", "X08"]
+  },
+  "holdout": {
+    "easy": ["E03", "E01"],
+    "medium": ["M03", "M02", "M07"],
+    "difficult": ["D06", "D05", "D04"],
+    "extreme": ["X06", "X05", "X04", "X02", "X09"]
+  }
+}

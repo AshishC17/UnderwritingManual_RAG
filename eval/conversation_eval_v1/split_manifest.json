@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "strategy": "Author-defined regression/challenge split, assigned before benchmark execution. All variants sharing a scenario family or fixture stay together. Both splits contain NovaCred and LumenTrail cases. Dev includes known reported failures; holdout uses distinct scenario families within a shared corpus and behavior taxonomy. This is not a random production sample.",
+  "frozen_on": "2026-09-07",
+  "dev": [
+    "C-D01",
+    "C-D02",
+    "C-D03",
+    "C-D04",
+    "C-D05",
+    "C-D06",
+    "C-D07",
+    "C-D08",
+    "C-D09",
+    "C-D10",
+    "C-D11",
+    "C-D12"
+  ],
+  "holdout": [
+    "C-H01",
+    "C-H02",
+    "C-H03",
+    "C-H04",
+    "C-H05",
+    "C-H06",
+    "C-H07",
+    "C-H08",
+    "C-H09",
+    "C-H10",
+    "C-H11",
+    "C-H12"
+  ],
+  "family_split": {
+    "nc_simultaneous_results": "dev",
+    "nc_block_exception_provenance": "dev",
+    "nc_selection_scope": "holdout",
+    "nc_offer_age_cross_lender": "dev",
+    "missing_antecedent": "dev",
+    "code105_thread_isolation": "dev",
+    "lt_complex_income": "holdout",
+    "lt_thin_file": "dev",
+    "lt_partner_flow_order": "holdout",
+    "lt_reopen": "holdout",
+    "lt_ownership": "dev",
+    "lt_identity_validity": "holdout",
+    "lt_partner_attestation": "dev",
+    "lt_notices": "holdout",
+    "lt_device_out_of_domain": "holdout",
+    "lt_roles_history_horizon": "holdout"
+  },
+  "warning": "Use dev for tuning. Run holdout at named milestones. If an implementer inspects individual holdout labels to tune, retire those exposed cases. Percentages from 12 conversations per split are exploratory; report raw counts."
+}

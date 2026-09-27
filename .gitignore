@@ -219,9 +219,11 @@ __marimo__/
 
 # OS
 .DS_Store
+*.ses
 
 # Qdrant local storage (if run via local-mode/on-disk client)
 qdrant_storage/
+postgres_storage/
 
 # Images extracted from source PDFs — regenerable, unlike the captions beside them
 data/interim/images/
@@ -237,5 +239,24 @@ data/interim/generations/
 data/interim/judgements/
 data/interim/decompositions/
 
+# Immutable local index artifacts include PDF copies and large vector exports.
+# Keep release design/tests in Git; back up this directory with Qdrant storage.
+data/index_builds/
+
 # Judge label templates — generated per validation run
 results/*.labels.json
+
+# Local conversations, caches, runs, and assistant working files.
+data/*.db
+data/*.db-*
+data/*.sqlite*
+data/interim/*
+!data/interim/captions/
+!data/interim/captions/*.md
+results/
+output/
+tmp/
+.claude/
+.codex/
+.env.*
+!.env.example

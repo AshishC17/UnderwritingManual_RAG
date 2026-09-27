@@ -1,0 +1,38 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"One single-question run; schema only, not a collected result",
+  "type":"object","additionalProperties":false,
+  "required":["run_id","case_id","arm","status","config","attempts","final_answer","final_context_chunk_ids","claim_judgments","metrics"],
+  "properties":{
+    "response_assessment":{"type":["object","null"],"description":"Evaluation-only response kind, evidence and rationale; not a runtime node or correctness verdict."},
+    "run_id":{"type":"string"},"case_id":{"type":"string"},
+    "arm":{"enum":["no_retry","post_rerank_retry","post_generation_retry","synthetic_fixture"]},
+    "status":{"enum":["completed","clarification","error","not_completed"]},
+    "config":{"type":"object","additionalProperties":false,"required":["corpus_sha256","code_revision","config_sha256","generator_model","judge_model","prompt_hashes","max_retries","final_k","score_threshold","cache_mode"],"properties":{
+      "corpus_sha256":{"type":"string"},"code_revision":{"type":"string"},"config_sha256":{"type":"string"},"generator_model":{"type":"string"},"judge_model":{"type":"string"},"prompt_hashes":{"type":"object","additionalProperties":{"type":"string"}},"max_retries":{"type":"integer","minimum":0},"final_k":{"type":"integer","minimum":1},"score_threshold":{"type":["number","null"]},"cache_mode":{"enum":["cold","warm","mixed"]}
+    }},
+    "attempts":{"type":"array","items":{"$ref":"#/definitions/attempt"}},
+    "final_answer":{"type":["string","null"]},"final_context_chunk_ids":{"$ref":"#/definitions/strings"},
+    "claim_judgments":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["kind","claim_index","verdict","answer_quote","source_chunk_ids","rationale","reviewer"],"properties":{
+      "kind":{"enum":["required","forbidden","generated_claim"]},"claim_index":{"type":"integer","minimum":0},"verdict":{"enum":["present","absent","supported","unsupported","not_judged"]},"answer_quote":{"type":"string"},"source_chunk_ids":{"$ref":"#/definitions/strings"},"rationale":{"type":"string"},"reviewer":{"type":"string"}
+    }}},
+    "metrics":{"type":"object","additionalProperties":false,"required":["claim_recall","groundedness","full_claim_coverage","forbidden_claim_hit","expected_response_pass","context_group_coverage","scope_correct","scenario_preserved","pipeline_success"],"properties":{
+      "claim_recall":{"$ref":"#/definitions/ratio"},"groundedness":{"$ref":"#/definitions/ratio"},"context_group_coverage":{"$ref":"#/definitions/ratio"},
+      "full_claim_coverage":{"$ref":"#/definitions/nullable_bool"},"forbidden_claim_hit":{"$ref":"#/definitions/nullable_bool"},"expected_response_pass":{"$ref":"#/definitions/nullable_bool"},"scope_correct":{"$ref":"#/definitions/nullable_bool"},"scenario_preserved":{"$ref":"#/definitions/nullable_bool"},"pipeline_success":{"$ref":"#/definitions/nullable_bool"}
+    }}
+  },
+  "definitions":{
+    "strings":{"type":"array","items":{"type":"string"}},"ratio":{"type":["number","null"],"minimum":0,"maximum":1},"nullable_bool":{"type":["boolean","null"]},
+    "attempt":{"type":"object","additionalProperties":false,"required":["attempt","retry_of","queries","metadata_filter","candidate_chunk_ids","context_chunk_ids","rerank_scores","assessment","actual_action","targeted_query_indices","change","oracle","usage","trace_id"],"properties":{
+      "attempt":{"type":"integer","minimum":0},"retry_of":{"type":["integer","null"],"minimum":0},"queries":{"$ref":"#/definitions/strings"},"metadata_filter":{"type":["object","null"]},
+      "candidate_chunk_ids":{"$ref":"#/definitions/strings"},"context_chunk_ids":{"$ref":"#/definitions/strings"},
+      "rerank_scores":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["chunk_id","query_index","score"],"properties":{"chunk_id":{"type":"string"},"query_index":{"type":"integer","minimum":0},"score":{"type":"number"}}}},
+      "assessment":{"type":"object","additionalProperties":false,"required":["status","reason","unscored_query_indices"],"properties":{"status":{"enum":["sufficient","insufficient","unknown","wrong_scope","not_assessed"]},"reason":{"type":"string"},"unscored_query_indices":{"type":"array","items":{"type":"integer","minimum":0}}}},
+      "actual_action":{"enum":["generate","retry","reselect_context","repair_scope","qualified_answer","clarify","error"]},"targeted_query_indices":{"type":"array","items":{"type":"integer","minimum":0}},
+      "change":{"type":"object","additionalProperties":false,"required":["kind","description","effective_request_changed"],"properties":{"kind":{"enum":["initial","deeper_search","reformulate","reselect_context","repair_scope","regenerate","none"]},"description":{"type":"string"},"effective_request_changed":{"type":"boolean"}}},
+      "oracle":{"type":"object","additionalProperties":false,"required":["evidence_status","covered_groups","missing_groups","lost_groups","rationale"],"properties":{"evidence_status":{"enum":["sufficient","insufficient","wrong_scope","sufficient_for_qualified_answer","not_applicable","not_judged"]},"covered_groups":{"$ref":"#/definitions/strings"},"missing_groups":{"$ref":"#/definitions/strings"},"lost_groups":{"$ref":"#/definitions/strings"},"rationale":{"type":"string"}}},
+      "usage":{"type":"object","additionalProperties":false,"required":["elapsed_ms","provider_calls","tokens","cost_usd","cache_hits","transport_retries"],"properties":{"elapsed_ms":{"type":["number","null"],"minimum":0},"provider_calls":{"type":["integer","null"],"minimum":0},"tokens":{"type":["integer","null"],"minimum":0},"cost_usd":{"type":["number","null"],"minimum":0},"cache_hits":{"type":["integer","null"],"minimum":0},"transport_retries":{"type":["integer","null"],"minimum":0}}},
+      "trace_id":{"type":["string","null"]}
+    }}
+  }
+}

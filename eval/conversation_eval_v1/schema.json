@@ -1,0 +1,435 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Underwriting conversation evaluation split, version 1",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "1.0"
+      ]
+    },
+    "dataset_name": {
+      "type": "string"
+    },
+    "dataset_version": {
+      "type": "string"
+    },
+    "evaluation_date": {
+      "type": "string"
+    },
+    "split": {
+      "type": "string",
+      "enum": [
+        "dev",
+        "holdout"
+      ]
+    },
+    "source_catalog": {
+      "type": "string"
+    },
+    "review_status": {
+      "type": "string"
+    },
+    "execution_status": {
+      "type": "string",
+      "enum": [
+        "not_run"
+      ]
+    },
+    "fixtures": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/fixture"
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/case"
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "schema_version",
+    "dataset_name",
+    "dataset_version",
+    "evaluation_date",
+    "split",
+    "source_catalog",
+    "review_status",
+    "execution_status",
+    "fixtures",
+    "cases"
+  ],
+  "additionalProperties": false,
+  "definitions": {
+    "scope": {
+      "type": "object",
+      "properties": {
+        "lender_id": {
+          "type": "string",
+          "enum": [
+            "novacred",
+            "lumentrail"
+          ]
+        },
+        "document_version": {
+          "type": "string",
+          "enum": [
+            "V0",
+            "V1"
+          ]
+        }
+      },
+      "required": [
+        "lender_id",
+        "document_version"
+      ],
+      "additionalProperties": false
+    },
+    "group": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "any_of_source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "any_of_source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "conditional_group": {
+      "type": "object",
+      "properties": {
+        "when": {
+          "type": "string"
+        },
+        "any_of_source_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "when",
+        "any_of_source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "history_turn": {
+      "type": "object",
+      "properties": {
+        "turn_id": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/definitions/scope"
+        },
+        "context_source_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "turn_id",
+        "question",
+        "answer",
+        "scope",
+        "context_source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "fixture": {
+      "type": "object",
+      "properties": {
+        "quality": {
+          "type": "string",
+          "enum": [
+            "verified_reference",
+            "deliberately_incorrect"
+          ]
+        },
+        "provenance": {
+          "type": "string"
+        },
+        "history": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/history_turn"
+          }
+        }
+      },
+      "required": [
+        "quality",
+        "provenance",
+        "history"
+      ],
+      "additionalProperties": false
+    },
+    "expected": {
+      "type": "object",
+      "properties": {
+        "behavior": {
+          "type": "string",
+          "enum": [
+            "transform_previous_answer",
+            "inspect_previous_answer",
+            "answer_policy_question",
+            "compare_policy",
+            "clarify",
+            "correct_previous_answer",
+            "decline_out_of_scope"
+          ]
+        },
+        "scope": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "lender_id": {
+              "type": "string",
+              "enum": [
+                "novacred",
+                "lumentrail"
+              ]
+            },
+            "document_version": {
+              "type": "string",
+              "enum": [
+                "V0",
+                "V1"
+              ]
+            }
+          },
+          "required": [
+            "lender_id",
+            "document_version"
+          ],
+          "additionalProperties": false
+        },
+        "scope_relationship": {
+          "type": "string",
+          "enum": [
+            "unchanged",
+            "version_changed",
+            "date_changed",
+            "lender_changed",
+            "unresolved",
+            "clarified",
+            "not_applicable"
+          ]
+        },
+        "evidence_policy": {
+          "type": "string",
+          "enum": [
+            "stored_evidence_sufficient",
+            "new_scoped_evidence_required",
+            "recover_cited_evidence",
+            "blocked_until_clarified",
+            "no_policy_evidence_needed"
+          ]
+        },
+        "reference_answer": {
+          "type": "string"
+        },
+        "required_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbidden_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/group"
+          }
+        },
+        "output_format": {
+          "type": "string",
+          "enum": [
+            "unconstrained",
+            "plain_language",
+            "exactly_3_bullets",
+            "citation_explanation",
+            "concise",
+            "numbered_sequence",
+            "comparison_table"
+          ]
+        },
+        "context_requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_citation_source_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conditional_evidence_groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/conditional_group"
+          }
+        },
+        "acceptable_alternative": {
+          "type": "string"
+        },
+        "lookup_optimization_applicable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "behavior",
+        "scope",
+        "scope_relationship",
+        "evidence_policy",
+        "reference_answer",
+        "required_claims",
+        "forbidden_claims",
+        "evidence_groups",
+        "output_format",
+        "context_requirements",
+        "required_citation_source_refs"
+      ],
+      "additionalProperties": false
+    },
+    "step": {
+      "type": "object",
+      "properties": {
+        "step_id": {
+          "type": "string"
+        },
+        "thread": {
+          "type": "string"
+        },
+        "user_message": {
+          "type": "string"
+        },
+        "input_kind": {
+          "type": "string",
+          "enum": [
+            "question",
+            "clarification_reply"
+          ]
+        },
+        "expected": {
+          "$ref": "#/definitions/expected"
+        }
+      },
+      "required": [
+        "step_id",
+        "thread",
+        "user_message",
+        "input_kind",
+        "expected"
+      ],
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "split": {
+          "type": "string",
+          "enum": [
+            "dev",
+            "holdout"
+          ]
+        },
+        "scenario_family": {
+          "type": "string"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": [
+            "easy",
+            "medium",
+            "difficult",
+            "extreme"
+          ]
+        },
+        "provenance": {
+          "type": "string"
+        },
+        "execution_modes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "fixture",
+              "closed_loop"
+            ]
+          }
+        },
+        "fixture_sessions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/step"
+          }
+        },
+        "why_in_eval": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "split",
+        "scenario_family",
+        "difficulty",
+        "provenance",
+        "execution_modes",
+        "fixture_sessions",
+        "steps",
+        "why_in_eval"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

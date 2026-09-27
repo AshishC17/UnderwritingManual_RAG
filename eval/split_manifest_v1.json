@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "source_dataset": "ground_truth_v1.json",
+  "strategy": "Stratified deterministic hash split by difficulty. Rank case IDs by SHA-256(seed + ':' + case_id), place the first three from each difficulty in dev, and place the remainder in holdout.",
+  "seed": "novacred-ground-truth-v1",
+  "dev": {
+    "easy": ["E05", "E04", "E02"],
+    "medium": ["M04", "M05", "M01"],
+    "difficult": ["D02", "D01", "D03"],
+    "extreme": ["X07", "X01", "X03"]
+  },
+  "holdout": {
+    "easy": ["E03", "E01"],
+    "medium": ["M03", "M02"],
+    "difficult": ["D06", "D05", "D04"],
+    "extreme": ["X06", "X05", "X04", "X02"]
+  }
+}

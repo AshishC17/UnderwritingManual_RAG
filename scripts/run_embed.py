@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -24,7 +25,35 @@ from src.store import qdrant_store as qs
 # Reads VOYAGE_API_KEY from .env at the project root (gitignored).
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
-DEFAULT_CHUNKS = "data/processed/chunks.json"
+DEFAULT_CHUNKS = "data/processed/chunks_v2.json"
+
+
+def embed_by_document(
+    chunks: list[dict], *, model: str, dims: int
+) -> list[list[float]]:
+    """Contextualize each source document independently and restore corpus order.
+
+    Passing all four manuals in one Voyage contextual-embedding call would allow
+    context from one lender/version to influence another lender/version's vectors.
+    """
+    indexes_by_source: dict[str, list[int]] = defaultdict(list)
+    from src.guardrails.checks import evidence_check
+    evidence_check(chunks)
+    for index, item in enumerate(chunks):
+        indexes_by_source[item["source_doc"]].append(index)
+
+    vectors: list[list[float]] = [[] for _ in chunks]
+    for source_doc, indexes in indexes_by_source.items():
+        texts = [chunks[index]["text"] for index in indexes]
+        embedded = embed_document(texts, model=model, dims=dims)
+        if len(embedded) != len(indexes):
+            raise ValueError(
+                f"{source_doc}: expected {len(indexes)} vectors, got {len(embedded)}"
+            )
+        for index, vector in zip(indexes, embedded):
+            vectors[index] = vector
+        print(f"  contextual group: {source_doc} ({len(indexes)} chunks)")
+    return vectors
 
 
 def main() -> None:
@@ -40,12 +69,17 @@ def main() -> None:
     )
     args = ap.parse_args()
 
-    chunks = json.loads(Path(args.chunks).read_text())
+    chunks = [dict(item) for item in json.loads(Path(args.chunks).read_text())]
+    embedding_version = f"{args.model}:{args.dims}:document-context"
+    for item in chunks:
+        item["embedding_model"] = args.model
+        item["embedding_dimension"] = args.dims
+        item["embedding_version"] = embedding_version
     texts = [c["text"] for c in chunks]
     print(f"chunks: {len(chunks)}  model: {args.model}  dims: {args.dims}")
 
     try:
-        vectors = embed_document(texts, model=args.model, dims=args.dims)
+        vectors = embed_by_document(chunks, model=args.model, dims=args.dims)
     except MissingCredentials as e:
         print(f"\nERROR: {e}")
         raise SystemExit(1)

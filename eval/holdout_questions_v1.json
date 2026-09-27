@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "split": "holdout",
+  "source_document": "NovaCred_UW_V0_pdf.pdf",
+  "cases": [
+    {
+      "id": "E03",
+      "difficulty": "easy",
+      "question": "In Table 7, what line adjustment applies at row band 610-649 and column band 830-909?"
+    },
+    {
+      "id": "E01",
+      "difficulty": "easy",
+      "question": "During Prescreen prequalification, what source, action, and code apply to IP Velocity?"
+    },
+    {
+      "id": "M03",
+      "difficulty": "medium",
+      "question": "An applicant has no adverse tradelines but has too little observable credit history. Should this be treated as poor credit and declined? Identify the applicable code and next-step disposition."
+    },
+    {
+      "id": "M02",
+      "difficulty": "medium",
+      "question": "For a Tier 3 self-employed applicant, what documents are required and how must business income be treated before monthly income is finalized?"
+    },
+    {
+      "id": "D06",
+      "difficulty": "difficult",
+      "question": "Two approved providers disagree on the same underwriting attribute. The more favorable response is stale, while the other is current. May the reviewer choose or overwrite the values to support approval, and how must a later source refresh be recorded?"
+    },
+    {
+      "id": "D05",
+      "difficulty": "difficult",
+      "question": "A Prescreen candidate passed audience selection and received a firm offer. At application intake an active bureau freeze appears; after it is resolved, the refreshed full-underwriting bureau score is 575. What happens at each stage, and does the firm offer protect the applicant from either result?"
+    },
+    {
+      "id": "D04",
+      "difficulty": "difficult",
+      "question": "Assume a synthetic base line of $3,500, Table 7 row band >649 and column band >909, and an unresolved MLA status at full underwriting. What amount does the matrix propose before controls, and can the system finalize that line or fund the loan?"
+    },
+    {
+      "id": "X06",
+      "difficulty": "extreme",
+      "question": "A Non-Prescreen applicant shows one rapid payoff-and-reapply cycle. Fraud Consortium criterion FC-06 is mentioned. Does that single cycle automatically trigger NOAA Code 133, and how should the condition be evaluated?"
+    },
+    {
+      "id": "X05",
+      "difficulty": "extreme",
+      "question": "Trace this full-underwriting case: policy and credit checks initially pass; scoring and affordability run; fraud/compliance is not clear; the reviewer requests NMI; the evidence is resolved; the rerun passes and fraud/compliance is clear; the customer accepts; but required verifications are still incomplete after Intraday Account Review. What path is followed and what is the ending state given these facts?"
+    },
+    {
+      "id": "X04",
+      "difficulty": "extreme",
+      "question": "A partner traffic cluster matches Fraud Consortium criterion FC-08 because it shares an anomalous network signature. Is FC-08 a new underwriting code or an automatic NOAA? Which existing code/action should be evaluated before any terminal action?"
+    },
+    {
+      "id": "X02",
+      "difficulty": "extreme",
+      "question": "A Non-Prescreen full-underwriting evaluation fires Bank Account Ownership Code 135 and Notice Generation Code 136. Does NOIA 136 replace or soften NOAA 135, and what workflow outcome should be retained?"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cross-document comparison evaluation dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "suite", "split", "frozen", "cases"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "suite": {"const": "comparison_eval_v1"},
+    "split": {"enum": ["dev", "holdout"]},
+    "frozen": {"type": "boolean"},
+    "cases": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/case"}}
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lender_id", "document_id", "document_version"],
+      "properties": {
+        "lender_id": {"enum": ["novacred", "lumentrail"]},
+        "document_id": {"enum": ["novacred_flex_uw", "lumentrail_pathway_uw"]},
+        "document_version": {"enum": ["V0", "V1"]}
+      }
+    },
+    "history_turn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question", "answer", "chunk_ids", "scope", "turn_type"],
+      "properties": {
+        "question": {"type": "string"},
+        "answer": {"type": "string"},
+        "chunk_ids": {"type": "array", "items": {"type": "string"}},
+        "scope": {"$ref": "#/$defs/scope"},
+        "turn_type": {"const": "policy_answer"}
+      }
+    },
+    "setup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["history", "prior_scope"],
+      "properties": {
+        "history": {"type": "array", "items": {"$ref": "#/$defs/history_turn"}},
+        "prior_scope": {"oneOf": [{"$ref": "#/$defs/scope"}, {"type": "null"}]}
+      }
+    },
+    "evidence_group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "scope_key", "any_of_chunk_ids"],
+      "properties": {
+        "name": {"type": "string"},
+        "scope_key": {"type": "string"},
+        "any_of_chunk_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["behavior", "outcome", "scopes", "retry_scope_keys", "ground_truth_answer", "required_claims", "forbidden_claims", "evidence_groups"],
+      "properties": {
+        "behavior": {"enum": ["compare_policy", "clarify"]},
+        "outcome": {"enum": ["answer", "clarification"]},
+        "scopes": {"type": "array", "maxItems": 2, "items": {"$ref": "#/$defs/scope"}},
+        "retry_scope_keys": {"type": "array", "items": {"type": "string"}},
+        "ground_truth_answer": {"type": "string"},
+        "required_claims": {"type": "array", "items": {"type": "string"}},
+        "forbidden_claims": {"type": "array", "items": {"type": "string"}},
+        "evidence_groups": {"type": "array", "items": {"$ref": "#/$defs/evidence_group"}}
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "family", "difficulty", "question", "setup", "expected", "author_notes"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^C-[DH][0-9]{2}$"},
+        "family": {"type": "string"},
+        "difficulty": {"enum": ["medium", "difficult", "extreme"]},
+        "question": {"type": "string"},
+        "setup": {"$ref": "#/$defs/setup"},
+        "expected": {"$ref": "#/$defs/expected"},
+        "author_notes": {"type": "string"}
+      }
+    }
+  }
+}

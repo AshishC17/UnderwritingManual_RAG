@@ -16,6 +16,7 @@ from __future__ import annotations
 from functools import lru_cache
 
 from qdrant_client import models
+from src.util.telemetry import local_tool
 
 MODEL = "Qdrant/bm25"
 
@@ -39,6 +40,7 @@ def embed_documents(texts: list[str]) -> list[models.SparseVector]:
     return [_to_sparse(v) for v in _model().embed(texts)]
 
 
+@local_tool("sparse_embedding")
 def embed_query(text: str) -> models.SparseVector:
     """Query-side vectors: term presence, not frequency. Asymmetric with the
     document side on purpose — a query term appearing twice should not double

@@ -1,0 +1,1004 @@
+{
+  "$schema": "./schema.json",
+  "schema_version": "1.0",
+  "dataset_name": "underwriting_conversation_eval",
+  "dataset_version": "v1",
+  "evaluation_date": "2026-09-07",
+  "split": "holdout",
+  "source_catalog": "sources.json",
+  "review_status": "machine_authored_source_checked_pending_human_review",
+  "execution_status": "not_run",
+  "fixtures": {
+    "lt_complex": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_complex:t0",
+          "question": "What evidence is required for Independent / Complex income in LumenTrail V1?",
+          "answer": "For LumenTrail V1 Independent / Complex income, provide four recent bank statements unless an approved automated source supplies twelve months of consistent inflow history. A business-income summary and attestation are also required. [LumenTrail_UW_V1_pdf.pdf::0018]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_income_docs"
+          ]
+        }
+      ]
+    },
+    "lt_complex_faulty": {
+      "quality": "deliberately_incorrect",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_complex_faulty:t0",
+          "question": "What evidence is required for Independent / Complex income in LumenTrail V1?",
+          "answer": "Only three statements are required and no automated-history exception exists. [LumenTrail_UW_V1_pdf.pdf::0018]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_income_docs"
+          ]
+        }
+      ]
+    },
+    "lt_complex_missing": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_complex_missing:t0",
+          "question": "What evidence is required for Independent / Complex income in LumenTrail V1?",
+          "answer": "For LumenTrail V1 Independent / Complex income, provide four recent bank statements unless an approved automated source supplies twelve months of consistent inflow history. A business-income summary and attestation are also required. [LumenTrail_UW_V1_pdf.pdf::0018]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": []
+        }
+      ]
+    },
+    "lt_device": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_device:t0",
+          "question": "What does LumenTrail V1 Shared Device Cluster mean?",
+          "answer": "Code 114 requires Specialist Review. Legitimate household/shared-network use can be reconciled using relationship, identity consistency, timing and funding ownership. [LumenTrail_UW_V1_pdf.pdf::0043]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_device"
+          ]
+        }
+      ]
+    },
+    "lt_flow0": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_flow0:t0",
+          "question": "Which comes first after Verified Partner Eligibility in LumenTrail V0: preliminary line calculation or enhanced fraud review?",
+          "answer": "Calculate the preliminary line first, then enhanced fraud review, then final underwriting checks. A pass is continuation, not funding approval. [LumenTrail_UW_V0_pdf.pdf::0025]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "lt0_flow"
+          ]
+        }
+      ]
+    },
+    "lt_identity0": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_identity0:t0",
+          "question": "When does identity-document validity trigger Code 128 in LumenTrail V0?",
+          "answer": "Evidence Required 128 applies when evidence expires before expected funding. [LumenTrail_UW_V0_pdf.pdf::0029]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "lt0_dictionary"
+          ]
+        }
+      ]
+    },
+    "lt_notice": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_notice:t0",
+          "question": "What does LumenTrail V1 Code 133 mean?",
+          "answer": "It is a Funding Hold Operational Notice: funding is paused while a separate evidence or review result remains open. The notice alone does not state approval or decline. [LumenTrail_UW_V1_pdf.pdf::0031] [LumenTrail_UW_V1_pdf.pdf::0048]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_notice_dictionary",
+            "lt1_notices"
+          ]
+        }
+      ]
+    },
+    "lt_reopen1": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_reopen1:t0",
+          "question": "Can a reopened LumenTrail V1 case reuse still-valid identity and funding-ownership evidence?",
+          "answer": "V1 requires both identity and funding-ownership evidence to be refreshed even if still ordinarily valid. Preserve the earlier disposition and start a new evaluation event. [LumenTrail_UW_V1_pdf.pdf::0040]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_reopen"
+          ]
+        }
+      ]
+    },
+    "lt_roles_old": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "lt_roles_old:t0",
+          "question": "Does a Household Contributor become a borrower at LumenTrail V1?",
+          "answer": "No. A documented contribution may support residual-income analysis, but the contributor is not an obligor and cannot satisfy borrower identity controls. [LumenTrail_UW_V1_pdf.pdf::0004]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_roles"
+          ]
+        },
+        {
+          "turn_id": "lt_roles_old:t1",
+          "question": "What does LumenTrail V1 Code 133 mean?",
+          "answer": "It is a Funding Hold Operational Notice: funding is paused while a separate evidence or review result remains open. The notice alone does not state approval or decline. [LumenTrail_UW_V1_pdf.pdf::0031] [LumenTrail_UW_V1_pdf.pdf::0048]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_notice_dictionary",
+            "lt1_notices"
+          ]
+        },
+        {
+          "turn_id": "lt_roles_old:t2",
+          "question": "How does LumenTrail V1 handle reopened cases?",
+          "answer": "V1 requires both identity and funding-ownership evidence to be refreshed even if still ordinarily valid. Preserve the earlier disposition and start a new evaluation event. [LumenTrail_UW_V1_pdf.pdf::0040]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_reopen"
+          ]
+        },
+        {
+          "turn_id": "lt_roles_old:t3",
+          "question": "What are the LumenTrail V1 Independent / Complex income documents?",
+          "answer": "For LumenTrail V1 Independent / Complex income, provide four recent bank statements unless an approved automated source supplies twelve months of consistent inflow history. A business-income summary and attestation are also required. [LumenTrail_UW_V1_pdf.pdf::0018]",
+          "scope": {
+            "lender_id": "lumentrail",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "lt1_income_docs"
+          ]
+        }
+      ]
+    },
+    "nc_current_selection": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "nc_current_selection:t0",
+          "question": "What monthly Income Proxy is required for NovaCred current Prescreen selection?",
+          "answer": "NovaCred V1 requires an Income Proxy of at least $2,100 monthly, from NovaCred Affordability Index. [NovaCred_UW_V1_pdf.pdf::0003]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V1"
+          },
+          "context_source_refs": [
+            "nc1_selection"
+          ]
+        }
+      ]
+    },
+    "nc_exposure": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "nc_exposure:t0",
+          "question": "What is the existing-exposure ceiling in NovaCred V0 Prescreen selection?",
+          "answer": "The remaining active Flex balance must not be above $6,400. [NovaCred_UW_V0_pdf.pdf::0005]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "nc0_selection"
+          ]
+        }
+      ]
+    },
+    "nc_historical_selection": {
+      "quality": "verified_reference",
+      "provenance": "Synthetic source-checked fixture; not an observed production prompt.",
+      "history": [
+        {
+          "turn_id": "nc_historical_selection:t0",
+          "question": "What monthly Income Proxy is required for NovaCred V0 Prescreen selection?",
+          "answer": "At least $1,900 monthly, not missing, from NovaCred Affordability Index. [NovaCred_UW_V0_pdf.pdf::0005]",
+          "scope": {
+            "lender_id": "novacred",
+            "document_version": "V0"
+          },
+          "context_source_refs": [
+            "nc0_selection"
+          ]
+        }
+      ]
+    }
+  },
+  "cases": [
+    {
+      "id": "C-H01",
+      "split": "holdout",
+      "scenario_family": "nc_selection_scope",
+      "difficulty": "medium",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "nc_historical_selection"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "And what is the existing-exposure ceiling?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V0"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "For the same NovaCred V0 Prescreen selection, the active Flex remaining balance must not be above $6,400.",
+            "required_claims": [
+              "The Prescreen ceiling is $6,400 under NovaCred V0."
+            ],
+            "forbidden_claims": [
+              "$5,800 is the V0 ceiling.",
+              "A ceiling pass guarantees approval."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc0_selection",
+                "any_of_source_refs": [
+                  "nc0_selection"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [
+              "A new information request can be answered from already supplied authoritative evidence; it is not necessarily a text transformation."
+            ],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "And for V1?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "version_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "For NovaCred V1 Prescreen selection, the remaining-balance ceiling is $5,800.",
+            "required_claims": [
+              "Use NovaCred V1.",
+              "The V1 ceiling is $5,800."
+            ],
+            "forbidden_claims": [
+              "$6,400 is the V1 ceiling.",
+              "The lender changed to LumenTrail."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_selection",
+                "any_of_source_refs": [
+                  "nc1_selection"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Separates follow-up intent from evidence availability; inherits V0 first, then obeys explicit V1."
+    },
+    {
+      "id": "C-H02",
+      "split": "holdout",
+      "scenario_family": "nc_selection_scope",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "nc_current_selection"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "What was that minimum as of 2026-06-30?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V0"
+            },
+            "scope_relationship": "date_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "NovaCred V0 applied on 2026-06-30. The monthly Income Proxy minimum was $1,900 and must not be missing.",
+            "required_claims": [
+              "Select NovaCred V0 for 2026-06-30.",
+              "Income Proxy minimum is $1,900 monthly and not missing."
+            ],
+            "forbidden_claims": [
+              "Use inherited V1 despite the historical date.",
+              "$2,100 applies on 2026-06-30."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc0_selection",
+                "any_of_source_refs": [
+                  "nc0_selection"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "And on 2026-07-01?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "novacred",
+              "document_version": "V1"
+            },
+            "scope_relationship": "date_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "NovaCred V1 applies from 2026-07-01; its monthly Income Proxy minimum is $2,100.",
+            "required_claims": [
+              "Select NovaCred V1 for 2026-07-01.",
+              "The minimum is $2,100 monthly."
+            ],
+            "forbidden_claims": [
+              "V0 remains governing on 2026-07-01 merely because the previous turn used it."
+            ],
+            "evidence_groups": [
+              {
+                "name": "nc1_selection",
+                "any_of_source_refs": [
+                  "nc1_selection"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "An explicit date overrides the prior turn's version. Tests both sides of the effective boundary."
+    },
+    {
+      "id": "C-H03",
+      "split": "holdout",
+      "scenario_family": "nc_selection_scope",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "nc_exposure"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Explain the existing-exposure ceiling in simple words, but for the other lender.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "lender_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "For LumenTrail's current V1 manual, active LumenTrail exposure must not be above $4,500. The earlier NovaCred V0 ceiling does not carry across.",
+            "required_claims": [
+              "Switch to LumenTrail current V1.",
+              "The exposure ceiling is $4,500."
+            ],
+            "forbidden_claims": [
+              "$6,400 is LumenTrail's ceiling.",
+              "Carry NovaCred V0 into LumenTrail V0 automatically.",
+              "No evidence lookup is needed because the message says explain simply."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_eligibility",
+                "any_of_source_refs": [
+                  "lt1_eligibility"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Mixed style request and scope switch must not be classified as a pure rephrase."
+    },
+    {
+      "id": "C-H04",
+      "split": "holdout",
+      "scenario_family": "lt_complex_income",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_complex"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Give me just three short bullet points that keep the exception.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "- Normally provide four recent bank statements.\n- An approved automated source with 12 months of consistent inflows can replace those statements.\n- Still provide a business-income summary and attestation.",
+            "required_claims": [
+              "Four recent bank statements are the default requirement.",
+              "An approved automated source with twelve months of consistent inflow history can replace the statement requirement.",
+              "The business-income summary and attestation still remain required."
+            ],
+            "forbidden_claims": [
+              "Three statements are the V1 requirement.",
+              "Any automated source is acceptable.",
+              "Automated history removes the summary and attestation."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_income_docs",
+                "any_of_source_refs": [
+                  "lt1_income_docs"
+                ]
+              }
+            ],
+            "output_format": "exactly_3_bullets",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Holdout transformation requires preserving both an exception and obligations outside that exception."
+    },
+    {
+      "id": "C-H05",
+      "split": "holdout",
+      "scenario_family": "lt_complex_income",
+      "difficulty": "extreme",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture"
+      ],
+      "fixture_sessions": {
+        "A": "lt_complex_missing"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Quote the table cell you used for the four-statement requirement.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "inspect_previous_answer",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "recover_cited_evidence",
+            "reference_answer": "Recover LumenTrail V1 Table 8, Independent / Complex required-evidence cell. Quote accurately with its automated-history exception and continuing summary/attestation requirements; if source recovery fails, say the cell cannot currently be verified.",
+            "required_claims": [
+              "Identify LumenTrail V1 Table 8 as the cited source.",
+              "Quote only after recovering the actual source, or explicitly report that verification is unavailable."
+            ],
+            "forbidden_claims": [
+              "Fabricate a quote from previous assistant text.",
+              "Quote the V0 three-statement cell as if it were the original V1 source."
+            ],
+            "evidence_groups": [],
+            "output_format": "citation_explanation",
+            "context_requirements": [],
+            "required_citation_source_refs": [],
+            "conditional_evidence_groups": [
+              {
+                "when": "the response verifies or quotes the cell",
+                "any_of_source_refs": [
+                  "lt1_income_docs"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "why_in_eval": "Source recovery for a table cell differs from repeating a remembered numeric answer."
+    },
+    {
+      "id": "C-H06",
+      "split": "holdout",
+      "scenario_family": "lt_complex_income",
+      "difficulty": "extreme",
+      "provenance": "synthetic_fault_injection",
+      "execution_modes": [
+        "fixture"
+      ],
+      "fixture_sessions": {
+        "A": "lt_complex_faulty"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Make that shorter.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "correct_previous_answer",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "Correction: V1 normally needs four statements, with an approved 12-month automated-inflow alternative. A business-income summary and attestation are still required.",
+            "required_claims": [
+              "Four recent bank statements are the default requirement.",
+              "An approved automated source with twelve months of consistent inflow history can replace the statement requirement.",
+              "The business-income summary and attestation still remain required.",
+              "Explicitly correct the prior three-statement/no-exception claim."
+            ],
+            "forbidden_claims": [
+              "Preserve the earlier wrong three-statement requirement.",
+              "Invent approval after documentation."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_income_docs",
+                "any_of_source_refs": [
+                  "lt1_income_docs"
+                ]
+              }
+            ],
+            "output_format": "concise",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Second deliberately false prior answer uses a different policy family from dev."
+    },
+    {
+      "id": "C-H07",
+      "split": "holdout",
+      "scenario_family": "lt_partner_flow_order",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_flow0"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Put that in a simple numbered sequence.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "transform_previous_answer",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V0"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "1. Pass Verified Partner Eligibility.\n2. Calculate the preliminary line.\n3. Run enhanced fraud review.\n4. Continue to final underwriting checks when clear; this is not funding approval.",
+            "required_claims": [
+              "Under V0 line calculation precedes enhanced fraud review.",
+              "A pass only permits continuation."
+            ],
+            "forbidden_claims": [
+              "Enhanced fraud review precedes line calculation in V0.",
+              "The sequence alone establishes funding approval."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt0_flow",
+                "any_of_source_refs": [
+                  "lt0_flow"
+                ]
+              }
+            ],
+            "output_format": "numbered_sequence",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        },
+        {
+          "step_id": "s2",
+          "thread": "A",
+          "user_message": "Now give the sequence for V1.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "version_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "1. Pass Verified Partner Eligibility.\n2. Run enhanced fraud review.\n3. When clear, calculate the preliminary line.\n4. Continue to final underwriting checks; funding still requires later controls.",
+            "required_claims": [
+              "Under V1 enhanced fraud review precedes line calculation.",
+              "Further underwriting/funding controls remain."
+            ],
+            "forbidden_claims": [
+              "Copy V0 line-first order into V1."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_flow",
+                "any_of_source_refs": [
+                  "lt1_flow"
+                ]
+              }
+            ],
+            "output_format": "numbered_sequence",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Visual source-checked flow ordering should change across versions, not be penalized as conversational drift."
+    },
+    {
+      "id": "C-H08",
+      "split": "holdout",
+      "scenario_family": "lt_reopen",
+      "difficulty": "medium",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_reopen1"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Would the same apply under the older V0 manual?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V0"
+            },
+            "scope_relationship": "version_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "V0 may reuse a prior evidence package when every artifact remains within its validity window. It still preserves the earlier disposition and starts a new evaluation event.",
+            "required_claims": [
+              "Select LumenTrail V0.",
+              "Reuse is permitted only if every artifact remains valid.",
+              "Preserve the earlier disposition and create a new evaluation event."
+            ],
+            "forbidden_claims": [
+              "V0 always refreshes identity and funding-ownership evidence.",
+              "V0 permits stale evidence reuse."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt0_reopen",
+                "any_of_source_refs": [
+                  "lt0_reopen"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "A legitimate policy change should replace the previous answer's requirement."
+    },
+    {
+      "id": "C-H09",
+      "split": "holdout",
+      "scenario_family": "lt_identity_validity",
+      "difficulty": "difficult",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_identity0"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "And in V1 if 29 validity days remain on the expected funding date?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "version_changed",
+            "evidence_policy": "new_scoped_evidence_required",
+            "reference_answer": "LumenTrail V1 Code 128 requires evidence because 29 days is fewer than 30 remaining validity days at expected funding. Retain expected funding and document expiration dates.",
+            "required_claims": [
+              "Use LumenTrail V1 Code 128, Identity Document Validity.",
+              "29 remaining days meets the fewer-than-30 condition.",
+              "Both expected funding and expiration dates remain in the record."
+            ],
+            "forbidden_claims": [
+              "The document need only avoid expiring before funding under V1.",
+              "This is NovaCred Offer Age.",
+              "29 days passes the V1 remaining-validity rule."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_dictionary",
+                "any_of_source_refs": [
+                  "lt1_dictionary"
+                ]
+              },
+              {
+                "name": "lt1_identity_validity",
+                "any_of_source_refs": [
+                  "lt1_identity_validity"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Version-specific numeric boundary must replace a V0 rule in memory."
+    },
+    {
+      "id": "C-H10",
+      "split": "holdout",
+      "scenario_family": "lt_notices",
+      "difficulty": "medium",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_notice"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "So that means the loan was declined?",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "No. Funding Hold is an operational notice, not a decline or approval decision. The separate underwriting/evidence/review result determines the actual disposition.",
+            "required_claims": [
+              "Code 133 alone does not establish decline.",
+              "It also does not prove approval.",
+              "Use the separate underwriting/evidence/review result for disposition."
+            ],
+            "forbidden_claims": [
+              "Funding Hold automatically means decline.",
+              "It must have been approved because funding is mentioned."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_notices",
+                "any_of_source_refs": [
+                  "lt1_notices"
+                ]
+              }
+            ],
+            "output_format": "unconstrained",
+            "context_requirements": [],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Rejects a false inference from a previous answer without treating all follow-ups as formatting requests."
+    },
+    {
+      "id": "C-H11",
+      "split": "holdout",
+      "scenario_family": "lt_device_out_of_domain",
+      "difficulty": "easy",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_device"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "New topic: write a dinner invitation to my friends.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "decline_out_of_scope",
+            "scope": null,
+            "scope_relationship": "not_applicable",
+            "evidence_policy": "no_policy_evidence_needed",
+            "reference_answer": "I can help with the underwriting manuals here; a dinner invitation is outside this assistant's scope.",
+            "required_claims": [
+              "Briefly identify that this request is outside the underwriting-manual assistant's scope."
+            ],
+            "forbidden_claims": [
+              "Invent an underwriting rule about dinner.",
+              "Retrieve policy chunks to manufacture an answer."
+            ],
+            "evidence_groups": [],
+            "output_format": "unconstrained",
+            "context_requirements": [
+              "This is a proposed manual-assistant product boundary, not a safety prohibition. If general chat is later supported, version this expectation."
+            ],
+            "required_citation_source_refs": []
+          }
+        }
+      ],
+      "why_in_eval": "Tests irrelevant requests after topical history rather than only in an empty chat."
+    },
+    {
+      "id": "C-H12",
+      "split": "holdout",
+      "scenario_family": "lt_roles_history_horizon",
+      "difficulty": "extreme",
+      "provenance": "synthetic_source_checked",
+      "execution_modes": [
+        "fixture",
+        "closed_loop"
+      ],
+      "fixture_sessions": {
+        "A": "lt_roles_old"
+      },
+      "steps": [
+        {
+          "step_id": "s1",
+          "thread": "A",
+          "user_message": "Go back to my first question about the Household Contributor. Explain that role again without mixing in the later topics.",
+          "input_kind": "question",
+          "expected": {
+            "behavior": "answer_policy_question",
+            "scope": {
+              "lender_id": "lumentrail",
+              "document_version": "V1"
+            },
+            "scope_relationship": "unchanged",
+            "evidence_policy": "stored_evidence_sufficient",
+            "reference_answer": "A Household Contributor can provide a documented contribution for residual-income analysis but is not a borrower/obligor and cannot satisfy borrower identity controls.",
+            "required_claims": [
+              "Refer to the earlier Household Contributor question, not the latest income-document question.",
+              "A documented contribution may support residual-income analysis.",
+              "The contributor is not an obligor and cannot satisfy borrower identity."
+            ],
+            "forbidden_claims": [
+              "The Household Contributor is a co-borrower.",
+              "Answer the last question about bank statements instead."
+            ],
+            "evidence_groups": [
+              {
+                "name": "lt1_roles",
+                "any_of_source_refs": [
+                  "lt1_roles"
+                ]
+              }
+            ],
+            "output_format": "plain_language",
+            "context_requirements": [
+              "The referenced turn is four turns back, outside the current last-three history window. Recover its evidence from a stored turn or retrieve equivalent LumenTrail V1 source evidence."
+            ],
+            "required_citation_source_refs": [],
+            "lookup_optimization_applicable": false
+          }
+        }
+      ],
+      "why_in_eval": "Tests a topic explicitly outside the current history window; retrieval is allowed if earlier artifacts are not loaded."
+    }
+  ]
+}

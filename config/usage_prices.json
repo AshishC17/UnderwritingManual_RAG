@@ -1,0 +1,5 @@
+{
+  "as_of": null,
+  "models": {},
+  "note": "No prices assumed. Add provider:model entries with input_per_million/output_per_million for chat or total_per_million for Voyage, in USD. Unknown usage or prices remain null. These estimates exclude hosting, discounts and free-tier allowances."
+}

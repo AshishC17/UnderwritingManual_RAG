@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "split": "dev",
+  "source_document": "NovaCred_UW_V0_pdf.pdf",
+  "cases": [
+    {
+      "id": "E05",
+      "difficulty": "easy",
+      "question": "Which documents are required for Tier 2 income verification?"
+    },
+    {
+      "id": "E04",
+      "difficulty": "easy",
+      "question": "What monthly Income Proxy is required for Prescreen selection, and which source supplies it?"
+    },
+    {
+      "id": "E02",
+      "difficulty": "easy",
+      "question": "Does an Authorized Payer become a borrower or independently satisfy borrower underwriting requirements?"
+    },
+    {
+      "id": "M04",
+      "difficulty": "medium",
+      "question": "Compare the bureau-score decline controls at prequalification and full underwriting: what are their codes and exact thresholds?"
+    },
+    {
+      "id": "M05",
+      "difficulty": "medium",
+      "question": "How is FACTA handled at prequalification and at full-underwriting refresh, and why does both use the same Code 114?"
+    },
+    {
+      "id": "M01",
+      "difficulty": "medium",
+      "question": "What does Code 128 mean, what disposition does it create, what age threshold applies to each path, and where is the rule used?"
+    },
+    {
+      "id": "D02",
+      "difficulty": "difficult",
+      "question": "The Credit Risk Model score vector is unavailable, but the Null Score condition did not trigger. May the system treat scoring as passed, assign a line from an invented score band, or approve the applicant?"
+    },
+    {
+      "id": "D01",
+      "difficulty": "difficult",
+      "question": "A blocked-SSN record is 40 months old, classified as a resolved administrative duplicate, and the current identity comparison is exact. What is the normal code/disposition, can the exception apply, and does the same exception cover Non-Prescreen?"
+    },
+    {
+      "id": "D03",
+      "difficulty": "difficult",
+      "question": "In one Prescreen prequalification evaluation, an active exact Blocked SSN with no applicable exception and an active Credit Freeze both fire. Which codes and dispositions must be retained, and how should immediate routing and skipped work be recorded?"
+    },
+    {
+      "id": "X07",
+      "difficulty": "extreme",
+      "question": "After a configuration release, Code 105 firing rises sharply only in Non-Prescreen. During the same period, bureau-source completeness falls and fallback usage rises. Can analysts conclude that applicant credit risk worsened, and what comparisons are required before making a policy conclusion?"
+    },
+    {
+      "id": "X01",
+      "difficulty": "extreme",
+      "question": "During Non-Prescreen full underwriting, the offer is 35 days old, automated checks cannot reconcile the current address, and the requested funding method needs additional ownership or destination verification. Identify every applicable code and disposition, explain whether the evidence requests may be consolidated, and describe what happens after the evidence is resolved."
+    },
+    {
+      "id": "X03",
+      "difficulty": "extreme",
+      "question": "At full underwriting, Blocked Routing Code 120 persists, but the prior block was caused solely by a temporary network anomaly and the current application passes Intraday Account Review. Can the rule be overridden, what evidence history must remain, and does the override mean the application is approved?"
+    }
+  ]
+}

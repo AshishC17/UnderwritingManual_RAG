@@ -1,0 +1,496 @@
+{
+  "schema_version": "1.0",
+  "corpus_snapshot": {
+    "manifest_path": "config/corpus_manifest.json",
+    "manifest_sha256": "760ae55707bd0e61ca204b44c90713e4a9f459e2e2c61fd8db38682bc082fed3",
+    "chunks_path": "data/processed/chunks_v2.json",
+    "chunks_sha256": "7457d0004fa0a4ccb3cef2e360e9666644f41e806197583c09f0b4224189c656",
+    "chunk_count": 235,
+    "documents": [
+      {
+        "path": "data/raw/NovaCred_UW_V0_pdf.pdf",
+        "sha256": "eb6792359589314ffa8218800a7101714fbcbd7220ef6e22cfa25cdb081c2399"
+      },
+      {
+        "path": "data/raw/NovaCred_UW_V1_pdf.pdf",
+        "sha256": "05f1cbfd0c21e4971fe0e608b1316b3a6824401bdfc972f3dcaac93adba10221"
+      },
+      {
+        "path": "data/raw/LumenTrail_UW_V0_pdf.pdf",
+        "sha256": "e705b7b82503a058ee0a3a53d565d22b3fecea6dc045668c5cbd113db90bf411"
+      },
+      {
+        "path": "data/raw/LumenTrail_UW_V1_pdf.pdf",
+        "sha256": "6dcce8ec39c3af46d4c51456f723459cfa79608c792a6396d4b5d2753a644d25"
+      }
+    ]
+  },
+  "review_status": "Source-checked by an independent model; human review pending. No model benchmark has been run.",
+  "source_priority": "Original PDF text/visuals, then validated chunk mappings. Previous assistant answers and generated captions are not ground truth.",
+  "known_source_discrepancies": [
+    {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "page": 9,
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0022",
+      "finding": "The chunk caption adds a NOAA -> Assign Applicable NOAA -> Send Notification -> Expire Application path that is absent from the rendered V1 page-9 diagram.",
+      "treatment": "Do not require or endorse this exact sequence in the conversation oracle. Ground the identity-block and audit distinctions in PDF prose/Table 3 instead. Source PDF and chunk left unchanged."
+    }
+  ],
+  "sources": {
+    "nc0_selection": {
+      "source_doc": "NovaCred_UW_V0_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V0",
+      "pages": [
+        2
+      ],
+      "section": "Table 1: Prescreen Criteria",
+      "source_anchor": "No active Flex loan with a remaining balance above the synthetic exposure ceiling of $6,400",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V0_pdf.pdf::0005",
+      "content_hash": "97b86960a60d0137fd9e7b079c94fbe884de9bdbd9b9ad807e8fc419880e8a5d"
+    },
+    "nc0_rfai_dictionary": {
+      "source_doc": "NovaCred_UW_V0_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V0",
+      "pages": [
+        14
+      ],
+      "section": "Table 10: Available RFAIs",
+      "source_anchor": "Prescreen uses an older-than-45-day threshold; Non-Prescreen uses an older-than-30-day threshold.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V0_pdf.pdf::0039",
+      "content_hash": "e2a09022741e6274a613f475c27e509ad680ad1ccccc65f1fbb95c202c1e0365"
+    },
+    "nc1_selection": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        2
+      ],
+      "section": "Table 1: Prescreen Criteria",
+      "source_anchor": "Synthetic income proxy at or above $2,100 monthly",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0003",
+      "content_hash": "2df5fa8808123ae17fe9cee83c9bfbd47a7ae7fd43bfa951cdce15524509ccca"
+    },
+    "nc1_roles": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        3
+      ],
+      "section": "Table 2: Applicant Types",
+      "source_anchor": "Person permitted to supply a payment account without becoming a borrower",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0005",
+      "content_hash": "bcc4c078469ab1b4843756c293827fb7d1ad4235f1b91bbdf3a3a3170ed75986"
+    },
+    "nc1_skip": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        3
+      ],
+      "section": "UNDERWRITING",
+      "source_anchor": "A later rule may be skipped after an earlier terminal result, but the skip reason must distinguish not applicable from not evaluated.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0006",
+      "content_hash": "37a4823a8ccfb43ea5ce4407750153926525999a446823e3998605018428bc4d"
+    },
+    "nc1_prescreen": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        4
+      ],
+      "section": "Table 3: Prescreen Prequalification Rules",
+      "source_anchor": "Blocked SSN [1] NovaShield Identity Blocklist NOAA 101",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0007",
+      "content_hash": "cd9491b945cbf217bf2ecaf6f949558c925b75e7eaebd9b06e338aab3003f8ae"
+    },
+    "nc1_exception": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        4
+      ],
+      "section": "PRESCREEN PREQUALIFICATION RULES",
+      "source_anchor": "resolved administrative duplicate older than 48 months, the current identity comparison is exact, and a clean secondary identity source corroborates the match.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0008",
+      "content_hash": "780e431a74f0c5483e0b22c2747f5d5a4a6e4e3d8fed8a121358114b6d693684"
+    },
+    "nc1_routing_exception": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        5
+      ],
+      "section": "PRESCREEN FULL UNDERWRITING RULES",
+      "source_anchor": "two clean Intraday Account Review observations at least 24 hours apart and documented supervisor authorization.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0010",
+      "content_hash": "a946a57d74e9716631fb410079e883c4fde4e7d27a6e577c946cae732a54e69c"
+    },
+    "nc1_income_docs": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        8
+      ],
+      "section": "Table 8: Income Verification Tiers",
+      "source_anchor": "Two recent pay statements plus employment-status confirmation",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0018",
+      "content_hash": "c24a8ec61fd6b3bbb93d19f131265a93d82712ea00ec3633462e677b0ff39ec7"
+    },
+    "nc1_noaa": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        11
+      ],
+      "section": "Table 9: Available NOAAs",
+      "source_anchor": "NOAA 101 Blocked SSN: active identity block.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0028",
+      "content_hash": "2a16e555255fbad8c592ca9a13a5267ef7b84abc813804a673382af3c2d2fe56"
+    },
+    "nc1_rfai": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        12
+      ],
+      "section": "Table 10: Available RFAIs",
+      "source_anchor": "RFAI 105 Credit Freeze: bureau security freeze prevents normal access or remains active at refresh.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0030",
+      "content_hash": "adfd309b92c3a4febba6e177f1835cb98ce7ce9a06e2e0ba7c1aee6db9166194"
+    },
+    "nc1_history": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        13
+      ],
+      "section": "EVIDENCE AND DECISION HISTORY",
+      "source_anchor": "Each terminal, evidence-request, notice, or manual result retains source data, timestamp, rule code, action, policy version, and reviewer or system identifier.",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0038",
+      "content_hash": "d39c0d4a694a8781944fac6e8bccc1604e0ccc4db534954128c29ab814d7d755"
+    },
+    "nc1_intraday": {
+      "source_doc": "NovaCred_UW_V1_pdf.pdf",
+      "lender_id": "novacred",
+      "document_version": "V1",
+      "pages": [
+        14
+      ],
+      "section": "INTRADAY ACCOUNT REVIEW",
+      "source_anchor": "one clean observation is insufficient: two clean observations must be at least 24 hours apart",
+      "anchor_kind": "text",
+      "chunk_id": "NovaCred_UW_V1_pdf.pdf::0043",
+      "content_hash": "69c1ab99aff1512f2a9716d08bc52560b6899da1bc39abe81ff27a09a594c033"
+    },
+    "lt0_partner": {
+      "source_doc": "LumenTrail_UW_V0_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V0",
+      "pages": [
+        2
+      ],
+      "section": "CHANNELS AND APPLICATION INTAKE",
+      "source_anchor": "A Verified Partner attestation is current for 30 days in V0.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V0_pdf.pdf::0003",
+      "content_hash": "f8c5df26780e99e066e7511ca233796dff38f39ba990a303267f04b608c1236e"
+    },
+    "lt0_eligibility": {
+      "source_doc": "LumenTrail_UW_V0_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V0",
+      "pages": [
+        2
+      ],
+      "section": "ELIGIBILITY GATE",
+      "source_anchor": "normalized monthly income of at least $2,200, no active LumenTrail exposure above $5,000",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V0_pdf.pdf::0005",
+      "content_hash": "f168ee5261e20756a8f08316c0725069e3e89e9cdf37969408174de1e8d7a8fb"
+    },
+    "lt0_income_docs": {
+      "source_doc": "LumenTrail_UW_V0_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V0",
+      "pages": [
+        5
+      ],
+      "section": "Table 8: Income Documentation Bands",
+      "source_anchor": "Three recent bank statements, business-income summary, and independent-income attestation",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V0_pdf.pdf::0018",
+      "content_hash": "1d1ca6e6c7d6be5537882a16e9e7fcccbc70cca8084a8581e69484e123ba5217"
+    },
+    "lt0_flow": {
+      "source_doc": "LumenTrail_UW_V0_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V0",
+      "pages": [
+        7
+      ],
+      "section": "Verified Partner Final Underwriting Flow - V0",
+      "source_anchor": "Partner Eligibility -> Calculate Line -> Enhanced Fraud Review -> Final UW Checks",
+      "anchor_kind": "visual",
+      "chunk_id": "LumenTrail_UW_V0_pdf.pdf::0025",
+      "content_hash": "9187951ee3e1db39fe1e2878bb4c2f62772c4ffcde204e7a7f05ece0d641b178"
+    },
+    "lt0_dictionary": {
+      "source_doc": "LumenTrail_UW_V0_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V0",
+      "pages": [
+        8
+      ],
+      "section": "Table 10: Evidence Required Codes",
+      "source_anchor": "Version 0 has no automated rent-history continuation exception.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V0_pdf.pdf::0029",
+      "content_hash": "cad691de3ba0aa8b9f4b432ad9d9c8ac23ccdc86b7b52d8f1087c522867f4f7f"
+    },
+    "lt0_reopen": {
+      "source_doc": "LumenTrail_UW_V0_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V0",
+      "pages": [
+        10
+      ],
+      "section": "REOPENED CASES",
+      "source_anchor": "Version 0 may reuse a prior evidence package when every artifact remains within its configured validity window.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V0_pdf.pdf::0040",
+      "content_hash": "088032e0cc0366fb1471002a1dd976474ab2e9f1a149068fbd4c7c48c8bdb6fa"
+    },
+    "lt1_partner": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        2
+      ],
+      "section": "CHANNELS AND APPLICATION INTAKE",
+      "source_anchor": "A Verified Partner attestation is current for 14 days in V1.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0003",
+      "content_hash": "4b11de33653361342b62e3610a7993709da228d8aa3f01fded24587ac730cc0f"
+    },
+    "lt1_roles": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        2
+      ],
+      "section": "Table 2: Applicant Roles",
+      "source_anchor": "Non-borrower whose documented contribution may support residual-income analysis",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0004",
+      "content_hash": "6d0d630adf5bd45edc5a0819184cac616b0c9797008a7ede5449f0d5a7bd3209"
+    },
+    "lt1_eligibility": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        2
+      ],
+      "section": "ELIGIBILITY GATE",
+      "source_anchor": "normalized monthly income of at least $2,350, no active LumenTrail exposure above $4,500",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0005",
+      "content_hash": "ae61617896d726aaee2515d2475747c4a97bfd6f5be0871395cbe815e81f68dd"
+    },
+    "lt1_final_rules": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        4
+      ],
+      "section": "Table 5: Final Underwriting Rules",
+      "source_anchor": "Funding Account Ownership Lumen Payment Graph Evidence Required / Specialist Review [2] 120",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0011",
+      "content_hash": "c13e221e311ff62eebc9972e5d2be1e7f43abe5fc13504b567a9a3223f0bb277"
+    },
+    "lt1_notice_scope": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        4
+      ],
+      "section": "FINAL UNDERWRITING AND FUNDING READINESS",
+      "source_anchor": "Operational Notice Codes 133 and 136 report funding workflow state.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0014",
+      "content_hash": "b3d21b2154c4b6193d9d67053d67eabc29d58a42984304f3286ccac8b6789d2e"
+    },
+    "lt1_income_docs": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        5
+      ],
+      "section": "Table 8: Income Documentation Bands",
+      "source_anchor": "Four recent bank statements unless an approved automated source supplies twelve months of consistent inflow history, plus business-income summary and attestation",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0018",
+      "content_hash": "c33a0eb2aab547997fd48e3fdeaaa66c4ca704ad755446be7ed52a5f96dfd0a5"
+    },
+    "lt1_flow": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        7
+      ],
+      "section": "Verified Partner Final Underwriting Flow - V1",
+      "source_anchor": "Partner Eligibility -> Enhanced Fraud Review -> Calculate Line -> Final UW Checks",
+      "anchor_kind": "visual",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0025",
+      "content_hash": "d49df4f99a343e47649e9ad4618cac7abadc841bee0e231aca0f5cf85e04818b"
+    },
+    "lt1_dictionary": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        8
+      ],
+      "section": "Table 10: Evidence and Conditional Code Definitions",
+      "source_anchor": "Thin Credit File: fewer than two qualifying tradelines. Twelve months of verified rent history may satisfy the narrow continuation exception; all other final controls remain.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0029",
+      "content_hash": "4c88f09e89c2657ac37816019abaddc27c5e539582b6cf65bf5a74e4ec582c41"
+    },
+    "lt1_notice_dictionary": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        9
+      ],
+      "section": "Table 11: Operational Notice Codes",
+      "source_anchor": "Notice 133 Funding Hold: funding is paused while a separate evidence or review result remains open.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0031",
+      "content_hash": "89230e17099a9577e4336927c3f5f1e16490ed516a584066919ba1ea64c167ad"
+    },
+    "lt1_footnotes": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        10
+      ],
+      "section": "Table 15: Exception Footnote Register",
+      "source_anchor": "Verified 12-month rent history may permit continuation; not approval.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0036",
+      "content_hash": "f083a240fb52a340c470b0dff35eea0e43f2bc2dc555e0f7c9ba49d6135636cf"
+    },
+    "lt1_dates": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        10
+      ],
+      "section": "VERSION RESOLUTION",
+      "source_anchor": "LumenTrail V1 applies to evaluation events from 2026-09-01 onward.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0038",
+      "content_hash": "c2cd2083379af64f81842b5bab8297e21a19612fc841f07bce9d3b8c5a3ca402"
+    },
+    "lt1_reopen": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        10
+      ],
+      "section": "REOPENED CASES",
+      "source_anchor": "Version 1 always refreshes identity and funding-ownership evidence, even if the prior artifacts remain technically within their ordinary validity windows.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0040",
+      "content_hash": "52c1994f8e89e2754706d64640a6368d15bb513db09088f158b365d2f0da5e7e"
+    },
+    "lt1_device": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        10
+      ],
+      "section": "SHARED DEVICE CLUSTERS",
+      "source_anchor": "Code 114 means LumenTrail Shared Device Cluster.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0043",
+      "content_hash": "ea7ec197f16d88d91970431ed2f1bc237611101ba7d39ff90e676922305b6503"
+    },
+    "lt1_ownership": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        11
+      ],
+      "section": "FUNDING ACCOUNT OWNERSHIP",
+      "source_anchor": "an unrelated account holder enters Specialist Review; a name-format-only mismatch with matching account and routing tokens remains Evidence Required.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0044",
+      "content_hash": "c4384ecd7d77598b0aaaa2aaa7a0c08407530db332be204bc921013547dd647b"
+    },
+    "lt1_identity_validity": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        11
+      ],
+      "section": "IDENTITY DOCUMENT VALIDITY",
+      "source_anchor": "has fewer than 30 validity days remaining on the expected funding date.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0045",
+      "content_hash": "52f026e67fff8b463710db85b9149885e45aa6c43641cb0567150a8d16f4718e"
+    },
+    "lt1_notices": {
+      "source_doc": "LumenTrail_UW_V1_pdf.pdf",
+      "lender_id": "lumentrail",
+      "document_version": "V1",
+      "pages": [
+        11
+      ],
+      "section": "FUNDING HOLDS AND NOTICES",
+      "source_anchor": "A Funding Hold or Funding Window Notice communicates operational state only.",
+      "anchor_kind": "text",
+      "chunk_id": "LumenTrail_UW_V1_pdf.pdf::0048",
+      "content_hash": "a5ebf05f5294a3f1be7f8dd7dc0997b9bcaedb66564fc7846097a49241a83c14"
+    }
+  }
+}

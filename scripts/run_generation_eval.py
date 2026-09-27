@@ -34,6 +34,7 @@ from src.eval.generation_metrics import (
     aggregate_generation,
     by_difficulty_generation,
     score_generation,
+    format_metric,
 )
 from src.eval.judge import (
     JUDGE_MODEL,
@@ -41,6 +42,8 @@ from src.eval.judge import (
     check_supported_batch,
     decompose_claims,
     judge_claim,
+    classify_response,
+    rubric_hashes,
 )
 from src.generate.generator import MODEL as GEN_MODEL
 from src.generate.generator import MissingCredentials, build_context, generate
@@ -112,14 +115,16 @@ def main() -> None:
             raise SystemExit(1)
 
         try:
+            response_assessment = classify_response(q, answer, model=args.judge_model)
             s = score_generation(
                 case, answer, [c["chunk_id"] for c in chunks],
                 make_judge(case["id"]),
                 context=build_context(chunks),
                 decompose=(lambda a: decompose_claims(a, model=args.judge_model)),
                 supported=(lambda cs, ctx: check_supported_batch(
-                    cs, ctx, model=args.judge_model)),
+                    cs, ctx, model=args.judge_model, question=q)),
                 relevance=(lambda q, a: check_relevance(q, a, model=args.judge_model)),
+                response_assessment=response_assessment,
             )
         except Exception as e:  # keep what already scored; the cache preserves it
             print(f"\n  STOPPED at {case['id']}: {type(e).__name__}: {str(e)[:160]}")
@@ -144,19 +149,19 @@ def main() -> None:
     print("\n" + "=" * 72)
     print(f"GENERATION RESULTS — {args.split}")
     print("=" * 72)
-    print(f"  claim recall           {agg['claim_recall']:.3f}   "
+    print(f"  claim recall           {format_metric(agg['claim_recall'])}   "
           f"(required claims the answer asserts)")
-    print(f"  groundedness           {agg['groundedness']:.3f}   "
+    print(f"  groundedness           {format_metric(agg['groundedness'])}   "
           f"(claims it makes that the context supports)")
     print(f"  hallucination rate     {agg['hallucination_rate']:.3f}   "
           f"(questions asserting ANY forbidden claim)")
-    print(f"  answer relevance       {agg['answer_relevance']:.3f}   "
+    print(f"  answer relevance       {format_metric(agg['answer_relevance'])}   "
           f"(answers that address the question)")
-    print(f"  citation validity      {agg['citation_validity']:.3f}   "
+    print(f"  citation validity      {format_metric(agg['citation_validity'])}   "
           f"(cited ids that were actually retrieved)")
-    print(f"  over-refusal           {agg['over_refusal']:.3f}   "
+    print(f"  over-refusal           {format_metric(agg['over_refusal'])}   "
           f"(declined despite having the evidence)")
-    print(f"  unsupported confidence {agg['unsupported_confidence']:.3f}   "
+    print(f"  unsupported confidence {format_metric(agg['unsupported_confidence'])}   "
           f"(of {agg['cases_missing_evidence']} cases missing evidence, "
           f"answered anyway)")
     print(f"  ungrounded claims      {agg['ungrounded_claims']} total | "
@@ -165,7 +170,7 @@ def main() -> None:
     print("\nby difficulty")
     print(f"{'difficulty':<12} {'claim-recall':>13} {'halluc-rate':>12}")
     for d, a in by_difficulty_generation(scores).items():
-        print(f"{d:<12} {a['claim_recall']:>13.3f} {a['hallucination_rate']:>12.3f}")
+        print(f"{d:<12} {format_metric(a['claim_recall']):>13} {a['hallucination_rate']:>12.3f}")
 
     if protected:
         print(f"\nPer-case detail withheld for {args.split}. Diagnose on dev.")
@@ -207,6 +212,7 @@ def main() -> None:
         _dest(args.out).write_text(json.dumps({
             "split": args.split, "k": args.k,
             "gen_model": args.gen_model, "judge_model": args.judge_model,
+            "evaluator_rubric_hashes": rubric_hashes(),
             "aggregate": agg,
             "by_difficulty": by_difficulty_generation(scores),
             "cases": [vars(s) for s in scores],

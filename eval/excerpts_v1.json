@@ -1,0 +1,571 @@
+{
+  "schema_version": "1.0",
+  "status": "draft_pending_review",
+  "suite": "retry_eval_v1",
+  "split": "dev",
+  "conventions": [
+    "text is verbatim from the chunk it was authored against; edit text, keep ids stable",
+    "table-row excerpts exclude the header row; flowchart-edge excerpts exclude the title",
+    "context is the table caption or chart title; an excerpt with context counts as found only when excerpt and context are in the same chunk, because the same row appears in sibling tables (Prescreen vs Non-Prescreen, Prequal vs Full, Direct vs Verified Partner)",
+    "running page footers (Confidential - Synthetic RAG evaluation corpus Page N ...) are excluded",
+    "a group is covered when, for at least one alternative, ALL of that alternative's excerpts are covered"
+  ],
+  "corpus_snapshot": {
+    "chunks_path": "data/processed/chunks_v2.json",
+    "chunks_sha256": "7457d0004fa0a4ccb3cef2e360e9666644f41e806197583c09f0b4224189c656",
+    "chunk_count": 235
+  },
+  "excerpts": {
+    "nc1_pre.row_101": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        4
+      ],
+      "section": "Table 3",
+      "kind": "table_row",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0007",
+      "text": "| Blocked SSN [1] | NovaShield Identity Blocklist | NOAA | 101 |",
+      "context": "Table 3: Prescreen Prequalification Rules",
+      "note": "Two rows from one table chunk; R-D04/rules needs both."
+    },
+    "nc1_pre.row_105": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        4
+      ],
+      "section": "Table 3",
+      "kind": "table_row",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0007",
+      "text": "| Credit Freeze | OrbitScore Bureau Feed | RFAI | 105 |",
+      "context": "Table 3: Prescreen Prequalification Rules"
+    },
+    "nc1_identity_exception.footnote_1": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        4
+      ],
+      "section": "Table 3 footnote [1]",
+      "kind": "footnote",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0008",
+      "text": "[1] Blocked SSN exception: the active block may be treated as passed only when it is a resolved administrative duplicate older than 48 months, the current identity comparison is exact, and a clean secondary identity source corroborates the match. This exception permits continuation; it is not approval."
+    },
+    "nc1_full.row_120": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        5
+      ],
+      "section": "Table 4",
+      "kind": "table_row",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0009",
+      "text": "| Blocked Routing [2] | NovaShield Identity Blocklist | NOAA | 120 |",
+      "context": "Table 4: Prescreen Full Underwriting Rules"
+    },
+    "nc1_full.row_128": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        5
+      ],
+      "section": "Table 4",
+      "kind": "table_row",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0009",
+      "text": "| Offer Age | NovaCred Marketing Ledger | RFAI | 128 |",
+      "context": "Table 4: Prescreen Full Underwriting Rules"
+    },
+    "nc1_routing_exception.footnote_2": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        5
+      ],
+      "section": "Table 4 footnotes [2] and [3]",
+      "kind": "footnote",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0010",
+      "text": "[2] Blocked Routing exception: a block caused solely by a temporary network anomaly may be treated as passed only after two clean Intraday Account Review observations at least 24 hours apart and documented supervisor authorization. The original block, both observations, the exception reason, and authorizer must remain in history. Passing this rule does not approve or fund the application.",
+      "note": "Footnotes [2] and [3] sit in one chunk and serve different groups (R-D02/override uses [2], R-D03/schema uses [3])."
+    },
+    "nc1_routing_exception.footnote_3": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        5
+      ],
+      "section": "Table 4 footnotes [2] and [3]",
+      "kind": "footnote",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0010",
+      "text": "[3] Scoring continuation exception: if a required score vector is unavailable and the Null Score condition did not trigger, the scoring rule may be treated as passed solely to continue to non-score controls. No score is created. Code 141 applies when a vector exists but belongs to an incompatible score schema; that condition must be resolved rather than numerically approximated."
+    },
+    "nc1_rfai.rfai_141": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        12
+      ],
+      "section": "Table 10",
+      "kind": "table_row",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0030",
+      "text": "| RFAI 141 | Score Schema Version Mismatch: supplied score belongs to an incompatible model schema and cannot enter the current matrix. |",
+      "context": "Table 10: Available RFAIs"
+    },
+    "nc1_rfai.rfai_128": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        12
+      ],
+      "section": "Table 10",
+      "kind": "table_row",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0030",
+      "text": "| RFAI 128 | Offer Age: Prescreen artifact is older than 30 days or Non-Prescreen artifact is older than 21 days. |",
+      "context": "Table 10: Available RFAIs"
+    },
+    "nc1_missing_scores.scoring_footnote": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        14
+      ],
+      "section": "MISSING SCORES",
+      "kind": "prose",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0046",
+      "text": "The narrow scoring footnote can permit continuation when a vector is unavailable and Null Score did not fire. It cannot create a score, assign a line, or guarantee approval. A schema mismatch is distinct from a missing vector and follows Code 141."
+    },
+    "nc1_history.audit_fields": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        13
+      ],
+      "section": "EVIDENCE AND DECISION HISTORY",
+      "kind": "prose",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0038",
+      "text": "Each terminal, evidence-request, notice, or manual result retains source data, timestamp, rule code, action, policy version, and reviewer or system identifier."
+    },
+    "nc1_skip.skip_reason": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        3
+      ],
+      "section": "UNDERWRITING",
+      "kind": "prose",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0006",
+      "text": "A later rule may be skipped after an earlier terminal result, but the skip reason must distinguish not applicable from not evaluated."
+    },
+    "nc1_full_flow.pass_path_and_evidence_loop": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        10
+      ],
+      "section": "New Customer Full Underwriting Process - Version 1",
+      "kind": "flowchart_edges",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0025",
+      "text": "- Rule Result --Pass--> Run Scoring and Affordability\n- Scoring and Affordability -> Fraud and Compliance Checks\n- Fraud and Compliance --Clear--> Final Verifications\n- Final Verifications --Complete--> Ready to Fund\n- Rule Result --RFAI--> Evidence or NMI\n- Evidence or NMI --resolved--> Evidence Integrity Gate\n- Evidence Integrity Gate --valid--> Run Full Underwriting Policy and Credit Checks",
+      "context": "New Customer Full Underwriting Process - Version 1",
+      "note": "Seven contiguous edges: the remaining pass path plus the evidence loop."
+    },
+    "lt1_final.row_128": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        4
+      ],
+      "section": "Table 5",
+      "kind": "table_row",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0011",
+      "text": "| Identity Document Validity | Lumen Evidence Vault | Evidence Required | 128 |",
+      "context": "Table 5: Final Underwriting Rules"
+    },
+    "lt1_evidence.evidence_128": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        8
+      ],
+      "section": "Table 10",
+      "kind": "table_row",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0029",
+      "text": "| Evidence 128 | Identity Document Validity: evidence expires before expected funding or has fewer than 30 validity days remaining on the expected funding date. |",
+      "context": "Table 10: Evidence and Conditional Code Definitions",
+      "note": "One chunk serves two groups (R-D07/validity and R-D11/exception). The sources.json anchor for this ref is the Conditional 120 sentence, which supports neither."
+    },
+    "lt1_evidence.evidence_106": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        8
+      ],
+      "section": "Table 10",
+      "kind": "table_row",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0029",
+      "text": "| Evidence 106 | Thin Credit File: fewer than two qualifying tradelines. Twelve months of verified rent history may satisfy the narrow continuation exception; all other final controls remain. |",
+      "context": "Table 10: Evidence and Conditional Code Definitions"
+    },
+    "lt1_identity_validity.definition": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        11
+      ],
+      "section": "IDENTITY DOCUMENT VALIDITY",
+      "kind": "prose",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0045",
+      "text": "Identity Document Validity: evidence expires before expected funding or has fewer than 30 validity days remaining on the expected funding date."
+    },
+    "nc1_line_policy.adjustment": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        7
+      ],
+      "section": "SCORE CUT AND LINE ASSIGNMENT",
+      "kind": "prose",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0015",
+      "text": "The selected adjustment is applied only after hard policy rules have passed or been resolved. A positive cell cannot override a decline, compliance stop, unresolved manual review, or missing compatible score band."
+    },
+    "nc1_line_limits.independent_controls": {
+      "document": "NovaCred_UW_V1_pdf.pdf",
+      "pages": [
+        8
+      ],
+      "section": "Table 7 following paragraph",
+      "kind": "prose",
+      "authoring_chunk_id": "NovaCred_UW_V1_pdf.pdf::0017",
+      "text": "The minimum line floor and maximum line cap remain independent controls applied after the matrix cell is selected."
+    },
+    "lt1_final_overview.readiness": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        4
+      ],
+      "section": "FINAL UNDERWRITING AND FUNDING READINESS",
+      "kind": "prose",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0010",
+      "text": "Funding Readiness then validates destination, ownership, consent freshness, and final evidence. Passing Final Underwriting is not Ready to Fund until Funding Readiness is complete.",
+      "note": "States Funding Readiness comes before Ready to Fund; the 'resolved ownership' step is in lt1_partner_flow."
+    },
+    "lt1_partner_flow.ownership_to_ready": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        7
+      ],
+      "section": "Verified Partner Final Underwriting Flow - V1",
+      "kind": "flowchart_edges",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0025",
+      "text": "- Account Ownership --resolved--> Funding Readiness\n- Funding Readiness --complete--> Ready to Fund",
+      "context": "Verified Partner Final Underwriting Flow - V1"
+    },
+    "lt1_ownership.rule": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        11
+      ],
+      "section": "FUNDING ACCOUNT OWNERSHIP",
+      "kind": "prose",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0044",
+      "text": "Funding Account Ownership: an unrelated account holder enters Specialist Review; a name-format-only mismatch with matching account and routing tokens remains Evidence Required. Passing or resolving this rule permits movement to remaining Funding Readiness checks and does not mean the application is approved."
+    },
+    "lt1_direct.row_106": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        3
+      ],
+      "section": "Table 3",
+      "kind": "table_row",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0006",
+      "text": "| Thin Credit File [1] | NorthArc Bureau | Evidence Required | 106 |",
+      "context": "Table 3: Direct Eligibility Rules"
+    },
+    "lt1_thin_limits.limits": {
+      "document": "LumenTrail_UW_V1_pdf.pdf",
+      "pages": [
+        3
+      ],
+      "section": "Table 3 footnote [1]",
+      "kind": "prose",
+      "authoring_chunk_id": "LumenTrail_UW_V1_pdf.pdf::0007",
+      "text": "Any continuation exception clears only the thin-file condition. It does not create a credit score or approve the application."
+    }
+  },
+  "groups": [
+    {
+      "case": "R-D01",
+      "group": "rule",
+      "requirement": "Prescreen Blocked SSN is NOAA 101.",
+      "any_of": [
+        {
+          "ref": "nc1_pre",
+          "excerpts": [
+            "nc1_pre.row_101"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D01",
+      "group": "exception",
+      "requirement": "All exception conditions and continuation-only meaning.",
+      "any_of": [
+        {
+          "ref": "nc1_identity_exception",
+          "excerpts": [
+            "nc1_identity_exception.footnote_1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D02",
+      "group": "rule",
+      "requirement": "The full-underwriting rule/code/action.",
+      "any_of": [
+        {
+          "ref": "nc1_full",
+          "excerpts": [
+            "nc1_full.row_120"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D02",
+      "group": "override",
+      "requirement": "Complete override conditions, retained history and limited effect.",
+      "any_of": [
+        {
+          "ref": "nc1_routing_exception",
+          "excerpts": [
+            "nc1_routing_exception.footnote_2"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D03",
+      "group": "rule",
+      "requirement": "RFAI 141 definition.",
+      "any_of": [
+        {
+          "ref": "nc1_rfai",
+          "excerpts": [
+            "nc1_rfai.rfai_141"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D03",
+      "group": "schema",
+      "requirement": "No numerical approximation and no exception bypass.",
+      "any_of": [
+        {
+          "ref": "nc1_routing_exception",
+          "excerpts": [
+            "nc1_routing_exception.footnote_3"
+          ]
+        },
+        {
+          "ref": "nc1_missing_scores",
+          "excerpts": [
+            "nc1_missing_scores.scoring_footnote"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D04",
+      "group": "rules",
+      "requirement": "101 and 105 in Prescreen prequalification.",
+      "any_of": [
+        {
+          "ref": "nc1_pre",
+          "excerpts": [
+            "nc1_pre.row_101",
+            "nc1_pre.row_105"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D04",
+      "group": "skip",
+      "requirement": "Later skipped work is distinct from evaluated outcomes.",
+      "any_of": [
+        {
+          "ref": "nc1_skip",
+          "excerpts": [
+            "nc1_skip.skip_reason"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D04",
+      "group": "history",
+      "requirement": "Every result retains its audit fields.",
+      "any_of": [
+        {
+          "ref": "nc1_history",
+          "excerpts": [
+            "nc1_history.audit_fields"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D05",
+      "group": "flow",
+      "requirement": "Valid evidence loop and remaining pass path in the page-10 diagram.",
+      "any_of": [
+        {
+          "ref": "nc1_full_flow",
+          "excerpts": [
+            "nc1_full_flow.pass_path_and_evidence_loop"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D06",
+      "group": "rule",
+      "requirement": "Prescreen full-underwriting Offer Age RFAI 128 row.",
+      "any_of": [
+        {
+          "ref": "nc1_full",
+          "excerpts": [
+            "nc1_full.row_128"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D06",
+      "group": "thresholds",
+      "requirement": "Both V1 Offer Age windows.",
+      "any_of": [
+        {
+          "ref": "nc1_rfai",
+          "excerpts": [
+            "nc1_rfai.rfai_128"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D07",
+      "group": "rule",
+      "requirement": "Final-underwriting Identity Document Validity rule and action.",
+      "any_of": [
+        {
+          "ref": "lt1_final",
+          "excerpts": [
+            "lt1_final.row_128"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D07",
+      "group": "validity",
+      "requirement": "V1 validity window anchored to expected funding.",
+      "any_of": [
+        {
+          "ref": "lt1_evidence",
+          "excerpts": [
+            "lt1_evidence.evidence_128"
+          ]
+        },
+        {
+          "ref": "lt1_identity_validity",
+          "excerpts": [
+            "lt1_identity_validity.definition"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D08",
+      "group": "cap_policy",
+      "requirement": "Cap is independent; no numeric cap is provided here.",
+      "any_of": [
+        {
+          "ref": "nc1_line_limits",
+          "excerpts": [
+            "nc1_line_limits.independent_controls"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D08",
+      "group": "adjustment",
+      "requirement": "Matrix is an adjustment applied after controls.",
+      "any_of": [
+        {
+          "ref": "nc1_line_policy",
+          "excerpts": [
+            "nc1_line_policy.adjustment"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D10",
+      "group": "ownership",
+      "requirement": "LumenTrail ownership condition, branch and limited effect.",
+      "any_of": [
+        {
+          "ref": "lt1_ownership",
+          "excerpts": [
+            "lt1_ownership.rule"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D10",
+      "group": "flow",
+      "requirement": "Resolved ownership proceeds to Funding Readiness before Ready to Fund.",
+      "any_of": [
+        {
+          "ref": "lt1_partner_flow",
+          "excerpts": [
+            "lt1_partner_flow.ownership_to_ready"
+          ]
+        },
+        {
+          "ref": "lt1_final_overview",
+          "excerpts": [
+            "lt1_final_overview.readiness"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D11",
+      "group": "rule",
+      "requirement": "Direct Thin Credit File rule/action/code.",
+      "any_of": [
+        {
+          "ref": "lt1_direct",
+          "excerpts": [
+            "lt1_direct.row_106"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D11",
+      "group": "exception",
+      "requirement": "Twelve-month exception.",
+      "any_of": [
+        {
+          "ref": "lt1_evidence",
+          "excerpts": [
+            "lt1_evidence.evidence_106"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "R-D11",
+      "group": "limits",
+      "requirement": "No created score or approval.",
+      "any_of": [
+        {
+          "ref": "lt1_thin_limits",
+          "excerpts": [
+            "lt1_thin_limits.limits"
+          ]
+        }
+      ]
+    }
+  ]
+}

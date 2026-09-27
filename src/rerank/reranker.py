@@ -24,7 +24,10 @@ import os
 import time
 from pathlib import Path
 
-from langsmith import traceable
+from src.guardrails.tracing import traceable
+
+from src.util.ratelimit import voyage_gate
+from src.util.telemetry import cache_hit, tracked_call, wait_event
 
 MODEL = "rerank-2.5"
 CACHE_DIR = "data/interim/reranks"
@@ -69,13 +72,18 @@ def _rerank_with_backoff(query: str, texts: list[str], model: str, verbose: bool
 
     client = _client()
     for attempt, wait in enumerate([0, *RETRY_WAITS_S]):
+        # Pace before every attempt, including the first. The backoff below now
+        # only handles the case where pacing was not enough (e.g. the daily
+        # token cap), rather than being the primary defence.
+        voyage_gate()
         if wait:
             if verbose:
                 print(f"      rate limited; waiting {wait}s "
                       f"(attempt {attempt}/{len(RETRY_WAITS_S)})", flush=True)
             time.sleep(wait)
+            wait_event("voyage", wait, "rate_limit_backoff")
         try:
-            return client.rerank(query=query, documents=texts, model=model)
+            return tracked_call("voyage", "rerank", model, client.rerank, query=query, documents=texts, model=model)
         except voyageai.error.RateLimitError:
             if attempt == len(RETRY_WAITS_S):
                 raise
@@ -118,6 +126,7 @@ def rerank(
     cache = Path(cache_dir) / f"{_key(model, query, texts)}.json"
 
     if cache.exists():
+        cache_hit("voyage", "rerank", model)
         scored = json.loads(cache.read_text())
     else:
         result = _rerank_with_backoff(query, texts, model)

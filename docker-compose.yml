@@ -1,4 +1,23 @@
 services:
+  postgres:
+    image: postgres:18.0
+    container_name: rag-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rag
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    volumes:
+      # PostgreSQL 18 keeps versioned data directories below this mount.
+      - ./postgres_storage:/var/lib/postgresql
+
   qdrant:
     image: qdrant/qdrant:v1.19.0
     container_name: qdrant

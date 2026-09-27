@@ -1,0 +1,96 @@
+{
+  "schema_version":"1.0", "suite":"retry_eval_v1", "split":"holdout",
+  "review_status":"model_authored_source_checked_human_review_pending",
+  "cases":[
+    {
+      "id":"R-H01", "family":"nc_request_consolidation", "difficulty":"extreme", "tags":["plain_language","many_to_one_evidence","audit_dependency"],
+      "question":"NovaCred V1 Non-Prescreen full underwriting cannot reconcile the current residence or verify the funding destination. One bank statement might address both. Can operations send one combined request and keep only one code when the statement arrives?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"novacred","document_version":"V1"},
+      "scenario_constraints":["Non-Prescreen full underwriting","residence unreconciled","funding destination unverified","one artifact may satisfy two requests"],
+      "ground_truth_answer":"The applicable evidence requests are RFAI 139 Address Evidence and RFAI 140 Funding Method Verification. One consolidated applicant request is permitted if the same artifact can satisfy both, but each request remains linked to its own source code. Receiving a statement does not by itself resolve both conditions or erase the original requests and submitted evidence versions.",
+      "required_claims":["Retain RFAI 139 Address Evidence and RFAI 140 Funding Method Verification.","Requests may be consolidated when one artifact can satisfy both, but every source-code relationship remains traceable.","Receipt alone does not erase prior requests or establish that both conditions are resolved."],
+      "forbidden_claims":["One document means one source code is enough.","Submitting a bank statement automatically clears both conditions."],
+      "required_aspects":[{"id":"codes","need":"Identify both evidence requests.","claim_indices":[0]},{"id":"consolidation","need":"Separate applicant convenience from audit and resolution.","claim_indices":[1,2]}],
+      "evidence_groups":[{"name":"rules","requirement":"Non-Prescreen address/funding rules.","any_of_source_refs":["nc1_nonpre_full"]},{"name":"definitions","requirement":"139 and 140 meanings.","any_of_source_refs":["nc1_rfai"]},{"name":"links","requirement":"One artifact preserves every request-code relationship.","any_of_source_refs":["nc1_multiple"]},{"name":"history","requirement":"Original request and submitted versions retained.","any_of_source_refs":["nc1_rfai_lifecycle"]}]
+    },
+    {
+      "id":"R-H02", "family":"lt_device_context", "difficulty":"difficult", "tags":["full_form_distractor","false_policy_premise","fraud_context"],
+      "question":"LumenTrail V1 Direct eligibility reports 114 after relatives use the same device at one household. Should staff treat it as a Fair and Accurate Credit Transactions Act identity-theft alert and automatically decline the household?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"lumentrail","document_version":"V1"},
+      "scenario_constraints":["LumenTrail Direct eligibility","relatives sharing household/device","the supplied expansion is a proposed policy interpretation"],
+      "ground_truth_answer":"No. LumenTrail 114 is Shared Device Cluster and routes to Specialist Review, not NovaCred FACTA handling or automatic decline. Household/shared-network use may be legitimate. Compare relationship, identity consistency, timing and funding ownership to assess the condition.",
+      "required_claims":["LumenTrail 114 is Shared Device Cluster with Specialist Review.","The NovaCred FACTA/identity-theft-alert meaning cannot be imported.","Shared household/device use can be legitimate; review relationship, identity consistency, timing and funding ownership rather than automatically decline."],
+      "forbidden_claims":["LumenTrail 114 is a FACTA evidence request.","A shared household device alone mandates decline."],
+      "required_aspects":[{"id":"interpretation","need":"Resolve the lender-specific code and legitimate-use limitation.","claim_indices":[0,1,2]}],
+      "evidence_groups":[{"name":"rule","requirement":"Direct device rule/action/code.","any_of_source_refs":["lt1_direct"]},{"name":"device_context","requirement":"Specialist interpretation and checks.","any_of_source_refs":["lt1_device"]}]
+    },
+    {
+      "id":"R-H03", "family":"lt_historical_reopen", "difficulty":"difficult", "tags":["historical_scope","upload_date_distractor","version_drift"],
+      "question":"A LumenTrail case was reopened for a new evaluation on 2026-08-20, and every artifact in the earlier evidence package was still within its validity window. The PDF was uploaded in September. Must identity and ownership always be refreshed anyway, or may that package be reused?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"lumentrail","document_version":"V0"},
+      "scenario_constraints":["new evaluation 2026-08-20","all evidence within validity windows","September is upload date only"],
+      "ground_truth_answer":"The August 20 evaluation falls under LumenTrail V0; upload date does not select the policy. V0 may reuse the package if every artifact is within its configured validity window. Reopening preserves the earlier disposition and creates a new evaluation event. Do not retroactively impose V1's unconditional identity/ownership refresh rule.",
+      "required_claims":["The evaluation date selects LumenTrail V0, independent of the September upload date.","V0 may reuse the package because every artifact remains within its configured validity window.","The earlier disposition is preserved and reopening starts a new evaluation event."],
+      "forbidden_claims":["September upload makes V1 govern the August evaluation.","V0 always requires identity and funding-ownership refresh even for valid artifacts."],
+      "required_aspects":[{"id":"version","need":"Select historical policy using the evaluation date.","claim_indices":[0]},{"id":"reopen","need":"Apply V0 reuse and history requirements.","claim_indices":[1,2]}],
+      "evidence_groups":[{"name":"version","requirement":"V0 period and date-based resolution.","any_of_source_refs":["lt0_version"]},{"name":"reopen","requirement":"V0 evidence reuse and new event.","any_of_source_refs":["lt0_reopen"]}]
+    },
+    {
+      "id":"R-H04", "family":"nc_matrix_coordinates", "difficulty":"difficult", "tags":["table_coordinates","implicit_join","scenario_application"],
+      "question":"NovaCred V1: refreshed representative bureau score 625, compatible NovaCred Risk Score 800, and all hard policy controls have passed. What adjustment does the line matrix select? Does selecting that cell alone authorize approval?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"novacred","document_version":"V1"},
+      "scenario_constraints":["bureau score 625","risk score 800","compatible schema","hard controls passed"],
+      "ground_truth_answer":"Use the 610-649 bureau row and 750-829 risk-score column in NovaCred V1 Table 7: +$150. It is an adjustment and is not approval by itself; remaining applicable controls and independent line limits still apply.",
+      "required_claims":["The correct coordinates are bureau 610-649 and risk score 750-829.","The selected adjustment is +$150.","The matrix cell alone is not final approval and independent line limits still apply."],
+      "forbidden_claims":["The selected adjustment is +$350.","A positive adjustment alone approves the application."],
+      "required_aspects":[{"id":"cell","need":"Use both dimensions correctly.","claim_indices":[0,1]},{"id":"effect","need":"Separate adjustment from approval.","claim_indices":[2]}],
+      "evidence_groups":[{"name":"matrix","requirement":"Exact row/column cell.","any_of_source_refs":["nc1_matrix"]},{"name":"limits","requirement":"Independent line limits.","any_of_source_refs":["nc1_line_limits"]},{"name":"authority","requirement":"Product requires remaining checks before final approval.","any_of_source_refs":["nc1_overview"]}],
+      "author_notes":"Same cap source as R-D08 is supporting evidence; this family tests coordinate application, not discovering an unspecified numeric cap."
+    },
+    {
+      "id":"R-H05", "family":"lt_income_alternative", "difficulty":"difficult", "tags":["unless_clause","nonliteral_question","alternative_evidence"],
+      "question":"For a self-employed LumenTrail V1 applicant, an approved automated source supplies twelve months of consistent inflow history. Must we still collect four recent bank statements, and can we dispense with the business-income summary and attestation as well?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"lumentrail","document_version":"V1"},
+      "scenario_constraints":["self-employed","approved source","12 months consistent inflow"],
+      "ground_truth_answer":"The Independent / Complex band normally requires four recent bank statements, but an approved automated source supplying twelve months of consistent inflow history is the stated alternative. The business-income summary and attestation remain required; the alternative does not remove the whole evidence package.",
+      "required_claims":["The Independent / Complex band has a four-bank-statement requirement unless the approved automated source supplies twelve months of consistent inflow history.","The given source satisfies that alternative.","A business-income summary and attestation are still required."],
+      "forbidden_claims":["Any automated source removes all documentation requirements.","Four bank statements remain mandatory even when the stated alternative is satisfied."],
+      "required_aspects":[{"id":"alternative","need":"Apply the narrow alternative without dropping remaining documents.","claim_indices":[0,1,2]}],
+      "evidence_groups":[{"name":"documents","requirement":"Complete Independent / Complex row, including unless clause and remaining evidence.","any_of_source_refs":["lt1_income_docs"]}]
+    },
+    {
+      "id":"R-H06", "family":"nc_reprocess_governance", "difficulty":"extreme", "tags":["favorable_outcome_trap","source_conflict","independent_fact_needs"],
+      "question":"NovaCred V1 operations has two conflicting approved-source responses. Can an analyst pick the favorable one and rerun the underwriting rules until the case passes, calling each rerun a technical retry?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"novacred","document_version":"V1"},
+      "scenario_constraints":["two conflicting approved responses","no defined new event is supplied","question concerns underwriting rule reprocessing, not RAG retrieval"],
+      "ground_truth_answer":"No. Use configured source precedence, not whichever source is favorable, and retain both responses, timestamps and the configured tie-break result. Reprocessing needs a defined event such as an approved technical retry, evidence, correction or new bureau data; it cannot be repeated to seek a favorable outcome. Link the initiating event, before/after states and configuration version.",
+      "required_claims":["Configured source precedence applies; the favorable source cannot be chosen arbitrarily.","Both responses, timestamps and the configured tie-break result must remain.","Reprocessing requires a defined event and must not be repeated to search for a favorable outcome.","Record linked initiating event, before/after states and configuration version."],
+      "forbidden_claims":["An analyst may label every repeated run a technical retry to get a pass.","The less favorable source should be discarded."],
+      "required_aspects":[{"id":"sources","need":"Resolve conflicting evidence by policy.","claim_indices":[0,1]},{"id":"reprocessing","need":"Apply event and history constraints.","claim_indices":[2,3]}],
+      "evidence_groups":[{"name":"source_precedence","requirement":"Source conflict governance.","any_of_source_refs":["nc1_precedence"]},{"name":"reprocess","requirement":"Defined event and audit linkage.","any_of_source_refs":["nc1_reprocess"]}]
+    },
+    {
+      "id":"R-H07", "family":"lt_absent_code", "difficulty":"difficult", "tags":["unanswerable","undefined_identifier","no_search_rescue"],
+      "question":"In LumenTrail V1 Final Underwriting, what does Code 999 mean and which override authorizes it?",
+      "answerability":"unanswerable", "expected_response":"qualified_answer", "expected_scope":{"lender_id":"lumentrail","document_version":"V1"},
+      "scenario_constraints":["exact code 999","LumenTrail V1 Final Underwriting"],
+      "ground_truth_answer":"Code 999 and an override for it are not defined in the supplied LumenTrail V1 manual. State that limitation and request a valid code/reference if needed. Do not relabel it as a nearby existing code or invent an override.",
+      "required_claims":["The supplied LumenTrail V1 manual does not define Code 999 or authorize an override for it."],
+      "forbidden_claims":["Code 999 is a generic specialist override.","Code 999 means Funding Account Ownership."],
+      "required_aspects":[{"id":"unknown_code","need":"State the source limitation without inventing a rule.","claim_indices":[0]}],
+      "evidence_groups":[],
+      "author_notes":"Full-PDF identifier audit found no 999. No positive evidence group exists; retrieval recall and numeric sufficiency-label calibration are N/A. Empty groups are not evidence of a complete policy answer."
+    },
+    {
+      "id":"R-H08", "family":"lt_operational_notice", "difficulty":"difficult", "tags":["operational_vs_policy_state","misleading_success_signal","code_pair"],
+      "question":"LumenTrail V1 Funding Readiness has issued notice 136 because the disbursement window changed, but a fresh identity comparison is still requested under 134. Does the notice mean the identity request is cleared and the loan is ready to fund?",
+      "answerability":"answerable", "expected_response":"answer", "expected_scope":{"lender_id":"lumentrail","document_version":"V1"},
+      "scenario_constraints":["Funding Readiness","notice136 issued","identity134 still open"],
+      "ground_truth_answer":"No. Operational Notice 136 communicates the changed funding window. Code 134 is Identity Re-verification, Evidence Required, and remains an independent open result. A notice cannot replace that result or establish funding readiness; the required evidence and remaining controls must be resolved.",
+      "required_claims":["Notice 136 reports a changed funding window, not a credit or evidence decision.","Code 134 is an Evidence Required identity re-verification result and remains open in the scenario.","The notice cannot replace the open result or itself establish Ready to Fund."],
+      "forbidden_claims":["Sending Notice 136 clears Identity Re-verification 134.","Operational notice issuance alone means approval or Ready to Fund."],
+      "required_aspects":[{"id":"notice_vs_result","need":"Keep operational workflow state separate from an unresolved evidence requirement.","claim_indices":[0,1,2]}],
+      "evidence_groups":[{"name":"rules","requirement":"Funding Readiness rows for 134 and 136.","any_of_source_refs":["lt1_funding"]},{"name":"notice","requirement":"136 changed-window definition.","any_of_source_refs":["lt1_notices"]},{"name":"limits","requirement":"Notices coexist with rather than replace underwriting/evidence outcomes.","any_of_source_refs":["lt1_notice_limits"]}]
+    }
+  ]
+}

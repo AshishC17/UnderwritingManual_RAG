@@ -1,0 +1,191 @@
+{
+  "schema_version": "1.0",
+  "suite": "comparison_eval_v1",
+  "split": "holdout",
+  "frozen": true,
+  "cases": [
+    {
+      "id": "C-H01",
+      "family": "current_thin_file_exception",
+      "difficulty": "difficult",
+      "question": "Compare current NovaCred and LumenTrail treatment of a thin credit file during their initial underwriting gate. Give each code and action, and explain whether either current policy states a rent-history continuation exception.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V1 uses RFAI 106 for Thin File and describes insufficient tradelines or alternate history as requiring additional evidence. LumenTrail V1 uses Evidence Required 106 for Thin Credit File and expressly permits twelve months of verified rent history as a narrow continuation exception; all other final controls still remain.",
+        "required_claims": [
+          "NovaCred V1 uses RFAI code 106 for Thin File at prescreen prequalification.",
+          "NovaCred's definition says insufficient tradelines or alternate history requires additional evidence.",
+          "LumenTrail V1 uses Evidence Required code 106 for Thin Credit File at Direct Eligibility.",
+          "LumenTrail V1 permits twelve months of verified rent history as a narrow continuation exception while all other final controls remain.",
+          "The documented rent-history exception belongs to LumenTrail V1 and must not be transferred to NovaCred."
+        ],
+        "forbidden_claims": [
+          "NovaCred V1 expressly has the twelve-month rent-history exception.",
+          "The rent-history exception is final approval.",
+          "LumenTrail automatically declines every thin-file applicant."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_thin_rule", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0007"]},
+          {"name": "novacred_thin_definition", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0030"]},
+          {"name": "lumentrail_thin_rule", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0006"]},
+          {"name": "lumentrail_thin_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0029"]}
+        ]
+      },
+      "author_notes": "Tests exception attribution when code and broad concept happen to align."
+    },
+    {
+      "id": "C-H02",
+      "family": "historical_v0_baseline_thresholds",
+      "difficulty": "difficult",
+      "question": "Compare NovaCred V0 prescreen selection with LumenTrail V0 Eligibility Gate on age, monthly income, existing exposure, recent delinquency, and application velocity.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V0"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V0"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V0 uses age 20, monthly income proxy $1,900, exposure $6,400, 60+ delinquency lookback 180 days, and no more than three applications in 45 days. LumenTrail V0 uses age 21, normalized monthly income $2,200, exposure $5,000, 60+ delinquency lookback 120 days, and no more than two Direct applications in 30 days.",
+        "required_claims": [
+          "NovaCred V0 uses age 20, $1,900 income proxy, $6,400 exposure, a 180-day delinquency lookback, and at most three applications in 45 days.",
+          "LumenTrail V0 uses age 21, $2,200 normalized monthly income, $5,000 exposure, a 120-day delinquency lookback, and at most two Direct applications in 30 days.",
+          "The answer keeps all values tied to their lender and historical V0 authority."
+        ],
+        "forbidden_claims": [
+          "NovaCred V0 uses the current $5,800 exposure ceiling.",
+          "LumenTrail V0 uses the current $2,350 income floor.",
+          "The two historical baselines are identical."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_v0_baseline", "scope_key": "novacred::novacred_flex_uw::V0", "any_of_chunk_ids": ["NovaCred_UW_V0_pdf.pdf::0005"]},
+          {"name": "lumentrail_v0_baseline", "scope_key": "lumentrail::lumentrail_pathway_uw::V0", "any_of_chunk_ids": ["LumenTrail_UW_V0_pdf.pdf::0005"]}
+        ]
+      },
+      "author_notes": "Historical comparison catches accidental default-to-current behavior on either side."
+    },
+    {
+      "id": "C-H03",
+      "family": "followup_override_both_current",
+      "difficulty": "extreme",
+      "question": "Now compare both current lenders' code 120 policies instead.",
+      "setup": {
+        "history": [{
+          "question": "Explain LumenTrail V0 code 120.",
+          "answer": "LumenTrail V0 code 120 is Evidence Required for Funding Account Ownership when ownership cannot be reconciled automatically [LumenTrail_UW_V0_pdf.pdf::0029].",
+          "chunk_ids": ["LumenTrail_UW_V0_pdf.pdf::0011", "LumenTrail_UW_V0_pdf.pdf::0029"],
+          "scope": {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V0"},
+          "turn_type": "policy_answer"
+        }],
+        "prior_scope": {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V0"}
+      },
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "The phrase both current overrides the prior LumenTrail V0 scope. NovaCred V1 code 120 is NOAA Blocked Routing with the two-clean-observations, 24-hours-apart, supervisor-authorized anomaly override. LumenTrail V1 code 120 is conditional Funding Account Ownership: unrelated holder to Specialist Review; name-format-only mismatch with matching tokens remains Evidence Required.",
+        "required_claims": [
+          "Both comparison scopes are V1 even though the preceding LumenTrail turn used V0.",
+          "NovaCred V1 code 120 is NOAA Blocked Routing with its current anomaly override requirements.",
+          "LumenTrail V1 code 120 is conditional Funding Account Ownership with separate Specialist Review and Evidence Required routes."
+        ],
+        "forbidden_claims": [
+          "The prior LumenTrail V0 version remains in force despite the request for both current policies.",
+          "Both code 120 policies concern blocked routing.",
+          "Either code 120 route is itself final approval."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_current_120", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0009", "NovaCred_UW_V1_pdf.pdf::0013"]},
+          {"name": "novacred_current_120_definition", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0028"]},
+          {"name": "lumentrail_current_120", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0011"]},
+          {"name": "lumentrail_current_120_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0029"]}
+        ]
+      },
+      "author_notes": "Conversation case where explicit current wording must override inherited historical scope."
+    },
+    {
+      "id": "C-H04",
+      "family": "cross_document_pass_semantics",
+      "difficulty": "extreme",
+      "question": "Compare what a pass or cleared result actually permits in the current NovaCred and LumenTrail flows. Does passing the early or intermediate gate itself mean final approval or funding for either lender, and what major steps still follow?",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V1"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "For NovaCred, a prequalification pass reaches preliminary line/offer display; customer acceptance continues to full underwriting, where policy/credit, scoring/affordability, fraud/compliance, and final verifications must still lead to Ready to Fund. For LumenTrail, a Direct Eligibility pass reaches preliminary line/offer and acceptance proceeds to Final Underwriting; in the Verified Partner path, enhanced fraud, line calculation, final underwriting, account ownership, and Funding Readiness remain. A pass is continuation, not final approval or funding, for both.",
+        "required_claims": [
+          "NovaCred prequalification pass permits preliminary line assignment and offer display, and acceptance continues to full underwriting rather than final approval.",
+          "NovaCred still requires full policy and credit checks, scoring and affordability, fraud and compliance, and final verifications before Ready to Fund.",
+          "LumenTrail Direct Eligibility pass permits preliminary line and offer presentation, and acceptance moves to Final Underwriting rather than approval.",
+          "LumenTrail's current Verified Partner flow still includes enhanced fraud review, line calculation, final underwriting, account ownership, and Funding Readiness.",
+          "Neither lender treats an early or intermediate pass as final approval or funding authority."
+        ],
+        "forbidden_claims": [
+          "NovaCred prequalification pass is final approval.",
+          "LumenTrail Eligibility Gate pass authorizes funding.",
+          "Customer acceptance skips all final underwriting controls."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_prequalification_flow", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0022"]},
+          {"name": "novacred_full_underwriting_flow", "scope_key": "novacred::novacred_flex_uw::V1", "any_of_chunk_ids": ["NovaCred_UW_V1_pdf.pdf::0025"]},
+          {"name": "lumentrail_pass_semantics", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0001", "LumenTrail_UW_V1_pdf.pdf::0022"]},
+          {"name": "lumentrail_verified_partner_flow", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0025"]}
+        ]
+      },
+      "author_notes": "Cross-document, multi-hop flow case with a shared semantic trap: continuation is not approval."
+    },
+    {
+      "id": "C-H05",
+      "family": "mixed_explicit_versions_code_105",
+      "difficulty": "difficult",
+      "question": "Compare NovaCred V0 code 105 with LumenTrail V1 code 105. State the rule, action, and meaning for each without carrying a version or definition across lenders.",
+      "setup": {"history": [], "prior_scope": null},
+      "expected": {
+        "behavior": "compare_policy",
+        "outcome": "answer",
+        "scopes": [
+          {"lender_id": "novacred", "document_id": "novacred_flex_uw", "document_version": "V0"},
+          {"lender_id": "lumentrail", "document_id": "lumentrail_pathway_uw", "document_version": "V1"}
+        ],
+        "retry_scope_keys": [],
+        "ground_truth_answer": "NovaCred V0 code 105 is RFAI Credit Freeze: normal bureau file access is prevented or the freeze remains active at full-underwriting refresh, requiring additional information or refreshed bureau state. LumenTrail V1 code 105 is Evidence Required for Income Source Mismatch: stated source and approved evidence do not reconcile.",
+        "required_claims": [
+          "NovaCred V0 code 105 is RFAI Credit Freeze.",
+          "NovaCred V0 code 105 concerns prevented bureau access or a freeze remaining active at refresh and requires more information or refreshed state.",
+          "LumenTrail V1 code 105 is Evidence Required for Income Source Mismatch.",
+          "LumenTrail V1 code 105 means the stated income source and approved evidence do not reconcile.",
+          "The same number has unrelated lender-specific meanings and the requested versions remain independent."
+        ],
+        "forbidden_claims": [
+          "Both code 105 definitions concern a bureau freeze.",
+          "LumenTrail code 105 is Credit Freeze.",
+          "NovaCred V0 is silently replaced with V1."
+        ],
+        "evidence_groups": [
+          {"name": "novacred_v0_105_rule", "scope_key": "novacred::novacred_flex_uw::V0", "any_of_chunk_ids": ["NovaCred_UW_V0_pdf.pdf::0011", "NovaCred_UW_V0_pdf.pdf::0013", "NovaCred_UW_V0_pdf.pdf::0016", "NovaCred_UW_V0_pdf.pdf::0018"]},
+          {"name": "novacred_v0_105_definition", "scope_key": "novacred::novacred_flex_uw::V0", "any_of_chunk_ids": ["NovaCred_UW_V0_pdf.pdf::0039"]},
+          {"name": "lumentrail_v1_105_rule", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0006", "LumenTrail_UW_V1_pdf.pdf::0008"]},
+          {"name": "lumentrail_v1_105_definition", "scope_key": "lumentrail::lumentrail_pathway_uw::V1", "any_of_chunk_ids": ["LumenTrail_UW_V1_pdf.pdf::0029"]}
+        ]
+      },
+      "author_notes": "Explicit mixed-version mapping plus a numeric-code collision."
+    }
+  ]
+}

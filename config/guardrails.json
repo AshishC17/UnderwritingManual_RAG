@@ -1,0 +1,12 @@
+{
+  "policy_version": "guardrails-v1",
+  "max_input_chars": 12000,
+  "max_field_chars": 120000,
+  "max_context_chars": 120000,
+  "semantic_checks": true,
+  "semantic_model": "qwen/qwen3.8-27b",
+  "semantic_timeout_seconds": 20,
+  "semantic_max_output_tokens": 300,
+  "semantic_cache_entries": 256,
+  "reviewed_image_sha256": []
+}

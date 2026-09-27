@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Underwriting RAG</title>
+<style>
+  :root{
+    --ground:#F3F5F8; --surface:#fff; --surface-2:#F8FAFC;
+    --ink:#14181F; --muted:#5A6473; --faint:#8A94A3;
+    --rule:#DCE2E9; --accent:#26456F; --accent-soft:#E7EDF6;
+    --ask:#9A6A08; --ask-soft:#FDF6E7; --ok:#1D7A50; --warn:#A63A32;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0E1116; --surface:#161A21; --surface-2:#1B2028;
+      --ink:#E6EAF0; --muted:#9AA4B2; --faint:#727C8A;
+      --rule:#272D36; --accent:#86A9DE; --accent-soft:#1A2331;
+      --ask:#D9A441; --ask-soft:#221C0E; --ok:#4FB585; --warn:#E0736A;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font:15px/1.6 "IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    display:flex; flex-direction:column; height:100vh;
+  }
+  header{
+    background:var(--surface); border-bottom:1px solid var(--rule);
+    padding:14px 22px; display:flex; align-items:center;
+    justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  h1{font-size:15px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .sub{font:11.5px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+  button{
+    font:inherit; font-size:13px; padding:6px 13px; border-radius:4px;
+    border:1px solid var(--rule); background:var(--surface-2);
+    color:var(--ink); cursor:pointer;
+  }
+  button:hover{border-color:var(--accent)}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  #log{flex:1;overflow-y:auto;padding:26px 22px;display:flex;flex-direction:column;gap:18px}
+  .row{max-width:760px;width:100%;margin:0 auto}
+  .msg{padding:13px 16px;border-radius:6px;border:1px solid var(--rule);background:var(--surface)}
+  .you{background:var(--accent-soft);border-color:transparent;margin-left:auto;max-width:78%}
+  .you .who{color:var(--accent)}
+  .ask{background:var(--ask-soft);border-left:3px solid var(--ask)}
+  .ask .who{color:var(--ask)}
+  .who{
+    font:11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+    text-transform:uppercase; letter-spacing:.1em; color:var(--muted);
+    margin-bottom:8px; display:block;
+  }
+  .body{white-space:pre-wrap;word-wrap:break-word}
+  .meta{
+    margin-top:11px; padding-top:9px; border-top:1px solid var(--rule);
+    font:11.5px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; color:var(--muted);
+    display:flex; flex-wrap:wrap; gap:6px 16px;
+  }
+  .meta b{color:var(--ink);font-weight:500}
+  .gt-ok{color:var(--ok)} .gt-no{color:var(--warn)}
+  .hint{font-size:12.5px;color:var(--faint);margin-top:7px}
+
+  footer{border-top:1px solid var(--rule);background:var(--surface);padding:14px 22px}
+  form{max-width:760px;margin:0 auto;display:flex;gap:10px}
+  input{
+    flex:1; font:inherit; padding:10px 13px; border-radius:5px;
+    border:1px solid var(--rule); background:var(--ground); color:var(--ink);
+  }
+  input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+  input:disabled{opacity:.55}
+  .spin{display:inline-block;animation:p 1.4s ease-in-out infinite}
+  @keyframes p{0%,100%{opacity:.35}50%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Underwriting RAG</h1>
+    <div class="sub" id="threadline">no thread yet</div>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button id="cov">Coverage</button>
+    <button id="reset">New thread</button>
+  </div>
+</header>
+
+<div id="log">
+  <div class="row">
+    <div class="msg">
+      <span class="who">Start</span>
+      <div class="body">Ask a question about an underwriting manual.
+
+If you don't name a lender and version, I'll ask — that reply gets folded into your original question rather than stored as a separate one.</div>
+      <div class="hint">You can type your own questions; no reference answer is required.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <form id="f">
+    <input id="q" autocomplete="off" placeholder="Ask a question…" autofocus>
+    <button type="submit" id="send">Send</button>
+  </form>
+</footer>
+
+<script>
+const log = document.getElementById('log');
+const form = document.getElementById('f');
+const input = document.getElementById('q');
+const send = document.getElementById('send');
+const threadline = document.getElementById('threadline');
+const threadStorageKey = 'underwriting-rag-active-thread';
+let threadId = localStorage.getItem(threadStorageKey);
+let awaitingClarification = false;
+
+function esc(s){ const d=document.createElement('div'); d.textContent=s??''; return d.innerHTML; }
+
+function add(who, text, cls, metaHtml, hint){
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.innerHTML = `<div class="msg ${cls||''}">
+      <span class="who">${esc(who)}</span>
+      <div class="body">${esc(text)}</div>
+      ${metaHtml ? `<div class="meta">${metaHtml}</div>` : ''}
+      ${hint ? `<div class="hint">${esc(hint)}</div>` : ''}
+    </div>`;
+  log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  return row;
+}
+
+function resetLog(){
+  log.innerHTML = '';
+  add('Start', 'Ask a question about an underwriting manual.', '', '',
+      'Conversation state and messages are restored from the service after a restart.');
+}
+
+async function restoreThread(){
+  if (!threadId) return;
+  try {
+    const res = await fetch(`/threads/${encodeURIComponent(threadId)}/messages`);
+    if (res.status === 404) {
+      localStorage.removeItem(threadStorageKey);
+      threadId = null;
+      return;
+    }
+    if (!res.ok) throw new Error(`server returned ${res.status}`);
+    const d = await res.json();
+    resetLog();
+    for (const message of d.messages) {
+      if (message.role === 'user') {
+        add(message.kind === 'clarification_reply' ? 'Your reply' : 'You',
+            message.content, 'you');
+      } else if (message.kind === 'clarification_prompt') {
+        add('Needs scope', message.content, 'ask',
+            `reason <b>${esc(message.metadata?.reason || '')}</b>`);
+      } else if (message.kind === 'blocked') {
+        add('Guardrail', message.content, 'ask');
+      } else {
+        add('Answer', message.content, '');
+      }
+    }
+    awaitingClarification = Boolean(d.thread.awaiting_clarification);
+    threadline.textContent = `thread ${threadId.slice(0, 8)} · restored`;
+  } catch (err) {
+    add('Restore error', String(err.message || err), 'ask');
+  }
+}
+
+function pending(){
+  const row = add('Working', 'thinking…', '');
+  const body = row.querySelector('.body');
+  body.classList.add('spin');
+  const t0 = Date.now();
+  const timer = setInterval(() => {
+    const s = Math.round((Date.now() - t0) / 1000);
+    body.textContent = s < 4
+      ? 'thinking…'
+      : `retrieving and reranking — ${s}s (Voyage free tier paces to ~20s per call)`;
+  }, 500);
+  return () => { clearInterval(timer); row.remove(); };
+}
+
+function answerMeta(d){
+  const parts = [];
+  if (d.scopes?.length) {
+    const labels = d.scopes.map(s => `${esc(s.lender)} ${esc(s.version||'')}`);
+    parts.push(`comparison <b>${labels.join(' ↔ ')}</b>`);
+  } else if (d.scope?.lender) {
+    parts.push(`scope <b>${esc(d.scope.lender)} ${esc(d.scope.version||'')}</b>`
+      + (d.scope.inherited ? ' <span style="opacity:.75">(inherited)</span>' : ''));
+  }
+  const comparisonQueryCount = Object.values(d.comparison_sub_queries || {})
+    .reduce((total, queries) => total + queries.length, 0);
+  if (comparisonQueryCount) {
+    parts.push(`scoped searches <b>${comparisonQueryCount}</b>`);
+  } else if (d.sub_queries?.length > 1) {
+    parts.push(`sub-queries <b>${d.sub_queries.length}</b>`);
+  }
+  parts.push(`<b>${(d.elapsed_ms/1000).toFixed(1)}s</b>`);
+  const guards = d.guardrails || [];
+  if (guards.some(g => g.reason_code === 'semantic_guard_rate_limited')) {
+    parts.push('<span class="gt-no">guard model usage limit</span>');
+  } else if (guards.some(g => g.decision === 'error')) {
+    parts.push('<span class="gt-no">guard check unavailable</span>');
+  } else if (guards.some(g => g.decision === 'block')) {
+    parts.push('<span class="gt-no">blocked by guardrail</span>');
+  } else if (guards.some(g => g.decision === 'decline')) {
+    parts.push('<span class="gt-no">outside supported topics</span>');
+  } else if (guards.some(g => g.guard === 'semantic_screen' && g.stage === 'request' && g.decision === 'allow')) {
+    parts.push('<span class="gt-ok">input guard passed</span>');
+  }
+  return parts.join('');
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+
+  add(awaitingClarification ? 'Your reply' : 'You', text, 'you');
+  input.value = '';
+  input.disabled = send.disabled = true;
+  const done = pending();
+
+  try {
+    const res = await fetch('/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({thread_id: threadId, message: text})
+    });
+    if (!res.ok) throw new Error(`server returned ${res.status}`);
+    const d = await res.json();
+    done();
+
+    threadId = d.thread_id;
+    localStorage.setItem(threadStorageKey, threadId);
+    threadline.textContent = `thread ${threadId.slice(0, 8)}`;
+
+    if (d.type === 'clarification') {
+      awaitingClarification = true;
+      add('Needs scope', d.text, 'ask', `reason <b>${esc(d.reason||'')}</b>`,
+          'Your next message answers this and is folded into the original question.');
+    } else {
+      awaitingClarification = Boolean(d.awaiting_clarification);
+      add('Answer', d.text, '', answerMeta(d),
+          awaitingClarification ? 'The earlier clarification is still pending.' : null);
+    }
+  } catch (err) {
+    done();
+    add('Error', String(err.message || err), 'ask');
+  } finally {
+    input.disabled = send.disabled = false;
+    input.focus();
+  }
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+  threadId = null;
+  localStorage.removeItem(threadStorageKey);
+  awaitingClarification = false;
+  threadline.textContent = 'no thread yet';
+  resetLog();
+  add('New thread', 'A new conversation will start with your next message. Previous conversations remain stored.', '');
+});
+
+document.getElementById('cov').addEventListener('click', async () => {
+  try {
+    const d = await (await fetch('/coverage')).json();
+    add('Coverage', JSON.stringify(d, null, 2), '');
+  } catch (err) {
+    add('Error', String(err.message || err), 'ask');
+  }
+});
+
+restoreThread();
+</script>
+</body>
+</html>

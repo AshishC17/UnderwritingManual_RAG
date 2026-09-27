@@ -1,0 +1,69 @@
+{
+  "review_status":"PDF-text checked; cited flowchart and matrix pages visually checked; human label review pending.",
+  "corpus_snapshot":{
+    "manifest_path":"config/corpus_manifest.json", "manifest_sha256":"760ae55707bd0e61ca204b44c90713e4a9f459e2e2c61fd8db38682bc082fed3",
+    "chunks_path":"data/processed/chunks_v2.json", "chunks_sha256":"7457d0004fa0a4ccb3cef2e360e9666644f41e806197583c09f0b4224189c656", "chunk_count":235,
+    "documents":[
+      {"path":"data/raw/NovaCred_UW_V0_pdf.pdf","sha256":"eb6792359589314ffa8218800a7101714fbcbd7220ef6e22cfa25cdb081c2399"},
+      {"path":"data/raw/NovaCred_UW_V1_pdf.pdf","sha256":"05f1cbfd0c21e4971fe0e608b1316b3a6824401bdfc972f3dcaac93adba10221"},
+      {"path":"data/raw/LumenTrail_UW_V0_pdf.pdf","sha256":"e705b7b82503a058ee0a3a53d565d22b3fecea6dc045668c5cbd113db90bf411"},
+      {"path":"data/raw/LumenTrail_UW_V1_pdf.pdf","sha256":"6dcce8ec39c3af46d4c51456f723459cfa79608c792a6396d4b5d2753a644d25"}
+    ]
+  },
+  "oracle_policy":"PDF meaning and scenario entailment are authoritative. Chunk IDs are frozen diagnostic mappings, not an independent proof of sufficiency. Anchors are locators, never full generator context. Materialize full chunk payloads only after verifying the snapshot. A whole-snapshot hash pins text, metadata and every mapping.",
+  "known_discrepancies":[
+    "NovaCred V1 page-10 caption nc1_full_flow includes an Evidence Integrity Gate invalid -> Manual Review arrow that is not drawn on the PDF. R-D05 requires only the visually confirmed valid loop and pass path. Claims solely supported by this caption addition may be context-grounded but fail PDF-grounded correctness.",
+    "The previously recorded NovaCred V1 page-9 caption discrepancy remains outside this suite's evidence targets."
+  ],
+  "absence_audits":[
+    {"documents":"all_four","literal":"notice of adverse action","result":"absent_case_insensitive","interpretation":"User expansion is a paraphrase, not a PDF-defined expansion or legal requirement."},
+    {"documents":"all_four","literal":"IAR","result":"absent_whole_word","interpretation":"Only the surrounding routing/observation scenario disambiguates R-D02."},
+    {"documents":"all_four","literal":"QXR","result":"absent_whole_word","interpretation":"R-D12 also lacks sufficient contextual clues."},
+    {"documents":"all_four","literal":"999","result":"absent_whole_word","interpretation":"No Code 999 definition or override is in the frozen manuals."},
+    {"documents":"NovaCred_UW_V1_pdf.pdf","literal":null,"result":"semantic_full_pdf_review","interpretation":"Maximum line cap is mentioned but not numerically specified. Matrix cells and exposure ceilings are not that cap."}
+  ],
+  "sources":{
+    "nc1_overview":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0001","pages":[2],"section":"PRODUCT OVERVIEW","anchor":"A marketing selection or prequalification pass is not a final approval."},
+    "nc1_selection":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0003","pages":[2],"section":"Table 1","anchor":"Synthetic income proxy at or above $2,100 monthly"},
+    "nc1_marketing":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0004","pages":[2],"section":"NON-PRESCREEN MARKETING","anchor":"Missing path flags are quarantined rather than silently defaulted."},
+    "nc1_roles":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0005","pages":[3],"section":"Table 2","anchor":"Cannot satisfy borrower underwriting requirements"},
+    "nc1_skip":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0006","pages":[3],"section":"UNDERWRITING","anchor":"the skip reason must distinguish not applicable from not evaluated"},
+    "nc1_pre":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0007","pages":[4],"section":"Table 3","anchor":"Blocked SSN [1]"},
+    "nc1_identity_exception":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0008","pages":[4],"section":"Table 3 footnote [1]","anchor":"resolved administrative duplicate older than 48 months"},
+    "nc1_full":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0009","pages":[5],"section":"Table 4","anchor":"Blocked Routing [2]"},
+    "nc1_routing_exception":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0010","pages":[5],"section":"Table 4 footnotes [2] and [3]","anchor":"The original block, both observations, the exception reason, and authorizer must remain in history."},
+    "nc1_nonpre_full":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0013","pages":[7],"section":"Table 6","anchor":"Funding Method Verification"},
+    "nc1_line_policy":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0015","pages":[7],"section":"SCORE CUT AND LINE ASSIGNMENT","anchor":"The selected adjustment is applied only after hard policy rules have passed or been resolved."},
+    "nc1_matrix":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0016","pages":[8],"section":"Table 7","anchor":"Table 7: Line Assignment Matrix","visual_verified":true},
+    "nc1_line_limits":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0017","pages":[8],"section":"Table 7 following paragraph","anchor":"The minimum line floor and maximum line cap remain independent controls"},
+    "nc1_income_docs":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0018","pages":[8],"section":"Table 8","anchor":"Two recent pay statements plus employment-status confirmation"},
+    "nc1_income_variance":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0019","pages":[8],"section":"INCOME VERIFICATION","anchor":"Code 122 fires when stated income differs from verified income by more than 22 percent."},
+    "nc1_full_flow":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0025","pages":[10],"section":"New Customer Full Underwriting Process - Version 1","anchor":"New Customer Full Underwriting Process - Version 1","visual_verified":true},
+    "nc1_rfai":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0030","pages":[12],"section":"Table 10","anchor":"Offer Age: Prescreen artifact is older than 30 days or Non-Prescreen artifact is older than 21 days."},
+    "nc1_notices":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0031","pages":[12],"section":"Table 11","anchor":"Final Disposition Pending"},
+    "nc1_review":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0032","pages":[12],"section":"Table 12","anchor":"Declared residence conflicts with validated address evidence."},
+    "nc1_fraud":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0035","pages":[13],"section":"Table 14","anchor":"Household cluster shares device with consistent identity"},
+    "nc1_precedence":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0037","pages":[13],"section":"SOURCE PRECEDENCE AND DATA FRESHNESS","anchor":"Reviewers must not choose the most favorable source."},
+    "nc1_history":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0038","pages":[13],"section":"EVIDENCE AND DECISION HISTORY","anchor":"Each terminal, evidence-request, notice, or manual result retains source data, timestamp, rule code, action, policy version, and reviewer or system identifier."},
+    "nc1_reprocess":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0040","pages":[14],"section":"RULE REPROCESSING","anchor":"It must not be used repeatedly to search for a favorable outcome."},
+    "nc1_monitoring":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0041","pages":[14],"section":"MONITORING","anchor":"Code-level monitoring without version segmentation can hide a threshold change."},
+    "nc1_missing_scores":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0046","pages":[14],"section":"MISSING SCORES","anchor":"It cannot create a score, assign a line, or guarantee approval."},
+    "nc1_rfai_lifecycle":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0047","pages":[15],"section":"RFAI LIFECYCLE","anchor":"The prior request and all submitted versions remain in history."},
+    "nc1_multiple":{"chunk_id":"NovaCred_UW_V1_pdf.pdf::0048","pages":[15],"section":"MULTIPLE REQUESTS","anchor":"One uploaded document must not obscure which conditions were evaluated."},
+    "lt1_direct":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0006","pages":[3],"section":"Table 3","anchor":"Thin Credit File [1]"},
+    "lt1_thin_limits":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0007","pages":[3],"section":"Table 3 footnote [1]","anchor":"It does not create a credit score or approve the application."},
+    "lt1_final_overview":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0010","pages":[4],"section":"FINAL UNDERWRITING AND FUNDING READINESS","anchor":"Passing Final Underwriting is not Ready to Fund until Funding Readiness is complete."},
+    "lt1_final":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0011","pages":[4],"section":"Table 5","anchor":"Identity Document Validity"},
+    "lt1_funding":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0013","pages":[4],"section":"Table 6","anchor":"Identity Re-verification"},
+    "lt1_notice_limits":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0014","pages":[4],"section":"Funding Readiness paragraph","anchor":"must not replace, the actual underwriting or evidence result"},
+    "lt1_income_docs":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0018","pages":[5],"section":"Table 8","anchor":"Four recent bank statements unless an approved automated source supplies twelve months of consistent inflow history"},
+    "lt1_partner_flow":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0025","pages":[7],"section":"Verified Partner Final Underwriting Flow - V1","anchor":"Verified Partner Final Underwriting Flow - V1","visual_verified":true},
+    "lt1_evidence":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0029","pages":[8],"section":"Table 10","anchor":"a name-format-only mismatch with matching account and routing tokens remains Evidence Required."},
+    "lt1_notices":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0031","pages":[9],"section":"Table 11","anchor":"Funding Window Notice: expected disbursement window changed after acceptance."},
+    "lt1_device":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0043","pages":[10],"section":"SHARED DEVICE CLUSTERS","anchor":"The reviewer compares relationship, identity consistency, timing, and funding ownership."},
+    "lt1_ownership":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0044","pages":[11],"section":"FUNDING ACCOUNT OWNERSHIP","anchor":"does not mean the application is approved."},
+    "lt1_identity_validity":{"chunk_id":"LumenTrail_UW_V1_pdf.pdf::0045","pages":[11],"section":"IDENTITY DOCUMENT VALIDITY","anchor":"has fewer than 30 validity days remaining on the expected funding date."},
+    "lt0_version":{"chunk_id":"LumenTrail_UW_V0_pdf.pdf::0038","pages":[10],"section":"VERSION RESOLUTION","anchor":"LumenTrail V0 applies to evaluation events from 2026-03-01 through 2026-08-31."},
+    "lt0_reopen":{"chunk_id":"LumenTrail_UW_V0_pdf.pdf::0040","pages":[10],"section":"REOPENED CASES","anchor":"Version 0 may reuse a prior evidence package when every artifact remains within its configured validity window."}
+  }
+}
